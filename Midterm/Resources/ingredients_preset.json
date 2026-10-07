@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Carrot",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated."
+  },
+  {
+    "name": "Tomato",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.0,
+    "carbonFactor": 0.2,
+    "storageTip": "Keep in a cool place."
+  },
+  {
+    "name": "Milk",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 4.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated below 4°C."
+  },
+  {
+    "name": "Apple",
+    "category": "Fruit",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.2,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated for longer freshness."
+  },
+  {
+    "name": "Chicken",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 8.0,
+    "carbonFactor": 3.0,
+    "storageTip": "Keep refrigerated and cook thoroughly."
+  }
+]
