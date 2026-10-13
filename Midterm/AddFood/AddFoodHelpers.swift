@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 struct FoodDraft {
     var name: String
@@ -8,8 +7,7 @@ struct FoodDraft {
     var addedDate: Date
     var estimatedValue: Double
     var preset: IngredientPreset?
-    var photo: UIImage?
-    var recognizedFromPhoto: Bool
+    var fromScan: Bool
 
     var shelfLifeDays: Int {
         preset?.shelfLifeDays ?? category.fallbackShelfLifeDays
