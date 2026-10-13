@@ -3,6 +3,7 @@ import SwiftUI
 struct HomeView: View {
 
     @EnvironmentObject var foodStore: FoodStore
+    @State private var showAddFood = false
 
     // MARK: - Data
 
@@ -52,6 +53,9 @@ struct HomeView: View {
                 }
             }
             .toolbar(.hidden, for: .navigationBar)
+            .sheet(isPresented: $showAddFood) {
+                AddFoodView(store: foodStore)
+            }
         }
     }
 
@@ -84,19 +88,24 @@ struct HomeView: View {
 
             Spacer()
 
-            ZStack {
-                Circle()
-                    .fill(PremiumTheme.surface)
+            Button {
+                showAddFood = true
+            } label: {
+                ZStack {
+                    Circle()
+                        .fill(PremiumTheme.surface)
 
-                Image(systemName: "leaf.fill")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(PremiumTheme.olive)
+                    Image(systemName: "plus")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(PremiumTheme.olive)
+                }
+                .frame(width: 46, height: 46)
+                .overlay {
+                    Circle()
+                        .stroke(PremiumTheme.border, lineWidth: 1)
+                }
             }
-            .frame(width: 46, height: 46)
-            .overlay {
-                Circle()
-                    .stroke(PremiumTheme.border, lineWidth: 1)
-            }
+            .buttonStyle(.plain)
         }
     }
 
