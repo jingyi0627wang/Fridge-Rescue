@@ -1,8 +1,22 @@
+
 import SwiftUI
 
 struct MainTabView: View {
 
     @EnvironmentObject var foodStore: FoodStore
+
+    // MARK: - Freshlings Colors
+    private let freshGreen = Color(
+        red: 0.53,
+        green: 0.89,
+        blue: 0.36
+    )
+
+    private let creamBackground = Color(
+        red: 0.98,
+        green: 0.99,
+        blue: 0.96
+    )
 
     var body: some View {
 
@@ -53,13 +67,7 @@ struct MainTabView: View {
                 Text("Impact")
             }
         }
-        .tint(
-            Color(
-                red: 0.34,
-                green: 0.46,
-                blue: 0.23
-            )
-        )
+        .tint(freshGreen)
     }
 }
 
@@ -69,36 +77,40 @@ struct MainTabView: View {
 
 struct AddFoodPlaceholderView: View {
 
+    private let freshGreen = Color(
+        red: 0.53,
+        green: 0.89,
+        blue: 0.36
+    )
+
+    private let creamBackground = Color(
+        red: 0.98,
+        green: 0.99,
+        blue: 0.96
+    )
+
     var body: some View {
 
         ZStack {
 
-            Color(
-                red: 0.969,
-                green: 0.965,
-                blue: 0.945
-            )
-            .ignoresSafeArea()
+            creamBackground
+                .ignoresSafeArea()
 
             VStack(spacing: 18) {
 
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 52))
-                    .foregroundStyle(
-                        Color(
-                            red: 0.34,
-                            green: 0.46,
-                            blue: 0.23
-                        )
-                    )
+                    .foregroundStyle(freshGreen)
 
                 Text("Add Food")
                     .font(.system(size: 30, weight: .bold))
 
-                Text("Manual entry and AI food recognition will appear here.")
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
+                Text(
+                    "Manual entry and AI food recognition will appear here."
+                )
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
             }
         }
     }
@@ -110,34 +122,38 @@ struct AddFoodPlaceholderView: View {
 
 struct ImpactPlaceholderView: View {
 
+    private let freshGreen = Color(
+        red: 0.53,
+        green: 0.89,
+        blue: 0.36
+    )
+
+    private let creamBackground = Color(
+        red: 0.98,
+        green: 0.99,
+        blue: 0.96
+    )
+
     var body: some View {
 
         ZStack {
 
-            Color(
-                red: 0.969,
-                green: 0.965,
-                blue: 0.945
-            )
-            .ignoresSafeArea()
+            creamBackground
+                .ignoresSafeArea()
 
             VStack(spacing: 18) {
 
                 Image(systemName: "chart.bar.fill")
                     .font(.system(size: 48))
-                    .foregroundStyle(
-                        Color(
-                            red: 0.34,
-                            green: 0.46,
-                            blue: 0.23
-                        )
-                    )
+                    .foregroundStyle(freshGreen)
 
                 Text("Impact")
                     .font(.system(size: 30, weight: .bold))
 
-                Text("Your food rescue statistics will appear here.")
-                    .foregroundStyle(.secondary)
+                Text(
+                    "Your food rescue statistics will appear here."
+                )
+                .foregroundStyle(.secondary)
             }
         }
     }
@@ -150,3 +166,4 @@ struct ImpactPlaceholderView: View {
     MainTabView()
         .environmentObject(FoodStore())
 }
+

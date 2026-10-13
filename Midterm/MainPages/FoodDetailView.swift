@@ -1,454 +1,261 @@
 import SwiftUI
 
+// MARK: - Food Details · Freshlings visual style
+// This palette is local to this file so teammates' pages are unchanged.
+private enum FreshlingsDetailStyle {
+    static let background = Color(red: 0.985, green: 0.992, blue: 0.970)
+    static let white = Color.white
+    static let softGreen = Color(red: 0.931, green: 0.976, blue: 0.869)
+    static let softYellow = Color(red: 1.000, green: 0.956, blue: 0.822)
+    static let green = Color(red: 0.53, green: 0.89, blue: 0.36)
+    static let darkGreen = Color(red: 0.22, green: 0.49, blue: 0.19)
+    static let brown = Color(red: 0.34, green: 0.27, blue: 0.22)
+    static let secondary = Color(red: 0.50, green: 0.48, blue: 0.41)
+    static let orange = Color(red: 0.96, green: 0.56, blue: 0.29)
+    static let gold = Color(red: 0.77, green: 0.54, blue: 0.09)
+    static let red = Color(red: 0.86, green: 0.36, blue: 0.19)
+    static let track = Color(red: 0.89, green: 0.92, blue: 0.85)
+}
+
 struct FoodDetailView: View {
-
     let item: FoodItem
+    @Environment(\.dismiss) private var dismiss
 
-    // MARK: - Colors
+    private var statusColor: Color {
+        switch item.freshnessLevel {
+        case .fresh: return FreshlingsDetailStyle.darkGreen
+        case .useSoon: return FreshlingsDetailStyle.gold
+        case .urgent: return FreshlingsDetailStyle.red
+        case .expired: return FreshlingsDetailStyle.secondary
+        }
+    }
 
-    private let backgroundColor = Color(
-        red: 0.97,
-        green: 0.96,
-        blue: 0.91
-    )
+    private var progress: CGFloat {
+        CGFloat(max(0, min(item.hpPercentage / 100.0, 1)))
+    }
 
-    private let cardColor = Color(
-        red: 0.995,
-        green: 0.985,
-        blue: 0.955
-    )
+    private var daysText: String {
+        if item.freshnessLevel == .expired { return "Expired" }
+        if item.remainingDays == 0 { return "Expires today" }
+        if item.remainingDays == 1 { return "1 day left" }
+        return "\(item.remainingDays) days left"
+    }
 
-    private let primaryText = Color(
-        red: 0.12,
-        green: 0.12,
-        blue: 0.10
-    )
-
-    private let secondaryText = Color(
-        red: 0.40,
-        green: 0.40,
-        blue: 0.35
-    )
-
-    private let green = Color(
-        red: 0.34,
-        green: 0.46,
-        blue: 0.23
-    )
-
-    private let orange = Color(
-        red: 0.76,
-        green: 0.31,
-        blue: 0.17
-    )
-
-    private let lightOrange = Color(
-        red: 0.96,
-        green: 0.88,
-        blue: 0.82
-    )
-
-    // MARK: - Body
+    private var foodEmoji: String {
+        switch item.category {
+        case .vegetable:
+            return item.name.localizedCaseInsensitiveContains("carrot") ? "🥕" : "🥬"
+        case .fruit: return "🍎"
+        case .dairy: return "🥛"
+        case .meat: return "🥩"
+        case .other: return "🥣"
+        }
+    }
 
     var body: some View {
-
         ZStack {
+            FreshlingsDetailStyle.background.ignoresSafeArea()
 
-            backgroundColor
-                .ignoresSafeArea()
-
-            ScrollView(.vertical, showsIndicators: false) {
-
-                VStack(spacing: 28) {
-
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 22) {
                     headerSection
-
-                    foodHeroSection
-
+                    heroSection
                     freshnessSection
-
                     informationSection
-
                     recipeButton
                 }
-                .padding(.horizontal, 22)
+                .padding(.horizontal, 20)
                 .padding(.top, 12)
-                .padding(.bottom, 50)
+                .padding(.bottom, 36)
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
     }
-
 
     // MARK: - Header
 
     private var headerSection: some View {
-
-        ZStack {
-
-            HStack {
-
-                Button {
-                    dismiss()
-                } label: {
-
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 19, weight: .semibold))
-                        .foregroundStyle(primaryText)
-                        .frame(width: 44, height: 44)
-                        .background(
-                            Circle()
-                                .fill(Color.white.opacity(0.75))
-                        )
-                }
-
-                Spacer()
+        HStack(spacing: 12) {
+            Button(action: { dismiss() }) {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(FreshlingsDetailStyle.darkGreen)
+                    .frame(width: 44, height: 44)
+                    .background(FreshlingsDetailStyle.white, in: Circle())
             }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Back")
+
+            Spacer()
 
             Text("Food Details")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(primaryText)
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.brown)
+
+            Spacer()
+
+            // Balances the back button so the title stays centered.
+            Color.clear.frame(width: 44, height: 44)
         }
     }
 
+    // MARK: - Food hero
 
-    // MARK: - Food Hero
-
-    private var foodHeroSection: some View {
-
+    private var heroSection: some View {
         VStack(spacing: 12) {
-
             ZStack {
+                Circle()
+                    .fill(FreshlingsDetailStyle.white.opacity(0.72))
+                    .frame(width: 142, height: 142)
 
                 Circle()
-                    .fill(iconBackground)
-                    .frame(width: 82, height: 82)
+                    .stroke(FreshlingsDetailStyle.darkGreen.opacity(0.10), lineWidth: 2)
+                    .frame(width: 142, height: 142)
 
                 Text(foodEmoji)
-                    .font(.system(size: 42))
+                    .font(.system(size: 76))
+                    .accessibilityHidden(true)
             }
 
             Text(item.name)
-                .font(.system(size: 34, weight: .bold))
-                .foregroundStyle(primaryText)
+                .font(.system(size: 32, weight: .heavy, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.brown)
+                .multilineTextAlignment(.center)
 
             Text(item.category.rawValue)
-                .font(.system(size: 17))
-                .foregroundStyle(secondaryText)
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.secondary)
 
             Text(item.freshnessLevel.title)
-                .font(.system(size: 14, weight: .semibold))
+                .font(.system(size: 13, weight: .bold, design: .rounded))
                 .foregroundStyle(statusColor)
                 .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .background(
-                    Capsule()
-                        .fill(statusColor.opacity(0.12))
-                )
+                .padding(.vertical, 9)
+                .background(statusColor.opacity(0.12), in: Capsule())
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 10)
+        .padding(.vertical, 22)
+        .background(FreshlingsDetailStyle.softGreen, in: RoundedRectangle(cornerRadius: 28))
     }
-
 
     // MARK: - Freshness
 
     private var freshnessSection: some View {
-
-        VStack(alignment: .leading, spacing: 22) {
-
-            Text("Freshness")
-                .font(.system(size: 21, weight: .bold))
-                .foregroundStyle(primaryText)
-
-            HStack(alignment: .firstTextBaseline) {
-
-                Text("\(Int(item.hpPercentage)) HP")
-                    .font(.system(size: 32, weight: .bold))
-                    .foregroundStyle(statusColor)
+        VStack(alignment: .leading, spacing: 18) {
+            HStack {
+                Label("Freshness HP", systemImage: "heart.fill")
+                    .font(.system(size: 19, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsDetailStyle.brown)
 
                 Spacer()
 
-                Text(daysText)
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(secondaryText)
+                Text("\(Int(item.hpPercentage))%")
+                    .font(.system(size: 27, weight: .heavy, design: .rounded))
+                    .foregroundStyle(statusColor)
+                    .monospacedDigit()
             }
 
             GeometryReader { geometry in
-
                 ZStack(alignment: .leading) {
-
-                    Capsule()
-                        .fill(Color.black.opacity(0.08))
-
+                    Capsule().fill(FreshlingsDetailStyle.track)
                     Capsule()
                         .fill(statusColor)
-                        .frame(
-                            width:
-                                geometry.size.width *
-                                CGFloat(item.hpPercentage / 100)
-                        )
+                        .frame(width: geometry.size.width * progress)
                 }
             }
-            .frame(height: 8)
+            .frame(height: 11)
+            .accessibilityLabel("Freshness")
+            .accessibilityValue("\(Int(item.hpPercentage)) percent")
+
+            HStack(spacing: 8) {
+                Image(systemName: "clock.fill")
+                    .foregroundStyle(statusColor)
+                Text(daysText)
+                    .foregroundStyle(FreshlingsDetailStyle.brown)
+                Spacer(minLength: 0)
+                Text("Use food while it's fresh")
+                    .foregroundStyle(FreshlingsDetailStyle.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+            .font(.system(size: 12, weight: .medium, design: .rounded))
         }
-        .padding(24)
-        .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(cardColor)
-        )
+        .padding(20)
+        .background(FreshlingsDetailStyle.white, in: RoundedRectangle(cornerRadius: 24))
     }
 
-
-    // MARK: - Food Information
+    // MARK: - Food information
 
     private var informationSection: some View {
-
-        VStack(alignment: .leading, spacing: 0) {
-
+        VStack(alignment: .leading, spacing: 4) {
             Text("Food Information")
-                .font(.system(size: 21, weight: .bold))
-                .foregroundStyle(primaryText)
-                .padding(.bottom, 18)
+                .font(.system(size: 19, weight: .bold, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.brown)
+                .padding(.bottom, 10)
 
-            informationRow(
-                title: "Quantity",
-                value: "\(item.quantity)"
-            )
-
-            divider
-
-            informationRow(
-                title: "Added",
-                value: formattedDate(item.addedDate)
-            )
-
-            divider
-
-            informationRow(
-                title: "Expiration",
-                value: formattedDate(item.expirationDate)
-            )
-
-            divider
-
-            informationRow(
-                title: "Estimated Value",
-                value: String(
-                    format: "$%.2f",
-                    item.estimatedValue
-                )
-            )
-
-            divider
-
-            informationRow(
-                title: "Carbon Factor",
-                value: String(
-                    format: "%.2f",
-                    item.carbonFactor
-                )
-            )
+            informationRow("Quantity", "\(item.quantity)")
+            Divider()
+            informationRow("Added", formattedDate(item.addedDate))
+            Divider()
+            informationRow("Expiration", formattedDate(item.expirationDate))
+            Divider()
+            informationRow("Estimated Value", String(format: "$%.2f", item.estimatedValue))
+            Divider()
+            informationRow("Carbon Factor", String(format: "%.2f", item.carbonFactor))
         }
-        .padding(24)
-        .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(cardColor)
-        )
+        .padding(20)
+        .background(FreshlingsDetailStyle.white, in: RoundedRectangle(cornerRadius: 24))
     }
 
-
-    // MARK: - Information Row
-
-    private func informationRow(
-        title: String,
-        value: String
-    ) -> some View {
-
-        HStack {
-
+    private func informationRow(_ title: String, _ value: String) -> some View {
+        HStack(spacing: 10) {
             Text(title)
-                .font(.system(size: 16))
-                .foregroundStyle(secondaryText)
-
-            Spacer()
-
+                .foregroundStyle(FreshlingsDetailStyle.secondary)
+            Spacer(minLength: 8)
             Text(value)
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(primaryText)
+                .fontWeight(.bold)
+                .foregroundStyle(FreshlingsDetailStyle.brown)
+                .multilineTextAlignment(.trailing)
         }
-        .padding(.vertical, 14)
+        .font(.system(size: 14, design: .rounded))
+        .padding(.vertical, 11)
     }
 
-
-    private var divider: some View {
-
-        Rectangle()
-            .fill(Color.black.opacity(0.06))
-            .frame(height: 1)
-    }
-
-
-    // MARK: - Find Recipes
+    // MARK: - Recipes
 
     private var recipeButton: some View {
-
         NavigationLink {
-
-            RecipeListView(
-                focusIngredient: item
-            )
-
+            RecipeListView(focusIngredient: item)
         } label: {
-
-            HStack(spacing: 14) {
-
+            HStack(spacing: 12) {
                 Image(systemName: "fork.knife")
-                    .font(.system(size: 18, weight: .semibold))
-
-                VStack(
-                    alignment: .leading,
-                    spacing: 3
-                ) {
-
-                    Text("Find Recipes with \(item.name)")
-                        .font(
-                            .system(
-                                size: 17,
-                                weight: .semibold
-                            )
-                        )
-
-                    Text("Use it before it expires")
-                        .font(.system(size: 13))
-                        .opacity(0.75)
+                    .font(.system(size: 21, weight: .semibold))
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Find Recipes")
+                        .font(.system(size: 17, weight: .bold, design: .rounded))
+                    Text("Cook with \(item.name) before it expires")
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .lineLimit(2)
                 }
-
-                Spacer()
-
+                Spacer(minLength: 4)
                 Image(systemName: "arrow.right")
-                    .font(
-                        .system(
-                            size: 16,
-                            weight: .semibold
-                        )
-                    )
+                    .font(.system(size: 16, weight: .bold))
             }
-            .foregroundStyle(Color.white)
+            .foregroundStyle(FreshlingsDetailStyle.darkGreen)
             .padding(.horizontal, 20)
-            .frame(height: 72)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(green)
-            )
+            .padding(.vertical, 17)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(FreshlingsDetailStyle.green, in: RoundedRectangle(cornerRadius: 22))
         }
         .buttonStyle(.plain)
     }
 
-
-    // MARK: - Status
-
-    private var statusColor: Color {
-
-        switch item.freshnessLevel {
-
-        case .fresh:
-            return green
-
-        case .useSoon:
-            return Color.orange
-
-        case .urgent:
-            return orange
-
-        case .expired:
-            return Color.gray
-        }
-    }
-
-
-    // MARK: - Icon Background
-
-    private var iconBackground: Color {
-
-        switch item.freshnessLevel {
-
-        case .fresh:
-            return green.opacity(0.12)
-
-        case .useSoon:
-            return Color.orange.opacity(0.12)
-
-        case .urgent:
-            return lightOrange
-
-        case .expired:
-            return Color.gray.opacity(0.12)
-        }
-    }
-
-
-    // MARK: - Food Emoji
-
-    private var foodEmoji: String {
-
-        switch item.category {
-
-        case .vegetable:
-            return "🥕"
-
-        case .fruit:
-            return "🍎"
-
-        case .dairy:
-            return "🥛"
-
-        case .meat:
-            return "🥩"
-
-        case .other:
-            return "🥣"
-        }
-    }
-
-
-    // MARK: - Days Text
-
-    private var daysText: String {
-
-        if item.hpPercentage <= 0 {
-            return "Expired"
-        }
-
-        if item.remainingDays == 0 {
-            return "Expires today"
-        }
-
-        if item.remainingDays == 1 {
-            return "1 day left"
-        }
-
-        return "\(item.remainingDays) days left"
-    }
-
-
-    // MARK: - Date
-
-    private func formattedDate(
-        _ date: Date
-    ) -> String {
-
+    private func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-
         formatter.dateFormat = "MMM d, yyyy"
-
         return formatter.string(from: date)
     }
-
-
-    // MARK: - Dismiss
-
-    @Environment(\.dismiss)
-    private var dismiss
 }
+

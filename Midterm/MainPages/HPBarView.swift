@@ -3,31 +3,33 @@ import SwiftUI
 struct HPBarView: View {
     let item: FoodItem
 
+    // MARK: - Freshlings Palette
+    private let cardBackground = Color(red: 1.00, green: 0.995, blue: 0.970)
+    private let mainText = Color(red: 0.23, green: 0.30, blue: 0.20)
+    private let secondaryText = Color(red: 0.44, green: 0.48, blue: 0.39)
+    private let trackColor = Color(red: 0.88, green: 0.93, blue: 0.82)
+
     private var statusColor: Color {
         switch item.freshnessLevel {
-        case .fresh:
-            return .fridgeGreen
-        case .useSoon:
-            return .fridgeOrange
-        case .urgent:
-            return .fridgeRed
-        case .expired:
-            return .gray
+        case .fresh: return Color(red: 0.29, green: 0.65, blue: 0.25)
+        case .useSoon: return Color(red: 0.77, green: 0.54, blue: 0.09)
+        case .urgent: return Color(red: 0.86, green: 0.36, blue: 0.19)
+        case .expired: return Color(red: 0.52, green: 0.54, blue: 0.51)
         }
     }
 
-    private var foodIcon: String {
+    private var statusBackground: Color {
+        statusColor.opacity(0.11)
+    }
+
+    private var foodEmoji: String {
         switch item.category {
         case .vegetable:
-            return "carrot.fill"
-        case .fruit:
-            return "apple.logo"
-        case .dairy:
-            return "waterbottle.fill"
-        case .meat:
-            return "fork.knife"
-        case .other:
-            return "takeoutbag.and.cup.and.straw.fill"
+            return item.name.localizedCaseInsensitiveContains("carrot") ? "🥕" : "🥬"
+        case .fruit: return "🍎"
+        case .dairy: return "🥛"
+        case .meat: return "🥩"
+        case .other: return "🥣"
         }
     }
 
@@ -36,157 +38,111 @@ struct HPBarView: View {
     }
 
     private var daysText: String {
-        if item.freshnessLevel == .expired {
-            return "Expired"
-        }
-
-        if item.remainingDays == 0 {
-            return "Expires today"
-        }
-
-        if item.remainingDays == 1 {
-            return "1 day left"
-        }
-
+        if item.freshnessLevel == .expired { return "Expired" }
+        if item.remainingDays == 0 { return "Expires today" }
+        if item.remainingDays == 1 { return "1 day left" }
         return "\(item.remainingDays) days left"
     }
 
     var body: some View {
-        VStack(spacing: 12) {
-
+        VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 13) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .fill(statusBackground)
+                    Text(foodEmoji)
+                        .font(.system(size: 29))
+                }
+                .frame(width: 58, height: 58)
+                .accessibilityHidden(true)
 
-                Image(systemName: foodIcon)
-                    .font(.system(size: 20))
-                    .foregroundStyle(statusColor)
-                    .frame(width: 48, height: 48)
-                    .background(statusColor.opacity(0.10))
-                    .clipShape(
-                        RoundedRectangle(cornerRadius: 14)
-                    )
-
-                VStack(alignment: .leading, spacing: 4) {
-
+                VStack(alignment: .leading, spacing: 5) {
                     Text(item.name)
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundStyle(.primary)
+                        .font(.system(size: 17, weight: .bold, design: .rounded))
+                        .foregroundStyle(mainText)
+                        .lineLimit(1)
 
-                    Text("\(item.category.rawValue) · ×\(item.quantity)")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.secondary)
+                    Text("\(item.category.rawValue)  ·  ×\(item.quantity)")
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .foregroundStyle(secondaryText)
+                        .lineLimit(1)
                 }
 
-                Spacer()
+                Spacer(minLength: 4)
 
-                VStack(alignment: .trailing, spacing: 7) {
-
-                    Text("\(Int(item.hpPercentage)) HP")
-                        .font(.system(size: 15, weight: .bold))
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text("\(Int(item.hpPercentage))%")
+                        .font(.system(size: 20, weight: .heavy, design: .rounded))
                         .foregroundStyle(statusColor)
-
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
+                    Text("FRESHNESS")
+                        .font(.system(size: 9, weight: .bold, design: .rounded))
+                        .tracking(0.8)
+                        .foregroundStyle(secondaryText)
                 }
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundStyle(secondaryText)
+                    .accessibilityHidden(true)
             }
 
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
-
-                    Capsule()
-                        .fill(Color.gray.opacity(0.12))
-
+                    Capsule().fill(trackColor)
                     Capsule()
                         .fill(statusColor)
-                        .frame(
-                            width: geometry.size.width * hpProgress
-                        )
+                        .frame(width: geometry.size.width * hpProgress)
                 }
             }
-            .frame(height: 6)
+            .frame(height: 9)
+            .accessibilityLabel("Freshness")
+            .accessibilityValue("\(Int(item.hpPercentage)) percent")
 
-            HStack {
+            HStack(spacing: 8) {
+                Label(daysText, systemImage: "clock")
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundStyle(secondaryText)
 
-                Label(
-                    daysText,
-                    systemImage: "clock"
-                )
-                .font(.system(size: 12))
-                .foregroundStyle(.secondary)
-
-                Spacer()
+                Spacer(minLength: 8)
 
                 Text(item.freshnessLevel.title)
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
                     .foregroundStyle(statusColor)
+                    .padding(.horizontal, 11)
+                    .padding(.vertical, 6)
+                    .background(statusBackground, in: Capsule())
             }
         }
-        .padding(15)
-        .background(Color.white)
-        .clipShape(
-            RoundedRectangle(cornerRadius: 20)
-        )
-        .shadow(
-            color: Color.black.opacity(0.025),
-            radius: 8,
-            x: 0,
-            y: 4
-        )
+        .padding(16)
+        .background(cardBackground, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(Color(red: 0.81, green: 0.88, blue: 0.75).opacity(0.65), lineWidth: 1)
+        }
     }
 }
 
-
 // MARK: - Shared App Colors
-
+// Keep these properties for compatibility with other existing views.
 extension Color {
-
-    static let fridgeBackground = Color(
-        red: 0.98,
-        green: 0.97,
-        blue: 0.95
-    )
-
-    static let fridgeGreen = Color(
-        red: 0.29,
-        green: 0.59,
-        blue: 0.38
-    )
-
-    static let fridgeOrange = Color(
-        red: 0.94,
-        green: 0.48,
-        blue: 0.24
-    )
-
-    static let fridgeRed = Color(
-        red: 0.92,
-        green: 0.36,
-        blue: 0.33
-    )
+    static let fridgeBackground = Color(red: 0.98, green: 0.99, blue: 0.96)
+    static let fridgeGreen = Color(red: 0.29, green: 0.65, blue: 0.25)
+    static let fridgeOrange = Color(red: 0.86, green: 0.36, blue: 0.19)
+    static let fridgeRed = Color(red: 0.82, green: 0.27, blue: 0.27)
 }
+
 // MARK: - Legacy Theme Support
-
+// Keep the same names so older views do not need to change.
 enum FridgeTheme {
-
     static let background = PremiumTheme.background
-
     static let card = PremiumTheme.surface
-
     static let green = PremiumTheme.olive
-
     static let yellow = PremiumTheme.gold
-
     static let orange = PremiumTheme.warmAccent
-
-    static let red = Color(
-        red: 0.65,
-        green: 0.30,
-        blue: 0.27
-    )
-
+    static let red = Color(red: 0.65, green: 0.30, blue: 0.27)
     static let primaryText = PremiumTheme.primaryText
-
     static let secondaryText = PremiumTheme.secondaryText
-
     static let border = PremiumTheme.border
 }
+
