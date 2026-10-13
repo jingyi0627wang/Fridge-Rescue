@@ -1,6 +1,4 @@
 import SwiftUI
-import PhotosUI
-import UIKit
 
 struct AddFoodView: View {
     @ObservedObject var store: FoodStore
@@ -15,13 +13,10 @@ struct AddFoodView: View {
     @State private var priceText = ""
     @State private var addedDate = Date()
 
-    @State private var photo: UIImage?
-    @State private var pickerItem: PhotosPickerItem?
-    @State private var showCamera = false
-
-    @State private var suggestions: [FoodSuggestion] = []
-    @State private var isRecognizing = false
-    @State private var recognitionNote: String?
+    @State private var showScanner = false
+    @State private var isLookingUp = false
+    @State private var scanned: ScannedFood?
+    @State private var scanMessage: String?
 
     @State private var showConfirm = false
 
@@ -30,8 +25,7 @@ struct AddFoodView: View {
     var body: some View {
         NavigationStack {
             Form {
-                photoSection
-                if photo != nil { aiSection }
+                scanSection
                 detailsSection
                 amountSection
             }
@@ -47,91 +41,57 @@ struct AddFoodView: View {
             }
             .navigationDestination(isPresented: $showConfirm) {
                 ExpirationConfirmView(draft: makeDraft(), store: store) {
-                    resetForm()
                     dismiss()
                 }
             }
             .onAppear {
                 if presets.isEmpty { presets = IngredientPresetService.shared.loadPresets() }
             }
-            .onChange(of: pickerItem) { loadPickedPhoto() }
             .onChange(of: name) { autoFillFromPreset() }
-            .fullScreenCover(isPresented: $showCamera) {
-                CameraPicker { image in setPhoto(image) }
-                    .ignoresSafeArea()
+            .fullScreenCover(isPresented: $showScanner) {
+                ScannerScreen { result in handle(result) }
             }
         }
     }
 
-    private var photoSection: some View {
+    private var scanSection: some View {
         Section {
-            if let photo {
-                Color.clear
-                    .frame(height: 220)
-                    .overlay {
-                        Image(uiImage: photo)
-                            .resizable()
-                            .scaledToFill()
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .overlay(alignment: .topTrailing) {
-                        Button(action: removePhoto) {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.title2)
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.white, .black.opacity(0.5))
-                        }
-                        .buttonStyle(.plain)
-                        .padding(8)
-                    }
-                    .listRowInsets(EdgeInsets())
+            Button {
+                scanMessage = nil
+                showScanner = true
+            } label: {
+                Label("Scan Barcode or Produce Sticker", systemImage: "barcode.viewfinder")
+                    .frame(maxWidth: .infinity)
             }
+            .buttonStyle(.borderedProminent)
+            .disabled(!BarcodeScannerView.isSupported || isLookingUp)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets())
 
-            HStack {
-                PhotosPicker(selection: $pickerItem, matching: .images) {
-                    Label(photo == nil ? "Choose Photo" : "Change Photo",
-                          systemImage: "photo.on.rectangle")
-                }
-                if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    Spacer()
-                    Button { showCamera = true } label: {
-                        Label("Take Photo", systemImage: "camera")
-                    }
-                }
-            }
-            .buttonStyle(.borderless)
-        } header: {
-            Text("Photo")
-        } footer: {
-            Text("Add a photo and we'll try to recognize the food for you.")
-        }
-    }
-
-    private var aiSection: some View {
-        Section("AI Suggestions") {
-            if isRecognizing {
+            if isLookingUp {
                 HStack(spacing: 10) {
                     ProgressView()
-                    Text("Looking at your photo…").foregroundStyle(.secondary)
+                    Text("Looking up product…").foregroundStyle(.secondary)
                 }
-            } else if suggestions.isEmpty {
-                Text(recognitionNote ?? "No suggestions.")
-                    .foregroundStyle(.secondary)
-            } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(suggestions) { suggestion in
-                            Button { apply(suggestion) } label: {
-                                Text("\(suggestion.category.addFoodIcon) \(suggestion.name)")
-                            }
-                            .buttonStyle(.bordered)
-                            .tint(suggestion.name == trimmedName ? .green : .gray)
-                        }
+            } else if let scanned {
+                VStack(alignment: .leading, spacing: 2) {
+                    Label(scanned.name, systemImage: "checkmark.circle.fill")
+                        .font(.headline)
+                        .foregroundStyle(.green)
+                    if !scanned.detail.isEmpty {
+                        Text(scanned.detail)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
                     }
                 }
-                Text("Tap a suggestion to use it. You can still edit the name below.")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+            } else if let scanMessage {
+                Text(scanMessage).foregroundStyle(.secondary)
+            }
+        } footer: {
+            if BarcodeScannerView.isSupported {
+                Text("Packaged food: scan the barcode. Fruit & vegetables: scan the 4-digit number on the sticker.")
+            } else {
+                Text("Scanning needs a real iPhone. Type the food below instead.")
             }
         }
     }
@@ -186,60 +146,38 @@ struct AddFoodView: View {
         }
     }
 
+    private func handle(_ result: ScanResult) {
+        scanned = nil
+        isLookingUp = true
+        Task {
+            let food: ScannedFood?
+            let code: String
+            switch result {
+            case .barcode(let value):
+                code = value
+                food = await ProductLookup.lookup(barcode: value)
+            case .plu(let value):
+                code = value
+                food = ProductLookup.lookup(plu: value)
+            }
+            isLookingUp = false
+
+            if let food {
+                scanned = food
+                name = food.name
+                if food.category != .other { category = food.category }
+            } else {
+                scanMessage = "Couldn't find code \(code). Type the name below."
+            }
+        }
+    }
+
     private func autoFillFromPreset() {
         guard let preset = PresetMatcher.find(name, in: presets),
               preset.name != lastAutoFilledName else { return }
         lastAutoFilledName = preset.name
         category = preset.category
         priceText = String(format: "%.2f", preset.estimatedValue)
-    }
-
-    private func loadPickedPhoto() {
-        guard let pickerItem else { return }
-        Task {
-            if let data = try? await pickerItem.loadTransferable(type: Data.self),
-               let image = UIImage(data: data) {
-                setPhoto(image)
-            }
-        }
-    }
-
-    private func setPhoto(_ image: UIImage) {
-        let small = image.resized(maxDimension: 1024)
-        photo = small
-        Task { await recognize(small) }
-    }
-
-    private func recognize(_ image: UIImage) async {
-        isRecognizing = true
-        recognitionNote = nil
-        suggestions = []
-
-        let results = await FoodRecognizer.recognize(image, presets: presets)
-
-        guard photo === image else { return }
-
-        suggestions = results
-        isRecognizing = false
-
-        if let top = results.first {
-            if trimmedName.isEmpty { apply(top) }
-        } else {
-            recognitionNote = "Couldn't recognize this food. Type the name below."
-        }
-    }
-
-    private func apply(_ suggestion: FoodSuggestion) {
-        name = suggestion.name
-        if suggestion.category != .other { category = suggestion.category }
-    }
-
-    private func removePhoto() {
-        photo = nil
-        pickerItem = nil
-        suggestions = []
-        recognitionNote = nil
-        isRecognizing = false
     }
 
     private func makeDraft() -> FoodDraft {
@@ -250,22 +188,8 @@ struct AddFoodView: View {
             addedDate: addedDate,
             estimatedValue: Double(priceText.replacingOccurrences(of: ",", with: ".")) ?? 0,
             preset: PresetMatcher.find(trimmedName, in: presets),
-            photo: photo,
-            recognizedFromPhoto: suggestions.contains {
-                $0.name.caseInsensitiveCompare(trimmedName) == .orderedSame
-            }
+            fromScan: scanned?.name == trimmedName
         )
-    }
-
-    private func resetForm() {
-        showConfirm = false
-        name = ""
-        lastAutoFilledName = ""
-        category = .other
-        quantity = 1
-        priceText = ""
-        addedDate = Date()
-        removePhoto()
     }
 }
 

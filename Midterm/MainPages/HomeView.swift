@@ -18,6 +18,7 @@ private enum FreshlingsHomeStyle {
 
 struct HomeView: View {
     @EnvironmentObject var foodStore: FoodStore
+    @State private var showAddFood = false
 
     private var activeItems: [FoodItem] {
         foodStore.foodItems
@@ -52,9 +53,13 @@ struct HomeView: View {
                 .padding(.top, 18)
                 .padding(.bottom, 30)
             }
+
         }
         // MainTabView already embeds HomeView in a NavigationStack.
         .toolbar(.hidden, for: .navigationBar)
+        .sheet(isPresented: $showAddFood) {
+            AddFoodView(store: foodStore)
+        }
     }
 
     // MARK: - Header
@@ -78,15 +83,22 @@ struct HomeView: View {
 
             Spacer(minLength: 4)
 
-            ZStack {
-                Circle()
-                    .fill(FreshlingsHomeStyle.softGreen)
-                    .frame(width: 62, height: 62)
-
-                Text("🌱")
-                    .font(.system(size: 34))
+            Button {
+                showAddFood = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 21, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsHomeStyle.darkGreen)
+                    .frame(width: 58, height: 58)
+                    .background(FreshlingsHomeStyle.softGreen)
+                    .clipShape(Circle())
+                    .overlay {
+                        Circle()
+                            .stroke(FreshlingsHomeStyle.green.opacity(0.35), lineWidth: 1.5)
+                    }
             }
-            .accessibilityHidden(true)
+            .buttonStyle(.plain)
+            .accessibilityLabel("Add Food")
         }
     }
 
