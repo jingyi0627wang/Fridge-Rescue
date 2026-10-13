@@ -1,1173 +1,369 @@
 import SwiftUI
 
+// Freshlings Today screen.
+// Visual styling is local to this file so other teammates' screens are unchanged.
 struct TodayView: View {
-
     @EnvironmentObject var foodStore: FoodStore
 
-    // MARK: - Local Theme
+    // MARK: - Freshlings palette
+    private let background = Color(red: 0.985, green: 0.990, blue: 0.962)
+    private let cardWhite = Color.white
+    private let grass = Color(red: 0.52, green: 0.87, blue: 0.34)
+    private let deepGreen = Color(red: 0.19, green: 0.44, blue: 0.17)
+    private let mint = Color(red: 0.91, green: 0.97, blue: 0.85)
+    private let paleYellow = Color(red: 1.00, green: 0.96, blue: 0.80)
+    private let orange = Color(red: 0.91, green: 0.45, blue: 0.22)
+    private let textBrown = Color(red: 0.29, green: 0.25, blue: 0.19)
+    private let secondaryBrown = Color(red: 0.48, green: 0.44, blue: 0.37)
 
-    private let backgroundColor = Color(
-        red: 0.965,
-        green: 0.950,
-        blue: 0.900
-    )
-
-    private let cardColor = Color(
-        red: 0.995,
-        green: 0.985,
-        blue: 0.955
-    )
-
-    private let primaryText = Color(
-        red: 0.16,
-        green: 0.15,
-        blue: 0.12
-    )
-
-    private let secondaryText = Color(
-        red: 0.43,
-        green: 0.42,
-        blue: 0.36
-    )
-
-    private let green = Color(
-        red: 0.38,
-        green: 0.48,
-        blue: 0.25
-    )
-
-    private let orange = Color(
-        red: 0.76,
-        green: 0.31,
-        blue: 0.18
-    )
-
-    private let yellow = Color(
-        red: 0.76,
-        green: 0.58,
-        blue: 0.18
-    )
-
-    private let red = Color(
-        red: 0.72,
-        green: 0.24,
-        blue: 0.20
-    )
-
-    private let borderColor = Color.black.opacity(0.06)
-
-
-    // MARK: - Data
-
+    // MARK: - Existing data rules (unchanged)
     private var priorityItems: [FoodItem] {
         foodStore.foodItems
             .filter {
                 $0.status == .active &&
-                (
-                    $0.freshnessLevel == .urgent ||
-                    $0.freshnessLevel == .useSoon
-                )
+                ($0.freshnessLevel == .urgent || $0.freshnessLevel == .useSoon)
             }
-            .sorted {
-                $0.hpPercentage < $1.hpPercentage
-            }
+            .sorted { $0.hpPercentage < $1.hpPercentage }
     }
-
 
     private var recommendedRecipes: [Recipe] {
-        RecipeData.recommendations(
-            for: priorityItems
-        )
+        RecipeData.recommendations(for: priorityItems)
     }
-
-
-    // MARK: - Body
 
     var body: some View {
+        ZStack {
+            background.ignoresSafeArea()
 
-        NavigationStack {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 24) {
+                    header
+                    summaryCard
 
-            ZStack {
-
-                backgroundColor
-                    .ignoresSafeArea()
-
-                ScrollView(
-                    .vertical,
-                    showsIndicators: false
-                ) {
-
-                    VStack(
-                        alignment: .leading,
-                        spacing: 30
-                    ) {
-
-                        headerSection
-
-                        summarySection
-
-                        if priorityItems.isEmpty {
-
-                            allGoodSection
-
-                        } else {
-
-                            prioritySection
-
-                            recipeSection
-                        }
+                    if priorityItems.isEmpty {
+                        allGoodCard
+                    } else {
+                        prioritySection
+                        recipeSection
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 22)
-
-                    // Important:
-                    // Keeps content above the bottom TabView.
-                    .padding(.bottom, 150)
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+                .padding(.bottom, 36)
             }
-            .navigationBarHidden(true)
         }
+        // MainTabView already wraps TodayView in NavigationStack.
+        .toolbar(.hidden, for: .navigationBar)
     }
-
 
     // MARK: - Header
+    private var header: some View {
+        HStack(alignment: .top, spacing: 12) {
+            VStack(alignment: .leading, spacing: 7) {
+                Text("TODAY'S FRESHLINGS")
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .tracking(1.4)
+                    .foregroundStyle(deepGreen)
 
-    private var headerSection: some View {
+                Text("Let's save some food!")
+                    .font(.system(size: 29, weight: .heavy, design: .rounded))
+                    .foregroundStyle(textBrown)
+                    .fixedSize(horizontal: false, vertical: true)
 
-        VStack(
-            alignment: .leading,
-            spacing: 7
-        ) {
+                Text("A little care keeps your food happy.")
+                    .font(.system(size: 14, design: .rounded))
+                    .foregroundStyle(secondaryBrown)
+            }
 
-            Text("TODAY")
-                .font(
-                    .system(
-                        size: 11,
-                        weight: .bold
-                    )
-                )
-                .tracking(2.2)
-                .foregroundStyle(green)
+            Spacer(minLength: 0)
 
-            Text("Use what matters first.")
-                .font(
-                    .system(
-                        size: 31,
-                        weight: .bold,
-                        design: .serif
-                    )
-                )
-                .foregroundStyle(primaryText)
-
-            Text(
-                "Start with the food that needs your attention most."
-            )
-            .font(
-                .system(
-                    size: 14,
-                    weight: .regular
-                )
-            )
-            .foregroundStyle(secondaryText)
+            Image(systemName: "leaf.fill")
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundStyle(deepGreen)
+                .frame(width: 54, height: 54)
+                .background(mint, in: Circle())
         }
     }
 
+    // MARK: - Dynamic summary
+    private var summaryCard: some View {
+        HStack(spacing: 14) {
+            Text(priorityItems.isEmpty ? "🌱" : "🥕")
+                .font(.system(size: 38))
+                .frame(width: 65, height: 65)
+                .background(.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 22))
 
-    // MARK: - Summary
+            VStack(alignment: .leading, spacing: 5) {
+                Text(priorityItems.isEmpty ? "All fresh and happy!" : "\(priorityItems.count) need some love!")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(textBrown)
 
-    private var summarySection: some View {
-
-        HStack(
-            spacing: 14
-        ) {
-
-            ZStack {
-
-                Circle()
-                    .fill(
-                        summaryColor.opacity(0.12)
-                    )
-                    .frame(
-                        width: 52,
-                        height: 52
-                    )
-
-                Image(
-                    systemName: summaryIcon
-                )
-                .font(
-                    .system(
-                        size: 19,
-                        weight: .semibold
-                    )
-                )
-                .foregroundStyle(
-                    summaryColor
-                )
+                Text(priorityItems.isEmpty
+                     ? "Nothing needs your attention right now."
+                     : "Use these ingredients first to reduce waste.")
+                    .font(.system(size: 13, design: .rounded))
+                    .foregroundStyle(secondaryBrown)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-
-
-            VStack(
-                alignment: .leading,
-                spacing: 5
-            ) {
-
-                if priorityItems.isEmpty {
-
-                    Text(
-                        "You're all caught up"
-                    )
-                    .font(
-                        .system(
-                            size: 17,
-                            weight: .bold
-                        )
-                    )
-                    .foregroundStyle(
-                        primaryText
-                    )
-
-                    Text(
-                        "Nothing needs immediate attention."
-                    )
-                    .font(
-                        .system(
-                            size: 12
-                        )
-                    )
-                    .foregroundStyle(
-                        secondaryText
-                    )
-
-                } else {
-
-                    Text(
-                        "\(priorityItems.count) \(priorityItems.count == 1 ? "item" : "items") need attention"
-                    )
-                    .font(
-                        .system(
-                            size: 17,
-                            weight: .bold
-                        )
-                    )
-                    .foregroundStyle(
-                        primaryText
-                    )
-
-                    Text(
-                        "Use these first to reduce food waste."
-                    )
-                    .font(
-                        .system(
-                            size: 12
-                        )
-                    )
-                    .foregroundStyle(
-                        secondaryText
-                    )
-                }
-            }
-
-            Spacer()
+            Spacer(minLength: 0)
         }
-        .padding(18)
-        .background(
-            cardColor
-        )
-        .overlay {
-
-            RoundedRectangle(
-                cornerRadius: 22
-            )
-            .stroke(
-                summaryColor.opacity(0.15),
-                lineWidth: 1
-            )
-        }
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: 22
-            )
-        )
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(priorityItems.isEmpty ? mint : paleYellow,
+                    in: RoundedRectangle(cornerRadius: 24))
     }
 
-
-    // MARK: - Priority Section
-
+    // MARK: - Priority food
     private var prioritySection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionTitle("Use These First", label: "LOWEST HP")
 
-        VStack(
-            alignment: .leading,
-            spacing: 15
-        ) {
-
-            sectionHeader(
-                title: "Use These First",
-                label: "LOWEST HP"
-            )
-
-            ForEach(
-                priorityItems
-            ) { item in
-
+            ForEach(priorityItems) { item in
                 NavigationLink {
-
-                    FoodDetailView(
-                        item: item
-                    )
-
+                    FoodDetailView(item: item)
                 } label: {
-
-                    priorityCard(
-                        item: item
-                    )
+                    priorityCard(item)
                 }
                 .buttonStyle(.plain)
             }
         }
     }
 
+    private func priorityCard(_ item: FoodItem) -> some View {
+        VStack(spacing: 14) {
+            HStack(spacing: 12) {
+                Text(foodEmoji(for: item))
+                    .font(.system(size: 29))
+                    .frame(width: 59, height: 59)
+                    .background(mint, in: RoundedRectangle(cornerRadius: 19))
 
-    // MARK: - Priority Card
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(item.name)
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .foregroundStyle(textBrown)
 
-    private func priorityCard(
-        item: FoodItem
-    ) -> some View {
-
-        VStack(
-            spacing: 15
-        ) {
-
-            HStack(
-                spacing: 14
-            ) {
-
-                foodIcon(
-                    item: item
-                )
-
-                VStack(
-                    alignment: .leading,
-                    spacing: 5
-                ) {
-
-                    Text(
-                        item.name
-                    )
-                    .font(
-                        .system(
-                            size: 17,
-                            weight: .bold
-                        )
-                    )
-                    .foregroundStyle(
-                        primaryText
-                    )
-
-                    Text(
-                        priorityMessage(
-                            for: item
-                        )
-                    )
-                    .font(
-                        .system(
-                            size: 12
-                        )
-                    )
-                    .foregroundStyle(
-                        secondaryText
-                    )
+                    Text(priorityMessage(for: item))
+                        .font(.system(size: 13, design: .rounded))
+                        .foregroundStyle(secondaryBrown)
                 }
 
-                Spacer()
+                Spacer(minLength: 6)
 
-                VStack(
-                    alignment: .trailing,
-                    spacing: 2
-                ) {
-
-                    Text(
-                        "\(Int(item.hpPercentage))"
-                    )
-                    .font(
-                        .system(
-                            size: 25,
-                            weight: .bold
-                        )
-                    )
-                    .foregroundStyle(
-                        statusColor(
-                            for: item
-                        )
-                    )
-
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("\(Int(item.hpPercentage))%")
+                        .font(.system(size: 20, weight: .heavy, design: .rounded))
+                        .foregroundStyle(statusColor(for: item))
                     Text("HP")
-                        .font(
-                            .system(
-                                size: 9,
-                                weight: .bold
-                            )
-                        )
-                        .tracking(1)
-                        .foregroundStyle(
-                            secondaryText
-                        )
+                        .font(.system(size: 10, weight: .bold, design: .rounded))
+                        .foregroundStyle(secondaryBrown)
                 }
             }
-
 
             GeometryReader { geometry in
-
-                ZStack(
-                    alignment: .leading
-                ) {
-
+                ZStack(alignment: .leading) {
+                    Capsule().fill(mint)
                     Capsule()
-                        .fill(
-                            Color.black.opacity(
-                                0.06
-                            )
-                        )
-
-                    Capsule()
-                        .fill(
-                            statusColor(
-                                for: item
-                            )
-                        )
-                        .frame(
-                            width:
-                                geometry.size.width
-                                * hpProgress(
-                                    for: item
-                                )
-                        )
+                        .fill(statusColor(for: item))
+                        .frame(width: geometry.size.width * hpProgress(for: item))
                 }
             }
-            .frame(
-                height: 6
-            )
-
+            .frame(height: 9)
 
             HStack {
-
-                Text(
-                    item.freshnessLevel.title
-                )
-                .font(
-                    .system(
-                        size: 11,
-                        weight: .bold
-                    )
-                )
-                .foregroundStyle(
-                    statusColor(
-                        for: item
-                    )
-                )
+                Text(item.freshnessLevel.title)
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundStyle(statusColor(for: item))
 
                 Spacer()
 
-                HStack(
-                    spacing: 5
-                ) {
-
-                    Text(
-                        item.remainingDays == 1
-                        ? "1 day left"
-                        : "\(item.remainingDays) days left"
-                    )
-
-                    Image(
-                        systemName:
-                            "chevron.right"
-                    )
-                }
-                .font(
-                    .system(
-                        size: 11,
-                        weight: .medium
-                    )
-                )
-                .foregroundStyle(
-                    secondaryText
-                )
+                Text(daysText(for: item))
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundStyle(secondaryBrown)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(secondaryBrown)
             }
         }
         .padding(18)
-        .background(
-            cardColor
-        )
+        .background(cardWhite, in: RoundedRectangle(cornerRadius: 24))
         .overlay {
-
-            RoundedRectangle(
-                cornerRadius: 22
-            )
-            .stroke(
-                statusColor(
-                    for: item
-                )
-                .opacity(0.12),
-                lineWidth: 1
-            )
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(statusColor(for: item).opacity(0.14), lineWidth: 1)
         }
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: 22
-            )
-        )
     }
 
-
-    // MARK: - Recipes
-
+    // MARK: - Recipe recommendations
     private var recipeSection: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            sectionTitle("Rescue Recipes", label: "COOK & SAVE")
 
-        VStack(
-            alignment: .leading,
-            spacing: 15
-        ) {
-
-            VStack(
-                alignment: .leading,
-                spacing: 5
-            ) {
-
-                Text(
-                    "Rescue Recipes"
-                )
-                .font(
-                    .system(
-                        size: 23,
-                        weight: .bold,
-                        design: .serif
-                    )
-                )
-                .foregroundStyle(
-                    primaryText
-                )
-
-                Text(
-                    "Recipes that help use your priority ingredients."
-                )
-                .font(
-                    .system(
-                        size: 13
-                    )
-                )
-                .foregroundStyle(
-                    secondaryText
-                )
-            }
-
+            Text("Tasty ideas to use your priority ingredients.")
+                .font(.system(size: 13, design: .rounded))
+                .foregroundStyle(secondaryBrown)
 
             if recommendedRecipes.isEmpty {
-
-                noRecipeSection
-
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("No matching recipes yet")
+                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                        .foregroundStyle(textBrown)
+                    Text("Add more ingredients to discover rescue recipes.")
+                        .font(.system(size: 13, design: .rounded))
+                        .foregroundStyle(secondaryBrown)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(18)
+                .background(.white, in: RoundedRectangle(cornerRadius: 22))
             } else {
-
-                ForEach(
-                    Array(
-                        recommendedRecipes.prefix(
-                            3
-                        )
-                    )
-                ) { recipe in
-
+                ForEach(Array(recommendedRecipes.prefix(3))) { recipe in
                     NavigationLink {
-
                         RecipeDetailView(
                             recipe: recipe,
-                            focusIngredient:
-                                matchingPriorityItem(
-                                    for: recipe
-                                )
+                            focusIngredient: matchingPriorityItem(for: recipe)
                         )
-
                     } label: {
-
-                        todayRecipeCard(
-                            recipe: recipe
-                        )
+                        recipeCard(recipe)
                     }
                     .buttonStyle(.plain)
                 }
 
-
                 NavigationLink {
-
                     RecipeListView()
-
                 } label: {
-
                     HStack {
-
-                        Text(
-                            "View All Recipes"
-                        )
-                        .fontWeight(
-                            .semibold
-                        )
-
+                        Text("View All Recipes")
                         Spacer()
-
-                        Image(
-                            systemName:
-                                "arrow.right"
-                        )
+                        Image(systemName: "arrow.right")
                     }
-                    .font(
-                        .system(
-                            size: 14
-                        )
-                    )
-                    .foregroundStyle(
-                        green
-                    )
-                    .padding(
-                        .horizontal,
-                        18
-                    )
-                    .frame(
-                        height: 52
-                    )
-                    .background(
-                        green.opacity(
-                            0.09
-                        )
-                    )
-                    .clipShape(
-                        RoundedRectangle(
-                            cornerRadius: 16
-                        )
-                    )
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(deepGreen)
+                    .padding(17)
+                    .background(mint, in: RoundedRectangle(cornerRadius: 18))
                 }
                 .buttonStyle(.plain)
             }
         }
     }
 
+    private func recipeCard(_ recipe: Recipe) -> some View {
+        HStack(spacing: 13) {
+            Text(recipe.emoji)
+                .font(.system(size: 30))
+                .frame(width: 62, height: 62)
+                .background(paleYellow, in: RoundedRectangle(cornerRadius: 19))
 
-    // MARK: - Recipe Card
+            VStack(alignment: .leading, spacing: 5) {
+                Text(recipe.name)
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(textBrown)
+                    .lineLimit(2)
 
-    private func todayRecipeCard(
-        recipe: Recipe
-    ) -> some View {
-
-        HStack(
-            spacing: 15
-        ) {
-
-            ZStack {
-
-                RoundedRectangle(
-                    cornerRadius: 16
-                )
-                .fill(
-                    green.opacity(
-                        0.09
-                    )
-                )
-                .frame(
-                    width: 62,
-                    height: 62
-                )
-
-                Text(
-                    recipe.emoji
-                )
-                .font(
-                    .system(
-                        size: 29
-                    )
-                )
-            }
-
-
-            VStack(
-                alignment: .leading,
-                spacing: 5
-            ) {
-
-                Text(
-                    recipe.name
-                )
-                .font(
-                    .system(
-                        size: 16,
-                        weight: .bold
-                    )
-                )
-                .foregroundStyle(
-                    primaryText
-                )
-                .lineLimit(1)
-
-
-                if let item =
-                    matchingPriorityItem(
-                        for: recipe
-                    ) {
-
-                    Text(
-                        "Helps rescue \(item.name)"
-                    )
-                    .font(
-                        .system(
-                            size: 12,
-                            weight: .semibold
-                        )
-                    )
-                    .foregroundStyle(
-                        orange
-                    )
-
+                if let item = matchingPriorityItem(for: recipe) {
+                    Text("Helps rescue \(item.name)")
+                        .font(.system(size: 12, weight: .semibold, design: .rounded))
+                        .foregroundStyle(orange)
                 } else {
-
-                    Text(
-                        "Uses food from your fridge"
-                    )
-                    .font(
-                        .system(
-                            size: 12
-                        )
-                    )
-                    .foregroundStyle(
-                        secondaryText
-                    )
+                    Text("Uses food from your fridge")
+                        .font(.system(size: 12, design: .rounded))
+                        .foregroundStyle(secondaryBrown)
                 }
 
-
-                HStack(
-                    spacing: 6
-                ) {
-
-                    Image(
-                        systemName:
-                            "clock"
-                    )
-
-                    Text(
-                        "\(recipe.time) min"
-                    )
-
-                    Text("•")
-
-                    Text(
-                        recipe.difficulty
-                    )
-                }
-                .font(
-                    .system(
-                        size: 11
-                    )
-                )
-                .foregroundStyle(
-                    secondaryText
-                )
+                Text("\(recipe.time) min  •  \(recipe.difficulty)")
+                    .font(.system(size: 11, design: .rounded))
+                    .foregroundStyle(secondaryBrown)
             }
 
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right")
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(secondaryBrown)
+        }
+        .padding(14)
+        .background(.white, in: RoundedRectangle(cornerRadius: 22))
+    }
+
+    // MARK: - Empty state
+    private var allGoodCard: some View {
+        VStack(spacing: 12) {
+            Text("🌼")
+                .font(.system(size: 43))
+            Text("Nothing urgent today!")
+                .font(.system(size: 21, weight: .heavy, design: .rounded))
+                .foregroundStyle(textBrown)
+            Text("Your food is in good shape. Check back later for more rescue ideas.")
+                .font(.system(size: 14, design: .rounded))
+                .foregroundStyle(secondaryBrown)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 35)
+        .background(.white, in: RoundedRectangle(cornerRadius: 24))
+    }
+
+    // MARK: - Shared local helpers
+    private func sectionTitle(_ title: String, label: String) -> some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text(title)
+                .font(.system(size: 23, weight: .heavy, design: .rounded))
+                .foregroundStyle(textBrown)
             Spacer()
-
-            Image(
-                systemName:
-                    "chevron.right"
-            )
-            .font(
-                .system(
-                    size: 12,
-                    weight: .semibold
-                )
-            )
-            .foregroundStyle(
-                secondaryText
-            )
-        }
-        .padding(16)
-        .background(
-            cardColor
-        )
-        .overlay {
-
-            RoundedRectangle(
-                cornerRadius: 20
-            )
-            .stroke(
-                borderColor,
-                lineWidth: 1
-            )
-        }
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: 20
-            )
-        )
-    }
-
-
-    // MARK: - All Good
-
-    private var allGoodSection: some View {
-
-        VStack(
-            spacing: 15
-        ) {
-
-            ZStack {
-
-                Circle()
-                    .fill(
-                        green.opacity(
-                            0.10
-                        )
-                    )
-                    .frame(
-                        width: 70,
-                        height: 70
-                    )
-
-                Image(
-                    systemName:
-                        "checkmark.circle.fill"
-                )
-                .font(
-                    .system(
-                        size: 30
-                    )
-                )
-                .foregroundStyle(
-                    green
-                )
-            }
-
-
-            Text(
-                "Nothing urgent today"
-            )
-            .font(
-                .system(
-                    size: 19,
-                    weight: .bold
-                )
-            )
-            .foregroundStyle(
-                primaryText
-            )
-
-
-            Text(
-                "Your food is in good shape. Check back later for rescue suggestions."
-            )
-            .font(
-                .system(
-                    size: 13
-                )
-            )
-            .foregroundStyle(
-                secondaryText
-            )
-            .multilineTextAlignment(
-                .center
-            )
-        }
-        .frame(
-            maxWidth: .infinity
-        )
-        .padding(
-            .horizontal,
-            25
-        )
-        .padding(
-            .vertical,
-            36
-        )
-        .background(
-            cardColor
-        )
-        .overlay {
-
-            RoundedRectangle(
-                cornerRadius: 22
-            )
-            .stroke(
-                borderColor,
-                lineWidth: 1
-            )
-        }
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: 22
-            )
-        )
-    }
-
-
-    // MARK: - No Recipe
-
-    private var noRecipeSection: some View {
-
-        VStack(
-            alignment: .leading,
-            spacing: 6
-        ) {
-
-            Text(
-                "No matching recipes yet"
-            )
-            .font(
-                .system(
-                    size: 15,
-                    weight: .semibold
-                )
-            )
-            .foregroundStyle(
-                primaryText
-            )
-
-            Text(
-                "Add more ingredients to unlock more rescue recipes."
-            )
-            .font(
-                .system(
-                    size: 12
-                )
-            )
-            .foregroundStyle(
-                secondaryText
-            )
-        }
-        .frame(
-            maxWidth: .infinity,
-            alignment: .leading
-        )
-        .padding(18)
-        .background(
-            cardColor
-        )
-        .overlay {
-
-            RoundedRectangle(
-                cornerRadius: 18
-            )
-            .stroke(
-                borderColor,
-                lineWidth: 1
-            )
-        }
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: 18
-            )
-        )
-    }
-
-
-    // MARK: - Section Header
-
-    private func sectionHeader(
-        title: String,
-        label: String
-    ) -> some View {
-
-        HStack {
-
-            Text(
-                title
-            )
-            .font(
-                .system(
-                    size: 23,
-                    weight: .bold,
-                    design: .serif
-                )
-            )
-            .foregroundStyle(
-                primaryText
-            )
-
-            Spacer()
-
-            Text(
-                label
-            )
-            .font(
-                .system(
-                    size: 9,
-                    weight: .bold
-                )
-            )
-            .tracking(1.4)
-            .foregroundStyle(
-                orange
-            )
+            Text(label)
+                .font(.system(size: 10, weight: .bold, design: .rounded))
+                .tracking(0.8)
+                .foregroundStyle(deepGreen)
         }
     }
 
-
-    // MARK: - Food Icon
-
-    private func foodIcon(
-        item: FoodItem
-    ) -> some View {
-
-        ZStack {
-
-            RoundedRectangle(
-                cornerRadius: 14
-            )
-            .fill(
-                statusColor(
-                    for: item
-                )
-                .opacity(0.10)
-            )
-            .frame(
-                width: 54,
-                height: 54
-            )
-
-            Text(
-                foodEmoji(
-                    for: item
-                )
-            )
-            .font(
-                .system(
-                    size: 25
-                )
-            )
-        }
-    }
-
-
-    // MARK: - Recipe Matching
-
-    private func matchingPriorityItem(
-        for recipe: Recipe
-    ) -> FoodItem? {
-
+    private func matchingPriorityItem(for recipe: Recipe) -> FoodItem? {
         priorityItems.first { item in
-
-            recipe.ingredients.contains {
-                ingredient in
-
-                ingredient
-                    .lowercased()
-                    .contains(
-                        item.name.lowercased()
-                    )
-                ||
-                item.name
-                    .lowercased()
-                    .contains(
-                        ingredient.lowercased()
-                    )
+            recipe.ingredients.contains { ingredient in
+                let normalizedIngredient = ingredient.lowercased()
+                let normalizedName = item.name.lowercased()
+                return normalizedIngredient.contains(normalizedName) ||
+                    normalizedName.contains(normalizedIngredient)
             }
         }
     }
 
-
-    // MARK: - Helpers
-
-    private var summaryColor: Color {
-
-        priorityItems.isEmpty
-        ? green
-        : orange
+    private func hpProgress(for item: FoodItem) -> CGFloat {
+        CGFloat(max(0, min(item.hpPercentage / 100.0, 1)))
     }
 
-
-    private var summaryIcon: String {
-
-        priorityItems.isEmpty
-        ? "checkmark.circle.fill"
-        : "exclamationmark.circle.fill"
-    }
-
-
-    private func statusColor(
-        for item: FoodItem
-    ) -> Color {
-
+    private func statusColor(for item: FoodItem) -> Color {
         switch item.freshnessLevel {
-
-        case .fresh:
-            return green
-
-        case .useSoon:
-            return yellow
-
-        case .urgent:
-            return orange
-
-        case .expired:
-            return red
+        case .fresh: return deepGreen
+        case .useSoon: return Color(red: 0.75, green: 0.56, blue: 0.10)
+        case .urgent: return orange
+        case .expired: return Color(red: 0.72, green: 0.25, blue: 0.23)
         }
     }
 
-
-    private func hpProgress(
-        for item: FoodItem
-    ) -> Double {
-
-        max(
-            0,
-            min(
-                item.hpPercentage / 100.0,
-                1
-            )
-        )
-    }
-
-
-    private func priorityMessage(
-        for item: FoodItem
-    ) -> String {
-
-        if item.remainingDays == 0 {
-            return "Expires today"
-        }
-
-        if item.remainingDays == 1 {
-            return "Only 1 day left"
-        }
-
+    private func priorityMessage(for item: FoodItem) -> String {
+        if item.remainingDays == 0 { return "Expires today" }
+        if item.remainingDays == 1 { return "Only 1 day left" }
         return "\(item.remainingDays) days left"
     }
 
+    private func daysText(for item: FoodItem) -> String {
+        if item.remainingDays == 0 { return "Today" }
+        if item.remainingDays == 1 { return "1 day left" }
+        return "\(item.remainingDays) days left"
+    }
 
-    private func foodEmoji(
-        for item: FoodItem
-    ) -> String {
-
+    private func foodEmoji(for item: FoodItem) -> String {
         switch item.category {
-
-        case .vegetable:
-            return "🥕"
-
-        case .fruit:
-            return "🍎"
-
-        case .dairy:
-            return "🥛"
-
-        case .meat:
-            return "🥩"
-
-        case .other:
-            return "🥣"
+        case .vegetable: return "🥕"
+        case .fruit: return "🍎"
+        case .dairy: return "🥛"
+        case .meat: return "🥩"
+        case .other: return "🥣"
         }
     }
 }
 
-
-// MARK: - Preview
-
 #Preview {
-
-    TodayView()
-        .environmentObject(
-            FoodStore()
-        )
+    NavigationStack {
+        TodayView()
+    }
+    .environmentObject(FoodStore())
 }
+
