@@ -26,6 +26,7 @@ struct AddFoodView: View {
         NavigationStack {
             Form {
                 scanSection
+                quickAddSection
                 detailsSection
                 amountSection
             }
@@ -94,6 +95,90 @@ struct AddFoodView: View {
                 Text("Scanning needs a real iPhone. Type the food below instead.")
             }
         }
+    }
+
+    // MARK: - Quick Add (Recent / Usually)
+    // Tap a food you've added before to fill in its name, category,
+    // usual amount and the price you paid last time.
+
+    @ViewBuilder
+    private var quickAddSection: some View {
+        let recent = store.recentAdds()
+        let usual = store.usualAdds()
+
+        if !recent.isEmpty {
+            Section {
+                if !usual.isEmpty {
+                    suggestionRow("Usually", icon: "repeat", items: usual, showsCount: true)
+                }
+                suggestionRow("Recent", icon: "clock.arrow.circlepath", items: recent, showsCount: false)
+            } header: {
+                Text("Quick Add")
+            } footer: {
+                Text("Fills in the name, amount and the price you paid last time. You can still change them.")
+            }
+        }
+    }
+
+    private func suggestionRow(_ title: String, icon: String,
+                               items: [QuickAddSuggestion], showsCount: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label(title, systemImage: icon)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(items) { suggestion in
+                        Button {
+                            apply(suggestion)
+                        } label: {
+                            suggestionChip(suggestion, showsCount: showsCount)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.trailing, 16)
+            }
+        }
+        .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 0))
+    }
+
+    private func suggestionChip(_ suggestion: QuickAddSuggestion, showsCount: Bool) -> some View {
+        let isSelected = trimmedName.lowercased() == suggestion.name.lowercased()
+        let price = suggestion.price > 0 ? " · " + suggestion.price.formatted(.currency(code: "USD")) : ""
+        let detail = showsCount
+            ? "×\(suggestion.quantity) · \(suggestion.timesAdded) times"
+            : "×\(suggestion.quantity)\(price) · \(suggestion.lastAdded.formatted(.relative(presentation: .named)))"
+
+        return VStack(alignment: .leading, spacing: 2) {
+            Text("\(suggestion.category.addFoodIcon) \(suggestion.name)")
+                .font(.subheadline.weight(.semibold))
+                .lineLimit(1)
+            Text(detail)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(isSelected ? Color.green.opacity(0.18) : Color(.secondarySystemBackground),
+                    in: RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(isSelected ? Color.green : .clear, lineWidth: 1.5)
+        )
+    }
+
+    private func apply(_ suggestion: QuickAddSuggestion) {
+        // Keep the price from last time instead of the preset's default price.
+        lastAutoFilledName = PresetMatcher.find(suggestion.name, in: presets)?.name ?? ""
+        name = suggestion.name
+        category = suggestion.category
+        quantity = suggestion.quantity
+        priceText = suggestion.price > 0 ? String(format: "%.2f", suggestion.price) : ""
+        scanned = nil
+        scanMessage = nil
     }
 
     private var detailsSection: some View {
