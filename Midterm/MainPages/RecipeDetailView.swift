@@ -399,6 +399,7 @@ struct RecipeDetailView: View {
             focusIngredient: nil
         )
         .environmentObject(FoodStore())
+        .environmentObject(AppRouter())
     }
 }
 
