@@ -18,10 +18,23 @@ struct RecipeListView: View {
     @State private var isLoadingOnline = false
     @State private var isOffline = false
 
+    /// Sections start short; "Show all" expands one (key = section title).
+    @State private var expandedSections: Set<String> = []
+    private let collapsedCount = 4
+
     private var activeItems: [FoodItem] {
-        foodStore.foodItems
-            .filter { $0.status == .active }
-            .sorted { $0.hpPercentage < $1.hpPercentage }
+        foodStore.activeItemsByUrgency
+    }
+
+    /// Chips: only food that expires soon (plus the selected one), so the bar
+    /// stays short even with 60 items. Other food is reachable from its
+    /// Food Details page → Find Recipes.
+    private var chipItems: [FoodItem] {
+        var items = activeItems.filter { RecipeData.needsAttention($0) }
+        if let focusItem, !items.contains(where: { $0.id == focusItem.id }) {
+            items.insert(focusItem, at: 0)
+        }
+        return items
     }
 
     /// Selected ingredient chip (nil = All).
@@ -59,14 +72,17 @@ struct RecipeListView: View {
     }
 
     var body: some View {
-        ZStack {
+        // Computed once per render, then passed down (fast with lots of food).
+        let sections = self.sections
+
+        return ZStack {
             RecipeFreshlingsStyle.background.ignoresSafeArea()
 
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 22) {
                     headerSection
 
-                    if !activeItems.isEmpty {
+                    if !chipItems.isEmpty {
                         ingredientChips
                     }
 
@@ -153,7 +169,7 @@ struct RecipeListView: View {
                 chip("All", isSelected: focusItem == nil, isUrgent: false) {
                     router.recipeFocusID = nil
                 }
-                ForEach(activeItems) { item in
+                ForEach(chipItems) { item in
                     chip(item.name,
                          isSelected: focusItem?.id == item.id,
                          isUrgent: RecipeData.needsAttention(item)) {
@@ -211,6 +227,10 @@ struct RecipeListView: View {
     private func recipeSection(_ title: String, subtitle: String, icon: String,
                                tint: Color, recipes: [Recipe]) -> some View {
         if !recipes.isEmpty {
+            let isExpanded = expandedSections.contains(title)
+            let visible = isExpanded ? recipes : Array(recipes.prefix(collapsedCount))
+            let items = foodStore.foodItems
+
             VStack(alignment: .leading, spacing: 12) {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Image(systemName: icon)
@@ -233,18 +253,39 @@ struct RecipeListView: View {
                         .background(RecipeFreshlingsStyle.lightGreen, in: Capsule())
                 }
 
-                ForEach(recipes) { recipe in
-                    NavigationLink {
-                        RecipeDetailView(
-                            recipe: recipe,
-                            focusIngredient: RecipeData.rescueItem(for: recipe, in: foodStore.foodItems)
-                        )
+                LazyVStack(spacing: 12) {
+                    ForEach(visible) { recipe in
+                        // Look these up once per card (not separately for link + card).
+                        let rescue = RecipeData.rescueItem(for: recipe, in: items)
+
+                        NavigationLink {
+                            RecipeDetailView(recipe: recipe, focusIngredient: rescue)
+                        } label: {
+                            FreshlingsRecipeCard(
+                                recipe: recipe,
+                                rescueFood: rescue,
+                                fridgeCount: RecipeData.matchCount(recipe, items)
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+
+                if recipes.count > collapsedCount {
+                    Button {
+                        withAnimation(.snappy) {
+                            if isExpanded { expandedSections.remove(title) } else { expandedSections.insert(title) }
+                        }
                     } label: {
-                        FreshlingsRecipeCard(
-                            recipe: recipe,
-                            rescueFood: RecipeData.rescueItem(for: recipe, in: foodStore.foodItems),
-                            fridgeCount: RecipeData.matchCount(recipe, foodStore.foodItems)
-                        )
+                        HStack {
+                            Text(isExpanded ? "Show less" : "Show all \(recipes.count)")
+                            Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        }
+                        .font(.system(size: 13, weight: .bold, design: .rounded))
+                        .foregroundStyle(RecipeFreshlingsStyle.leafGreen)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(RecipeFreshlingsStyle.lightGreen, in: Capsule())
                     }
                     .buttonStyle(.plain)
                 }

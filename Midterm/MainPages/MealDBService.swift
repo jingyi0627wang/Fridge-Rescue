@@ -47,8 +47,10 @@ enum MealDBService {
         // Only look up the most urgent items to keep it fast.
         let targets = items
             .filter { $0.status == .active }
-            .sorted { $0.hpPercentage < $1.hpPercentage }
+            .map { (item: $0, days: $0.daysUntilExpiration) }
+            .sorted { $0.days < $1.days }
             .prefix(4)
+            .map(\.item)
 
         guard !targets.isEmpty else { return OnlineResult(recipes: [], isOffline: false) }
 
@@ -83,9 +85,10 @@ enum MealDBService {
             }
         }
 
-        let sorted = recipes.sorted {
-            RecipeData.matchCount($0, items) > RecipeData.matchCount($1, items)
-        }
+        let sorted = recipes
+            .map { (recipe: $0, count: RecipeData.matchCount($0, items)) }
+            .sorted { $0.count > $1.count }
+            .map(\.recipe)
         return OnlineResult(recipes: sorted, isOffline: false)
     }
 
@@ -263,12 +266,11 @@ extension RecipeData {
     static func merged(local: [Recipe], online: [Recipe], items: [FoodItem]) -> [Recipe] {
         var seen = Set(local.map { $0.name.lowercased() })
         let extra = online.filter { seen.insert($0.name.lowercased()).inserted }
+        // Count once per recipe (not inside the sort comparator).
         return (local + extra)
             .enumerated()
-            .sorted { lhs, rhs in
-                let l = matchCount(lhs.element, items), r = matchCount(rhs.element, items)
-                return l != r ? l > r : lhs.offset < rhs.offset
-            }
-            .map(\.element)
+            .map { (recipe: $0.element, order: $0.offset, count: matchCount($0.element, items)) }
+            .sorted { $0.count != $1.count ? $0.count > $1.count : $0.order < $1.order }
+            .map(\.recipe)
     }
 }

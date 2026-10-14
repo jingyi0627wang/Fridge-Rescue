@@ -4,8 +4,27 @@ import Combine
 
 final class FoodStore: ObservableObject {
     @Published var foodItems: [FoodItem] = [] {
-        didSet { saveItems() }
+        didSet {
+            saveItems()
+            sortedCache = nil
+        }
     }
+
+    /// Active food, most urgent (fewest days left) first.
+    /// Sorted once and reused until the food list or the date changes.
+    var activeItemsByUrgency: [FoodItem] {
+        let today = Calendar.current.startOfDay(for: Date())
+        if let cache = sortedCache, cache.day == today { return cache.items }
+        let sorted = foodItems
+            .filter { $0.status == .active }
+            .map { (item: $0, days: $0.daysUntilExpiration) }
+            .sorted { $0.days != $1.days ? $0.days < $1.days : $0.item.name < $1.item.name }
+            .map(\.item)
+        sortedCache = (today, sorted)
+        return sorted
+    }
+
+    private var sortedCache: (day: Date, items: [FoodItem])?
 
     @Published var history: [FoodItem] = [] {
         didSet { saveHistory() }

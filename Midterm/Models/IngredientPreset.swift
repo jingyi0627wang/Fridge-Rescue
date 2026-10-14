@@ -50,8 +50,13 @@ final class IngredientPresetService {
 
     /// Storage tip for a food in the fridge ("Whole Milk" → Milk's tip).
     func storageTip(for foodName: String) -> String? {
-        guard let tip = PresetMatcher.find(foodName, in: loadPresets())?.storageTip,
-              !tip.isEmpty else { return nil }
-        return tip
+        let key = foodName.lowercased()
+        if let cached = tipCache[key] { return cached }
+        let tip = PresetMatcher.find(foodName, in: loadPresets())?.storageTip
+        let result = (tip?.isEmpty ?? true) ? nil : tip
+        tipCache[key] = .some(result)
+        return result
     }
+
+    private var tipCache: [String: String?] = [:]
 }
