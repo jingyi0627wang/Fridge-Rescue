@@ -22,6 +22,8 @@ struct FoodDetailView: View {
     @EnvironmentObject var router: AppRouter
     @Environment(\.dismiss) private var dismiss
     @State private var showEdit = false
+    /// How many to mark as used / thrown away (only shown when quantity > 1).
+    @State private var actionCount = 1
 
     private let original: FoodItem
 
@@ -142,38 +144,104 @@ struct FoodDetailView: View {
     // MARK: - Used / Wasted
     // Moves the item into history so the Impact page can count it.
 
-    private var finishButtons: some View {
-        HStack(spacing: 12) {
-            Button {
-                foodStore.markAsUsed(item)
-                dismiss()
-            } label: {
-                Label("I Used It", systemImage: "checkmark.circle.fill")
-                    .font(.system(size: 15, weight: .bold, design: .rounded))
-                    .foregroundStyle(FreshlingsDetailStyle.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(FreshlingsDetailStyle.darkGreen, in: RoundedRectangle(cornerRadius: 20))
-            }
-            .buttonStyle(.plain)
+    /// actionCount, kept within 1…quantity (quantity can change after an action).
+    private var count: Int { min(max(actionCount, 1), item.quantity) }
 
-            Button {
-                foodStore.markAsWasted(item)
-                dismiss()
-            } label: {
-                Label("Threw Away", systemImage: "trash")
-                    .font(.system(size: 15, weight: .bold, design: .rounded))
-                    .foregroundStyle(FreshlingsDetailStyle.red)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(FreshlingsDetailStyle.white, in: RoundedRectangle(cornerRadius: 20))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(FreshlingsDetailStyle.red.opacity(0.35), lineWidth: 1)
-                    )
+    private var finishButtons: some View {
+        VStack(spacing: 12) {
+            if item.quantity > 1 {
+                countPicker
             }
-            .buttonStyle(.plain)
+
+            HStack(spacing: 12) {
+                Button {
+                    finish(.used)
+                } label: {
+                    Label(item.quantity > 1 ? "Used \(count)" : "I Used It",
+                          systemImage: "checkmark.circle.fill")
+                        .font(.system(size: 15, weight: .bold, design: .rounded))
+                        .foregroundStyle(FreshlingsDetailStyle.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(FreshlingsDetailStyle.darkGreen, in: RoundedRectangle(cornerRadius: 20))
+                }
+                .buttonStyle(.plain)
+
+                Button {
+                    finish(.wasted)
+                } label: {
+                    Label(item.quantity > 1 ? "Threw Away \(count)" : "Threw Away",
+                          systemImage: "trash")
+                        .font(.system(size: 15, weight: .bold, design: .rounded))
+                        .foregroundStyle(FreshlingsDetailStyle.red)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(FreshlingsDetailStyle.white, in: RoundedRectangle(cornerRadius: 20))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(FreshlingsDetailStyle.red.opacity(0.35), lineWidth: 1)
+                        )
+                }
+                .buttonStyle(.plain)
+            }
         }
+    }
+
+    /// "How many?  −  1 of 3  +   All"
+    private var countPicker: some View {
+        HStack(spacing: 12) {
+            Text("How many?")
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.brown)
+
+            Spacer(minLength: 4)
+
+            countButton("minus", enabled: count > 1) { actionCount = count - 1 }
+
+            Text("\(count) of \(item.quantity)")
+                .font(.system(size: 15, weight: .heavy, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.darkGreen)
+                .monospacedDigit()
+                .frame(minWidth: 56)
+
+            countButton("plus", enabled: count < item.quantity) { actionCount = count + 1 }
+
+            Button("All") { actionCount = item.quantity }
+                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .foregroundStyle(count == item.quantity ? FreshlingsDetailStyle.white : FreshlingsDetailStyle.darkGreen)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .background(count == item.quantity ? FreshlingsDetailStyle.darkGreen : FreshlingsDetailStyle.softGreen,
+                            in: Capsule())
+                .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(FreshlingsDetailStyle.white, in: RoundedRectangle(cornerRadius: 20))
+    }
+
+    private func countButton(_ icon: String, enabled: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(enabled ? FreshlingsDetailStyle.darkGreen : FreshlingsDetailStyle.secondary.opacity(0.4))
+                .frame(width: 32, height: 32)
+                .background(FreshlingsDetailStyle.softGreen, in: Circle())
+        }
+        .buttonStyle(.plain)
+        .disabled(!enabled)
+    }
+
+    /// Takes `count` out of the fridge. Goes back only if none are left.
+    private func finish(_ status: FoodStatus) {
+        let usesAll = count >= item.quantity
+        if status == .used {
+            foodStore.markAsUsed(item, quantity: count)
+        } else {
+            foodStore.markAsWasted(item, quantity: count)
+        }
+        actionCount = 1
+        if usesAll { dismiss() }
     }
 
     // MARK: - Header

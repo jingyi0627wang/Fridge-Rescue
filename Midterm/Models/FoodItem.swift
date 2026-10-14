@@ -53,6 +53,9 @@ struct FoodItem: Identifiable, Codable {
     /// When the item was marked as used or wasted (nil while still in the fridge).
     /// Optional so food saved by older versions of the app still loads.
     var finishedDate: Date? = nil
+    /// History records only: id of the fridge item this came from
+    /// (so "Back to Fridge" can add the quantity back to it).
+    var originalID: UUID? = nil
 
     /// Date used for history and charts.
     var finishedOn: Date { finishedDate ?? addedDate }

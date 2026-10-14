@@ -320,16 +320,38 @@ enum RecipeData {
         }.count
     }
 
-    /// The fridge items a recipe would use up (one per ingredient).
-    static func fridgeItems(for recipe: Recipe, in items: [FoodItem]) -> [FoodItem] {
-        var used: [FoodItem] = []
-        for ingredient in recipe.ingredients {
-            let remaining = items.filter { item in !used.contains { $0.id == item.id } }
-            if let match = FoodMatcher.fridgeItem(for: ingredient, in: remaining) {
-                used.append(match)
+    /// Which fridge item each recipe ingredient uses (one item per ingredient).
+    static func fridgeMatches(for recipe: Recipe, in items: [FoodItem]) -> [(ingredient: RecipeIngredient, item: FoodItem)] {
+        var matches: [(ingredient: RecipeIngredient, item: FoodItem)] = []
+        for ingredient in recipe.items {
+            let remaining = items.filter { item in !matches.contains { $0.item.id == item.id } }
+            if let match = FoodMatcher.fridgeItem(for: ingredient.name, in: remaining) {
+                matches.append((ingredient, match))
             }
         }
-        return used
+        return matches
+    }
+
+    /// The fridge items a recipe would use up (one per ingredient).
+    static func fridgeItems(for recipe: Recipe, in items: [FoodItem]) -> [FoodItem] {
+        fridgeMatches(for: recipe, in: items).map(\.item)
+    }
+
+    /// How many of a fridge item cooking this recipe uses up, guessed from the amount:
+    /// "3" or "2 medium" → 2–3 (if the food is counted one by one), anything else
+    /// ("1/2 cup", "200 g", "2 tbsp") → 1. The user can change it on the recipe page.
+    static func defaultUseCount(amount: String, for item: FoodItem) -> Int {
+        let words = amount.lowercased().split(separator: " ").map(String.init)
+        let sizeWords: Set<String> = ["small", "medium", "large", "ripe", "big", "whole"]
+        let unit = IngredientPresetService.shared.loadPresets()
+            .first { $0.name.lowercased() == item.name.lowercased() }?.unit ?? "each"
+
+        guard unit == "each",
+              let first = words.first, let number = Int(first), number > 0,
+              words.dropFirst().allSatisfy({ sizeWords.contains($0) }) else {
+            return min(1, item.quantity)
+        }
+        return min(number, item.quantity)
     }
 }
 

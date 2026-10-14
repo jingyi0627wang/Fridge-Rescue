@@ -52,45 +52,85 @@ final class FoodStore: ObservableObject {
     }
 
     // MARK: - Used / Wasted
+    // `quantity` = how many to take out (nil = all of them).
+    // Using 1 of 3 carrots leaves 2 in the fridge and adds a history
+    // record for 1 carrot (so money and carbon are counted correctly).
 
-    func markAsUsed(_ item: FoodItem) {
-        undoable("\(item.name) marked as used") {
-            finish(item, as: .used)
+    func markAsUsed(_ item: FoodItem, quantity: Int? = nil) {
+        let count = clampedCount(item, quantity)
+        undoable(message(item, count, verb: "Used", allText: "marked as used")) {
+            take(item, count, as: .used)
         }
     }
 
-    func markAsWasted(_ item: FoodItem) {
-        undoable("\(item.name) counted as wasted") {
-            finish(item, as: .wasted)
+    func markAsWasted(_ item: FoodItem, quantity: Int? = nil) {
+        let count = clampedCount(item, quantity)
+        undoable(message(item, count, verb: "Threw away", allText: "counted as wasted")) {
+            take(item, count, as: .wasted)
         }
     }
 
-    /// Used by "I Cooked This" on a recipe.
-    func markAsUsed(_ items: [FoodItem]) {
-        guard !items.isEmpty else { return }
-        undoable("Cooked! Used \(items.map(\.name).joined(separator: ", "))") {
-            items.forEach { finish($0, as: .used) }
+    /// "I Cooked This": how many of each fridge item the recipe used.
+    func cook(_ uses: [(item: FoodItem, quantity: Int)]) {
+        let used = uses.filter { $0.quantity > 0 }
+        guard !used.isEmpty else { return }
+        let names = used.map { $0.quantity > 1 ? "\($0.quantity) \($0.item.name)" : $0.item.name }
+        undoable("Cooked! Used \(names.joined(separator: ", "))") {
+            used.forEach { take($0.item, $0.quantity, as: .used) }
         }
     }
 
-    private func finish(_ item: FoodItem, as status: FoodStatus) {
-        var completedItem = item
-        completedItem.status = status
-        completedItem.finishedDate = Date()
-        history.append(completedItem)
-        removeFromFridge(item)
+    private func clampedCount(_ item: FoodItem, _ quantity: Int?) -> Int {
+        let current = foodItems.first { $0.id == item.id }?.quantity ?? item.quantity
+        return min(max(quantity ?? current, 1), current)
+    }
+
+    private func message(_ item: FoodItem, _ count: Int, verb: String, allText: String) -> String {
+        let current = foodItems.first { $0.id == item.id }?.quantity ?? item.quantity
+        if count >= current { return "\(item.name) \(allText)" }
+        return "\(verb) \(count) \(item.name) · \(current - count) left"
+    }
+
+    private func take(_ item: FoodItem, _ count: Int, as status: FoodStatus) {
+        // Always work on the latest version in the fridge.
+        guard let index = foodItems.firstIndex(where: { $0.id == item.id }) else { return }
+        let current = foodItems[index]
+        let count = min(max(count, 1), current.quantity)
+
+        var record = current
+        record.id = UUID()
+        record.originalID = current.id
+        record.quantity = count
+        record.status = status
+        record.finishedDate = Date()
+        history.append(record)
+
+        if count >= current.quantity {
+            removeFromFridge(current)
+        } else {
+            foodItems[index].quantity -= count
+        }
     }
 
     // MARK: - History
 
-    /// Puts an item back in the fridge.
-    func restoreFromHistory(_ item: FoodItem) {
-        undoable("\(item.name) moved back to the fridge") {
-            history.removeAll { $0.id == item.id }
-            var restored = item
-            restored.status = .active
-            restored.finishedDate = nil
-            addItem(restored)
+    /// Puts a history record back in the fridge. If the original item is still
+    /// there (e.g. 2 carrots left), the quantity is added back to it.
+    func restoreFromHistory(_ record: FoodItem) {
+        undoable("\(record.name) moved back to the fridge") {
+            history.removeAll { $0.id == record.id }
+
+            if let originalID = record.originalID,
+               let index = foodItems.firstIndex(where: { $0.id == originalID }) {
+                foodItems[index].quantity += record.quantity
+            } else {
+                var restored = record
+                restored.id = record.originalID ?? record.id
+                restored.originalID = nil
+                restored.status = .active
+                restored.finishedDate = nil
+                addItem(restored)
+            }
         }
     }
 
