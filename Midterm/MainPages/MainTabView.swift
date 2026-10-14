@@ -1,5 +1,6 @@
 
 import SwiftUI
+import Combine
 
 // MARK: - App navigation
 // Lets any page jump to another tab, e.g. "Find recipes for Milk"

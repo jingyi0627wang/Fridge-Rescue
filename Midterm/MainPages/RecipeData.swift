@@ -77,7 +77,7 @@ enum FoodMatcher {
         text.lowercased()
             .components(separatedBy: CharacterSet.letters.inverted)
             .filter { !$0.isEmpty }
-            .map(singular)
+            .map { singular($0) }
     }
 
     private static func singular(_ word: String) -> String {
@@ -356,7 +356,7 @@ extension RecipeData {
     /// The most urgent fridge item this recipe would rescue (nil if none are urgent).
     static func rescueItem(for recipe: Recipe, in items: [FoodItem]) -> FoodItem? {
         fridgeItems(for: recipe, in: items)
-            .filter(needsAttention)
+            .filter { needsAttention($0) }
             .min { $0.daysUntilExpiration < $1.daysUntilExpiration }
     }
 
