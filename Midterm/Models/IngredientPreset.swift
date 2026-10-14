@@ -6,8 +6,16 @@ struct IngredientPreset: Codable, Identifiable {
     let category: FoodCategory
     let shelfLifeDays: Int
     let estimatedValue: Double
+    /// kg CO2e for ONE unit (= carbonPerKg × unitWeightKg).
     let carbonFactor: Double
     let storageTip: String
+
+    // Carbon data — Poore & Nemecek (2018), via Our World in Data.
+    // Optional so older JSON files still load.
+    let unit: String?            // what "1" means, e.g. "each", "bunch", "1 lb pack"
+    let unitWeightKg: Double?    // typical weight of one unit
+    let carbonPerKg: Double?     // kg CO2e per kg of this food
+    let carbonSource: String?    // food group used from the dataset
 }
 
 final class IngredientPresetService {

@@ -60,6 +60,15 @@ struct MainTabView: View {
             }
         }
         .tint(freshGreen)
+        // Undo bar for used / wasted / deleted / cooked actions.
+        .overlay(alignment: .bottom) {
+            if let toast = foodStore.toast {
+                UndoToastView(toast: toast)
+                    .padding(.bottom, 58)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+        }
+        .animation(.spring(duration: 0.35), value: foodStore.toast?.id)
     }
 }
 

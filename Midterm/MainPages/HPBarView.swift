@@ -38,10 +38,7 @@ struct HPBarView: View {
     }
 
     private var daysText: String {
-        if item.freshnessLevel == .expired { return "Expired" }
-        if item.remainingDays == 0 { return "Expires today" }
-        if item.remainingDays == 1 { return "1 day left" }
-        return "\(item.remainingDays) days left"
+        item.daysLeftText
     }
 
     var body: some View {

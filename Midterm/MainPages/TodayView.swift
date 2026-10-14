@@ -26,8 +26,18 @@ struct TodayView: View {
             .sorted { $0.hpPercentage < $1.hpPercentage }
     }
 
+    @State private var onlineRecipes: [Recipe] = []
+
     private var recommendedRecipes: [Recipe] {
-        RecipeData.recommendations(for: priorityItems)
+        RecipeData.merged(
+            local: RecipeData.recommendations(for: priorityItems),
+            online: onlineRecipes,
+            items: foodStore.foodItems
+        )
+    }
+
+    private var priorityKey: String {
+        priorityItems.map(\.name).joined(separator: "|")
     }
 
     var body: some View {
@@ -53,6 +63,9 @@ struct TodayView: View {
         }
         // MainTabView already wraps TodayView in NavigationStack.
         .toolbar(.hidden, for: .navigationBar)
+        .task(id: priorityKey) {
+            onlineRecipes = await MealDBService.recommendations(for: priorityItems).recipes
+        }
     }
 
     // MARK: - Header
@@ -245,10 +258,20 @@ struct TodayView: View {
 
     private func recipeCard(_ recipe: Recipe) -> some View {
         HStack(spacing: 13) {
-            Text(recipe.emoji)
-                .font(.system(size: 30))
-                .frame(width: 62, height: 62)
-                .background(paleYellow, in: RoundedRectangle(cornerRadius: 19))
+            Group {
+                if let url = recipe.imageURL {
+                    AsyncImage(url: url) { image in
+                        image.resizable().scaledToFill()
+                    } placeholder: {
+                        Text(recipe.emoji).font(.system(size: 30))
+                    }
+                } else {
+                    Text(recipe.emoji).font(.system(size: 30))
+                }
+            }
+            .frame(width: 62, height: 62)
+            .background(paleYellow)
+            .clipShape(RoundedRectangle(cornerRadius: 19))
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(recipe.name)
@@ -266,7 +289,7 @@ struct TodayView: View {
                         .foregroundStyle(secondaryBrown)
                 }
 
-                Text("\(recipe.time) min  •  \(recipe.difficulty)")
+                Text("\(recipe.timeText)  •  \(recipe.difficulty)")
                     .font(.system(size: 11, design: .rounded))
                     .foregroundStyle(secondaryBrown)
             }
@@ -335,15 +358,12 @@ struct TodayView: View {
     }
 
     private func priorityMessage(for item: FoodItem) -> String {
-        if item.remainingDays == 0 { return "Expires today" }
-        if item.remainingDays == 1 { return "Only 1 day left" }
-        return "\(item.remainingDays) days left"
+        if item.daysUntilExpiration == 1 { return "Only 1 day left" }
+        return item.daysLeftText
     }
 
     private func daysText(for item: FoodItem) -> String {
-        if item.remainingDays == 0 { return "Today" }
-        if item.remainingDays == 1 { return "1 day left" }
-        return "\(item.remainingDays) days left"
+        item.daysLeftText
     }
 
     private func foodEmoji(for item: FoodItem) -> String {
