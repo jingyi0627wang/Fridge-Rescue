@@ -91,15 +91,35 @@ struct HomeView: View {
 
             Spacer(minLength: 4)
 
-            ZStack {
-                Circle()
-                    .fill(FreshlingsHomeStyle.softGreen)
-                    .frame(width: 62, height: 62)
+            // Test data menu (for demos and testing with lots of food).
+            Menu {
+                Button {
+                    foodStore.addDemoItems()
+                } label: {
+                    Label("Load Demo Food (6)", systemImage: "carrot")
+                }
+                Button {
+                    foodStore.loadStressTestData()
+                } label: {
+                    Label("Load Lots of Food (60)", systemImage: "square.stack.3d.up.fill")
+                }
+                Divider()
+                Button(role: .destructive) {
+                    foodStore.clearAllData()
+                } label: {
+                    Label("Clear Fridge & History", systemImage: "trash")
+                }
+            } label: {
+                ZStack {
+                    Circle()
+                        .fill(FreshlingsHomeStyle.softGreen)
+                        .frame(width: 62, height: 62)
 
-                Text("🌱")
-                    .font(.system(size: 34))
+                    Text("🌱")
+                        .font(.system(size: 34))
+                }
             }
-            .accessibilityHidden(true)
+            .accessibilityLabel("Test data")
         }
     }
 

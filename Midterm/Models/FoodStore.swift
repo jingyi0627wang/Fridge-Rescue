@@ -153,7 +153,7 @@ final class FoodStore: ObservableObject {
 
     @Published var toast: UndoToast?
 
-    private func undoable(_ message: String, _ change: () -> Void) {
+    func undoable(_ message: String, _ change: () -> Void) {
         let items = foodItems
         let past = history
         change()
