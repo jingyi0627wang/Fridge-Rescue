@@ -4,6 +4,11 @@ import SwiftUI
 // FoodStore and RecipeData interfaces unchanged.
 struct RecipeDetailView: View {
     @EnvironmentObject var foodStore: FoodStore
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var showCookConfirm = false
+    @State private var rescuedNames: [String] = []
+    @State private var showCookedAlert = false
 
     let recipe: Recipe
     var focusIngredient: FoodItem?
@@ -24,10 +29,7 @@ struct RecipeDetailView: View {
     // MARK: - Original fridge matching behavior
 
     private func isInFridge(_ ingredient: String) -> Bool {
-        foodStore.foodItems.contains { food in
-            food.status == .active &&
-            food.name.lowercased() == ingredient.lowercased()
-        }
+        FoodMatcher.fridgeItem(for: ingredient, in: foodStore.foodItems) != nil
     }
 
     private var ingredientsInFridgeCount: Int {
@@ -37,15 +39,8 @@ struct RecipeDetailView: View {
     private var rescueIngredient: FoodItem? {
         if let focusIngredient { return focusIngredient }
 
-        let activeFoods = foodStore.foodItems
-            .filter { $0.status == .active }
-            .sorted { $0.hpPercentage < $1.hpPercentage }
-
-        return activeFoods.first { food in
-            recipe.ingredients.contains {
-                $0.lowercased() == food.name.lowercased()
-            }
-        }
+        return RecipeData.fridgeItems(for: recipe, in: foodStore.foodItems)
+            .min { $0.hpPercentage < $1.hpPercentage }
     }
 
     var body: some View {
@@ -63,6 +58,7 @@ struct RecipeDetailView: View {
 
                     ingredientsSection
                     cookingStepsSection
+                    cookedButton
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
@@ -72,6 +68,58 @@ struct RecipeDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Palette.background, for: .navigationBar)
         .tint(Palette.deepGreen)
+        .confirmationDialog(
+            "Mark these as eaten?",
+            isPresented: $showCookConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Yes, I cooked it") { cook() }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text(itemsToUse.map(\.name).joined(separator: ", "))
+        }
+        .alert("Nice cooking! 🎉", isPresented: $showCookedAlert) {
+            Button("Done") { dismiss() }
+        } message: {
+            Text("You rescued \(rescuedNames.joined(separator: ", ")). Check the Impact tab to see what you saved.")
+        }
+    }
+
+    // MARK: - I Cooked This
+    // Marks every fridge item this recipe uses as "used",
+    // so it leaves the fridge and counts on the Impact page.
+
+    private var itemsToUse: [FoodItem] {
+        RecipeData.fridgeItems(for: recipe, in: foodStore.foodItems)
+    }
+
+    private var cookedButton: some View {
+        Button {
+            showCookConfirm = true
+        } label: {
+            VStack(spacing: 4) {
+                Label("I Cooked This", systemImage: "frying.pan.fill")
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                Text(itemsToUse.isEmpty
+                     ? "No ingredients from your fridge"
+                     : "Marks \(itemsToUse.count) fridge \(itemsToUse.count == 1 ? "item" : "items") as eaten")
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+            }
+            .foregroundStyle(itemsToUse.isEmpty ? Palette.secondary : Palette.deepGreen)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(itemsToUse.isEmpty ? Palette.border : Palette.green,
+                        in: RoundedRectangle(cornerRadius: 22))
+        }
+        .buttonStyle(.plain)
+        .disabled(itemsToUse.isEmpty)
+    }
+
+    private func cook() {
+        let items = itemsToUse
+        rescuedNames = items.map(\.name)
+        foodStore.markAsUsed(items)
+        showCookedAlert = true
     }
 
     // MARK: - Hero

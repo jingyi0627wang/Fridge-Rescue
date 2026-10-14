@@ -50,6 +50,12 @@ struct FoodItem: Identifiable, Codable {
     var status: FoodStatus = .active
     var estimatedValue: Double
     var carbonFactor: Double
+    /// When the item was marked as used or wasted (nil while still in the fridge).
+    /// Optional so food saved by older versions of the app still loads.
+    var finishedDate: Date? = nil
+
+    /// Date used for history and charts.
+    var finishedOn: Date { finishedDate ?? addedDate }
 
     var totalShelfLifeDays: Int {
         max(Calendar.current.dateComponents(

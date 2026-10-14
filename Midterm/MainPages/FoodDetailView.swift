@@ -18,8 +18,26 @@ private enum FreshlingsDetailStyle {
 }
 
 struct FoodDetailView: View {
-    let item: FoodItem
+    @EnvironmentObject var foodStore: FoodStore
     @Environment(\.dismiss) private var dismiss
+    @State private var showWasteConfirm = false
+    @State private var showDeleteConfirm = false
+    @State private var showEdit = false
+
+    private let original: FoodItem
+
+    init(item: FoodItem) {
+        original = item
+    }
+
+    /// Always shows the latest version from the store (so edits appear right away).
+    private var item: FoodItem {
+        foodStore.foodItems.first { $0.id == original.id } ?? original
+    }
+
+    private var storageTip: String? {
+        IngredientPresetService.shared.storageTip(for: item.name)
+    }
 
     private var statusColor: Color {
         switch item.freshnessLevel {
@@ -61,8 +79,13 @@ struct FoodDetailView: View {
                     headerSection
                     heroSection
                     freshnessSection
+                    if let storageTip {
+                        tipSection(storageTip)
+                    }
                     informationSection
                     recipeButton
+                    finishButtons
+                    deleteButton
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
@@ -72,6 +95,108 @@ struct FoodDetailView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
+        .sheet(isPresented: $showEdit) {
+            EditFoodView(item: item)
+                .environmentObject(foodStore)
+        }
+        .alert("Delete \(item.name)?", isPresented: $showDeleteConfirm) {
+            Button("Delete", role: .destructive) {
+                foodStore.deleteItem(item)
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Use this if you added it by mistake. It won't count as used or wasted.")
+        }
+        .confirmationDialog(
+            "Throw away \(item.name)?",
+            isPresented: $showWasteConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Throw Away", role: .destructive) {
+                foodStore.markAsWasted(item)
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("It will be counted as wasted on the Impact page.")
+        }
+    }
+
+    // MARK: - Storage tip
+
+    private func tipSection(_ tip: String) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "lightbulb.fill")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(FreshlingsDetailStyle.gold)
+                .frame(width: 40, height: 40)
+                .background(FreshlingsDetailStyle.white, in: Circle())
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Storage Tip")
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsDetailStyle.brown)
+                Text(tip)
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(FreshlingsDetailStyle.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(18)
+        .background(FreshlingsDetailStyle.softYellow, in: RoundedRectangle(cornerRadius: 24))
+    }
+
+    // MARK: - Delete
+
+    private var deleteButton: some View {
+        Button(role: .destructive) {
+            showDeleteConfirm = true
+        } label: {
+            Text("Delete Item")
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.secondary)
+                .underline()
+        }
+        .buttonStyle(.plain)
+        .padding(.top, 4)
+    }
+
+    // MARK: - Used / Wasted
+    // Moves the item into history so the Impact page can count it.
+
+    private var finishButtons: some View {
+        HStack(spacing: 12) {
+            Button {
+                foodStore.markAsUsed(item)
+                dismiss()
+            } label: {
+                Label("I Used It", systemImage: "checkmark.circle.fill")
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsDetailStyle.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(FreshlingsDetailStyle.darkGreen, in: RoundedRectangle(cornerRadius: 20))
+            }
+            .buttonStyle(.plain)
+
+            Button {
+                showWasteConfirm = true
+            } label: {
+                Label("Threw Away", systemImage: "trash")
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsDetailStyle.red)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(FreshlingsDetailStyle.white, in: RoundedRectangle(cornerRadius: 20))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(FreshlingsDetailStyle.red.opacity(0.35), lineWidth: 1)
+                    )
+            }
+            .buttonStyle(.plain)
+        }
     }
 
     // MARK: - Header
@@ -96,8 +221,15 @@ struct FoodDetailView: View {
 
             Spacer()
 
-            // Balances the back button so the title stays centered.
-            Color.clear.frame(width: 44, height: 44)
+            Button { showEdit = true } label: {
+                Image(systemName: "pencil")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(FreshlingsDetailStyle.darkGreen)
+                    .frame(width: 44, height: 44)
+                    .background(FreshlingsDetailStyle.white, in: Circle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Edit")
         }
     }
 
@@ -259,3 +391,11 @@ struct FoodDetailView: View {
     }
 }
 
+#Preview {
+    let store = FoodStore()
+    store.addDemoItems()
+    return NavigationStack {
+        FoodDetailView(item: store.foodItems[0])
+    }
+    .environmentObject(store)
+}

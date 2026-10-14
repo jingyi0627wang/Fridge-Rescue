@@ -316,10 +316,7 @@ struct TodayView: View {
     private func matchingPriorityItem(for recipe: Recipe) -> FoodItem? {
         priorityItems.first { item in
             recipe.ingredients.contains { ingredient in
-                let normalizedIngredient = ingredient.lowercased()
-                let normalizedName = item.name.lowercased()
-                return normalizedIngredient.contains(normalizedName) ||
-                    normalizedName.contains(normalizedIngredient)
+                FoodMatcher.matches(ingredient: ingredient, foodName: item.name)
             }
         }
     }
