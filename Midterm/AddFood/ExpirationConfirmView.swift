@@ -76,6 +76,7 @@ struct ExpirationConfirmView: View {
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
+            .tint(Color(red: 0.22, green: 0.49, blue: 0.19))
             .padding()
         }
     }
@@ -131,7 +132,10 @@ struct ExpirationConfirmView: View {
             estimatedValue: draft.estimatedValue,
             carbonFactor: draft.carbonFactor
         )
-        store.addItem(item)
+        // Bottom bar: "Carrot added to your fridge" with Undo.
+        store.undoable("\(item.name) added to your fridge") {
+            store.addItem(item)
+        }
         onSaved()
     }
 

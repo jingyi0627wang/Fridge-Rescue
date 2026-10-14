@@ -542,6 +542,20 @@ struct HomeView: View {
                 .foregroundStyle(FreshlingsHomeStyle.secondary)
                 .multilineTextAlignment(.center)
 
+            // Goes to the Add tab.
+            Button {
+                router.selectedTab = .add
+            } label: {
+                Label("Add Food", systemImage: "plus")
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsHomeStyle.white)
+                    .padding(.horizontal, 22)
+                    .padding(.vertical, 12)
+                    .background(FreshlingsHomeStyle.darkGreen, in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .padding(.top, 6)
+
             // For demos / testing: fills the fridge with sample food.
             Button {
                 foodStore.addDemoItems()

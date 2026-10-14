@@ -1,8 +1,20 @@
 import SwiftUI
 
+// Add Food is a normal tab page (like Fridge and Today), not a pop-up.
+// MainTabView puts it in its own NavigationStack. After "Add to Fridge"
+// the page resets for the next item and the bottom bar confirms (with Undo).
 struct AddFoodView: View {
     @ObservedObject var store: FoodStore
-    @Environment(\.dismiss) private var dismiss
+
+    // Freshlings page style (same palette as Home / Today)
+    private enum Style {
+        static let background = Color(red: 0.985, green: 0.992, blue: 0.970)
+        static let green = Color(red: 0.53, green: 0.89, blue: 0.36)
+        static let darkGreen = Color(red: 0.22, green: 0.49, blue: 0.19)
+        static let brown = Color(red: 0.34, green: 0.27, blue: 0.22)
+        static let secondary = Color(red: 0.50, green: 0.48, blue: 0.41)
+        static let softGreen = Color(red: 0.931, green: 0.976, blue: 0.869)
+    }
 
     @State private var presets: [IngredientPreset] = []
     @State private var lastAutoFilledName = ""
@@ -23,36 +35,101 @@ struct AddFoodView: View {
     private var trimmedName: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     var body: some View {
-        NavigationStack {
-            Form {
-                scanSection
-                quickAddSection
-                detailsSection
-                amountSection
-            }
-            .navigationTitle("Add Food")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Next") { showConfirm = true }
-                        .disabled(trimmedName.isEmpty)
-                }
-            }
-            .navigationDestination(isPresented: $showConfirm) {
-                ExpirationConfirmView(draft: makeDraft(), store: store) {
-                    dismiss()
-                }
-            }
-            .onAppear {
-                if presets.isEmpty { presets = IngredientPresetService.shared.loadPresets() }
-            }
-            .onChange(of: name) { autoFillFromPreset() }
-            .fullScreenCover(isPresented: $showScanner) {
-                ScannerScreen { result in handle(result) }
+        Form {
+            headerSection
+            scanSection
+            quickAddSection
+            detailsSection
+            amountSection
+        }
+        .scrollContentBackground(.hidden)
+        .background(Style.background.ignoresSafeArea())
+        .tint(Style.darkGreen)
+        .scrollDismissesKeyboard(.interactively)
+        // Same as the other tabs: custom header instead of a navigation bar.
+        .toolbar(.hidden, for: .navigationBar)
+        .safeAreaInset(edge: .bottom) { nextButton }
+        .navigationDestination(isPresented: $showConfirm) {
+            ExpirationConfirmView(draft: makeDraft(), store: store) {
+                // Saved: go back to a fresh, empty Add page.
+                showConfirm = false
+                resetForm()
             }
         }
+        .onAppear {
+            if presets.isEmpty { presets = IngredientPresetService.shared.loadPresets() }
+        }
+        .onChange(of: name) { autoFillFromPreset() }
+        .fullScreenCover(isPresented: $showScanner) {
+            ScannerScreen { result in handle(result) }
+        }
+    }
+
+    // MARK: - Header (matches Home / Today)
+
+    private var headerSection: some View {
+        Section {
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("ADD FOOD")
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
+                        .tracking(1.5)
+                        .foregroundStyle(Style.darkGreen)
+                    Text("Add a Freshling")
+                        .font(.system(size: 32, weight: .heavy, design: .rounded))
+                        .foregroundStyle(Style.brown)
+                    Text("Scan it, pick a favorite, or type it in.")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .foregroundStyle(Style.secondary)
+                }
+                Spacer(minLength: 4)
+                if !trimmedName.isEmpty {
+                    Button("Clear", action: resetForm)
+                        .font(.system(size: 13, weight: .bold, design: .rounded))
+                        .foregroundStyle(Style.darkGreen)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 7)
+                        .background(Style.softGreen, in: Capsule())
+                        .buttonStyle(.plain)
+                }
+            }
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 4, trailing: 4))
+        }
+    }
+
+    // MARK: - Next (big button at the bottom)
+
+    private var nextButton: some View {
+        Button {
+            showConfirm = true
+        } label: {
+            HStack {
+                Text(trimmedName.isEmpty ? "Enter a food to continue" : "Next: Expiration Date")
+                if !trimmedName.isEmpty { Image(systemName: "arrow.right") }
+            }
+            .font(.system(size: 17, weight: .bold, design: .rounded))
+            .foregroundStyle(trimmedName.isEmpty ? Style.secondary : Style.darkGreen)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(trimmedName.isEmpty ? Style.softGreen : Style.green, in: Capsule())
+        }
+        .buttonStyle(.plain)
+        .disabled(trimmedName.isEmpty)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+        .background(Style.background.opacity(0.95))
+    }
+
+    private func resetForm() {
+        name = ""
+        category = .other
+        quantity = 1
+        priceText = ""
+        addedDate = Date()
+        scanned = nil
+        scanMessage = nil
+        lastAutoFilledName = ""
     }
 
     private var scanSection: some View {
@@ -289,5 +366,7 @@ struct AddFoodView: View {
 }
 
 #Preview {
-    AddFoodView(store: FoodStore())
+    NavigationStack {
+        AddFoodView(store: FoodStore())
+    }
 }
