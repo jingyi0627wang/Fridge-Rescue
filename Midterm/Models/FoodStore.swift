@@ -15,11 +15,14 @@ final class FoodStore: ObservableObject {
     var activeItemsByUrgency: [FoodItem] {
         let today = Calendar.current.startOfDay(for: Date())
         if let cache = sortedCache, cache.day == today { return cache.items }
-        let sorted = foodItems
-            .filter { $0.status == .active }
-            .map { (item: $0, days: $0.daysUntilExpiration) }
-            .sorted { $0.days != $1.days ? $0.days < $1.days : $0.item.name < $1.item.name }
-            .map(\.item)
+        // Split into small steps with explicit types (keeps the compiler fast).
+        let active: [FoodItem] = foodItems.filter { $0.status == .active }
+        let keyed: [(item: FoodItem, days: Int)] = active.map { (item: $0, days: $0.daysUntilExpiration) }
+        let ordered = keyed.sorted { a, b in
+            if a.days != b.days { return a.days < b.days }
+            return a.item.name < b.item.name
+        }
+        let sorted: [FoodItem] = ordered.map { $0.item }
         sortedCache = (today, sorted)
         return sorted
     }
