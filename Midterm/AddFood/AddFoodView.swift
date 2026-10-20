@@ -128,10 +128,10 @@ struct AddFoodView: View {
 
     private var amountSection: some View {
         Section {
-            Stepper("Quantity: \(quantity)", value: $quantity, in: 1...99)
+            Stepper("Quantity: \(quantity)\(unitSuffix)", value: $quantity, in: 1...99)
 
             HStack {
-                Text("Price")
+                Text("Price per unit")
                 Spacer()
                 Text(Locale.current.currencySymbol ?? "$").foregroundStyle(.secondary)
                 TextField("0.00", text: $priceText)
@@ -142,8 +142,18 @@ struct AddFoodView: View {
         } header: {
             Text("Amount & Price")
         } footer: {
-            Text("Price is used to calculate money saved on the Impact page.")
+            Text("Enter the price of ONE \(currentPreset?.unit ?? "unit"). Money saved = price × quantity.")
         }
+    }
+
+    private var currentPreset: IngredientPreset? {
+        PresetMatcher.find(trimmedName, in: presets)
+    }
+
+    /// e.g. " × bunch" so users know what 1 means.
+    private var unitSuffix: String {
+        guard let unit = currentPreset?.unit, unit != "each" else { return "" }
+        return " × \(unit)"
     }
 
     private func handle(_ result: ScanResult) {

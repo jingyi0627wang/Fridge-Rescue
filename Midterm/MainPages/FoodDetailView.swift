@@ -20,8 +20,6 @@ private enum FreshlingsDetailStyle {
 struct FoodDetailView: View {
     @EnvironmentObject var foodStore: FoodStore
     @Environment(\.dismiss) private var dismiss
-    @State private var showWasteConfirm = false
-    @State private var showDeleteConfirm = false
     @State private var showEdit = false
 
     private let original: FoodItem
@@ -53,10 +51,7 @@ struct FoodDetailView: View {
     }
 
     private var daysText: String {
-        if item.freshnessLevel == .expired { return "Expired" }
-        if item.remainingDays == 0 { return "Expires today" }
-        if item.remainingDays == 1 { return "1 day left" }
-        return "\(item.remainingDays) days left"
+        item.daysLeftText
     }
 
     private var foodEmoji: String {
@@ -99,28 +94,6 @@ struct FoodDetailView: View {
             EditFoodView(item: item)
                 .environmentObject(foodStore)
         }
-        .alert("Delete \(item.name)?", isPresented: $showDeleteConfirm) {
-            Button("Delete", role: .destructive) {
-                foodStore.deleteItem(item)
-                dismiss()
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("Use this if you added it by mistake. It won't count as used or wasted.")
-        }
-        .confirmationDialog(
-            "Throw away \(item.name)?",
-            isPresented: $showWasteConfirm,
-            titleVisibility: .visible
-        ) {
-            Button("Throw Away", role: .destructive) {
-                foodStore.markAsWasted(item)
-                dismiss()
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("It will be counted as wasted on the Impact page.")
-        }
     }
 
     // MARK: - Storage tip
@@ -152,7 +125,9 @@ struct FoodDetailView: View {
 
     private var deleteButton: some View {
         Button(role: .destructive) {
-            showDeleteConfirm = true
+            // No pop-up: deletes right away, with Undo at the bottom.
+            foodStore.deleteItem(item)
+            dismiss()
         } label: {
             Text("Delete Item")
                 .font(.system(size: 14, weight: .semibold, design: .rounded))
@@ -182,7 +157,8 @@ struct FoodDetailView: View {
             .buttonStyle(.plain)
 
             Button {
-                showWasteConfirm = true
+                foodStore.markAsWasted(item)
+                dismiss()
             } label: {
                 Label("Threw Away", systemImage: "trash")
                     .font(.system(size: 15, weight: .bold, design: .rounded))

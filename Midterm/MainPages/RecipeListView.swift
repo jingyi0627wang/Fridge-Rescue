@@ -7,11 +7,27 @@ struct RecipeListView: View {
     @EnvironmentObject var foodStore: FoodStore
     var focusIngredient: FoodItem?
 
+    // Online recipes from TheMealDB (loaded in .task below)
+    @State private var onlineRecipes: [Recipe] = []
+    @State private var isLoadingOnline = false
+    @State private var isOffline = false
+
+    private var sourceItems: [FoodItem] {
+        if let focusIngredient { return [focusIngredient] }
+        return foodStore.foodItems.filter { $0.status == .active }
+    }
+
     private var recipes: [Recipe] {
-        if let focusIngredient {
-            return RecipeData.recommendations(for: [focusIngredient])
-        }
-        return RecipeData.recommendations(for: foodStore.foodItems)
+        RecipeData.merged(
+            local: RecipeData.recommendations(for: sourceItems),
+            online: onlineRecipes,
+            items: foodStore.foodItems
+        )
+    }
+
+    /// Reload online recipes when the fridge changes.
+    private var fridgeKey: String {
+        sourceItems.map(\.name).sorted().joined(separator: "|")
     }
 
     private func rescueIngredient(for recipe: Recipe) -> FoodItem? {
@@ -35,6 +51,13 @@ struct RecipeListView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .task(id: fridgeKey) {
+            isLoadingOnline = true
+            let result = await MealDBService.recommendations(for: sourceItems)
+            onlineRecipes = result.recipes
+            isOffline = result.isOffline
+            isLoadingOnline = false
+        }
     }
 
     // MARK: Header
@@ -106,7 +129,20 @@ struct RecipeListView: View {
                     .clipShape(Capsule())
             }
 
-            if recipes.isEmpty {
+            if isLoadingOnline {
+                HStack(spacing: 8) {
+                    ProgressView()
+                    Text("Finding more recipes online…")
+                }
+                .font(.system(size: 12, weight: .medium, design: .rounded))
+                .foregroundStyle(RecipeFreshlingsStyle.secondary)
+            } else if isOffline {
+                Label("Offline: showing built-in recipes only", systemImage: "wifi.slash")
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundStyle(RecipeFreshlingsStyle.secondary)
+            }
+
+            if recipes.isEmpty && !isLoadingOnline {
                 emptyState
             } else {
                 ForEach(recipes) { recipe in
@@ -125,6 +161,14 @@ struct RecipeListView: View {
                         )
                     }
                     .buttonStyle(.plain)
+                }
+
+                if !onlineRecipes.isEmpty {
+                    Text("Recipes with photos are from TheMealDB.com")
+                        .font(.system(size: 11, weight: .medium, design: .rounded))
+                        .foregroundStyle(RecipeFreshlingsStyle.secondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 4)
                 }
             }
         }
@@ -162,8 +206,7 @@ private struct FreshlingsRecipeCard: View {
 
     var body: some View {
         HStack(spacing: 14) {
-            Text(recipe.emoji)
-                .font(.system(size: 35))
+            thumbnail
                 .frame(width: 76, height: 85)
                 .background(RecipeFreshlingsStyle.lightGreen)
                 .clipShape(RoundedRectangle(cornerRadius: 19, style: .continuous))
@@ -189,7 +232,7 @@ private struct FreshlingsRecipeCard: View {
 
                 HStack(spacing: 6) {
                     Image(systemName: "clock")
-                    Text("\(recipe.time) min")
+                    Text(recipe.timeText)
                     Text("•")
                     Text(recipe.difficulty)
                 }
@@ -210,6 +253,20 @@ private struct FreshlingsRecipeCard: View {
         .overlay {
             RoundedRectangle(cornerRadius: 23, style: .continuous)
                 .stroke(RecipeFreshlingsStyle.outline, lineWidth: 1)
+        }
+    }
+
+    /// Photo for online recipes, emoji for built-in ones.
+    @ViewBuilder
+    private var thumbnail: some View {
+        if let url = recipe.imageURL {
+            AsyncImage(url: url) { image in
+                image.resizable().scaledToFill()
+            } placeholder: {
+                Text(recipe.emoji).font(.system(size: 35))
+            }
+        } else {
+            Text(recipe.emoji).font(.system(size: 35))
         }
     }
 }

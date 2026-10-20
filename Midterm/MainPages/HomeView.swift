@@ -21,7 +21,6 @@ struct HomeView: View {
 
     @State private var searchText = ""
     @State private var selectedCategory: FoodCategory? = nil   // nil = All
-    @State private var itemToDelete: FoodItem?
 
     private var activeItems: [FoodItem] {
         foodStore.foodItems
@@ -68,21 +67,6 @@ struct HomeView: View {
         }
         // MainTabView already embeds HomeView in a NavigationStack.
         .toolbar(.hidden, for: .navigationBar)
-        .alert(
-            "Delete \(itemToDelete?.name ?? "item")?",
-            isPresented: Binding(
-                get: { itemToDelete != nil },
-                set: { if !$0 { itemToDelete = nil } }
-            )
-        ) {
-            Button("Delete", role: .destructive) {
-                if let itemToDelete { foodStore.deleteItem(itemToDelete) }
-                itemToDelete = nil
-            }
-            Button("Cancel", role: .cancel) { itemToDelete = nil }
-        } message: {
-            Text("It won't count as used or wasted.")
-        }
     }
 
     // MARK: - Header
@@ -286,7 +270,7 @@ struct HomeView: View {
                                     Label("Threw Away", systemImage: "trash")
                                 }
                                 Button(role: .destructive) {
-                                    itemToDelete = item
+                                    foodStore.deleteItem(item)
                                 } label: {
                                     Label("Delete", systemImage: "xmark.bin")
                                 }
@@ -497,15 +481,14 @@ struct HomeView: View {
     // MARK: - Text and color helpers
 
     private func priorityMessage(for item: FoodItem) -> String {
-        if item.remainingDays <= 0 { return "Best used today!" }
+        if item.daysUntilExpiration < 0 { return "Past its date. Check before using." }
+        if item.daysUntilExpiration == 0 { return "Best used today!" }
         if item.remainingDays == 1 { return "Only 1 day left. Use me soon!" }
         return "\(item.remainingDays) days left. Let's save it!"
     }
 
     private func daysText(for item: FoodItem) -> String {
-        if item.remainingDays <= 0 { return "Expires today" }
-        if item.remainingDays == 1 { return "1 day left" }
-        return "\(item.remainingDays) days left"
+        item.daysLeftText
     }
 
     private func expirationText(for item: FoodItem) -> String {

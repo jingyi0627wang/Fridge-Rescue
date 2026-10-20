@@ -115,3 +115,26 @@ extension FoodStore {
         return streak
     }
 }
+
+// MARK: - Goal progress
+
+extension FoodStore {
+
+    private var startOfWeek: Date {
+        Calendar.current.dateInterval(of: .weekOfYear, for: Date())?.start ?? Date()
+    }
+
+    private var startOfMonth: Date {
+        Calendar.current.dateInterval(of: .month, for: Date())?.start ?? Date()
+    }
+
+    var wastedThisWeek: Int {
+        wastedItems.filter { $0.finishedOn >= startOfWeek }.count
+    }
+
+    var moneySavedThisMonth: Double {
+        usedItems
+            .filter { $0.finishedOn >= startOfMonth }
+            .reduce(0) { $0 + $1.estimatedValue * Double($1.quantity) }
+    }
+}

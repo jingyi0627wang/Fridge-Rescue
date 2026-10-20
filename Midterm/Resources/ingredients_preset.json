@@ -4,1399 +4,2099 @@
     "category": "Vegetable",
     "shelfLifeDays": 30,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry place."
+    "carbonFactor": 0.53,
+    "storageTip": "Store whole in a cool, dark, dry place.",
+    "unit": "each",
+    "unitWeightKg": 1.0,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Artichoke",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.159,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Arugula",
     "category": "Vegetable",
     "shelfLifeDays": 3,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.071,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "5 oz bag",
+    "unitWeightKg": 0.14,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Asparagus",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.239,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Baby Bok Choy",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.051,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Baby Carrot",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.194,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "1 lb bag",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Baby Spinach",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.074,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "5 oz bag",
+    "unitWeightKg": 0.14,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Bamboo Shoots",
     "category": "Vegetable",
     "shelfLifeDays": 3,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.122,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "can",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Bean Sprouts",
     "category": "Vegetable",
     "shelfLifeDays": 3,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.18,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bag",
+    "unitWeightKg": 0.34,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Beet",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.065,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.15,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Beet Greens",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.159,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Belgian Endive",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.053,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Bell Pepper",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.09,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.17,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Bok Choy",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.255,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.5,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Broccoli",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.178,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.35,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Broccoli Rabe",
     "category": "Vegetable",
     "shelfLifeDays": 3,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.23,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Broccolini",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.128,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.25,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Brussels Sprouts",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.23,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "1 lb bag",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Butter Lettuce",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.106,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Butternut Squash",
     "category": "Vegetable",
     "shelfLifeDays": 60,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry place."
+    "carbonFactor": 0.53,
+    "storageTip": "Store whole in a cool, dark, dry place.",
+    "unit": "each",
+    "unitWeightKg": 1.0,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Button Mushroom",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Refrigerate unwashed in a paper bag."
+    "carbonFactor": 0.122,
+    "storageTip": "Refrigerate unwashed in a paper bag.",
+    "unit": "8 oz pack",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Carrot",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.026,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.06,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Cauliflower",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.306,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.6,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Celeriac",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.215,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.5,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Celery",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.239,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Chayote",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.133,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.25,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Cherry Tomato",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store at room temperature away from sunlight; refrigerate when fully ripe."
+    "carbonFactor": 0.627,
+    "storageTip": "Store at room temperature away from sunlight; refrigerate when fully ripe.",
+    "unit": "pint",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 2.09,
+    "carbonSource": "Tomatoes"
   },
   {
     "name": "Cilantro",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.027,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.05,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Collard Greens",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.23,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Corn on the Cob",
     "category": "Vegetable",
     "shelfLifeDays": 2,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.425,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "ear",
+    "unitWeightKg": 0.25,
+    "carbonPerKg": 1.7,
+    "carbonSource": "Maize"
   },
   {
     "name": "Cucumber",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.159,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Daikon Radish",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.255,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.5,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Delicata Squash",
     "category": "Vegetable",
     "shelfLifeDays": 30,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry place."
+    "carbonFactor": 0.265,
+    "storageTip": "Store whole in a cool, dark, dry place.",
+    "unit": "each",
+    "unitWeightKg": 0.5,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Eggplant",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.239,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Endive",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.053,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "English Cucumber",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.185,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.35,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Enoki Mushroom",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Refrigerate in the original package or a paper bag."
+    "carbonFactor": 0.053,
+    "storageTip": "Refrigerate in the original package or a paper bag.",
+    "unit": "pack",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Escarole",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.212,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.4,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Fennel",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.159,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bulb",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Fingerling Potato",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.313,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place.",
+    "unit": "1.5 lb bag",
+    "unitWeightKg": 0.68,
+    "carbonPerKg": 0.46,
+    "carbonSource": "Potatoes"
   },
   {
     "name": "Garlic",
     "category": "Vegetable",
     "shelfLifeDays": 60,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole bulbs in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.025,
+    "storageTip": "Store whole bulbs in a cool, dark, dry, ventilated place.",
+    "unit": "head",
+    "unitWeightKg": 0.05,
+    "carbonPerKg": 0.5,
+    "carbonSource": "Onions & Leeks"
   },
   {
     "name": "Ginger",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.043,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "knob",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Green Beans",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.239,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "1 lb",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Green Bell Pepper",
     "category": "Vegetable",
     "shelfLifeDays": 10,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.09,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.17,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Green Cabbage",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.459,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.9,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Green Leaf Lettuce",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.159,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Green Peas",
     "category": "Vegetable",
     "shelfLifeDays": 3,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.441,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "1 lb bag",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.98,
+    "carbonSource": "Peas"
   },
   {
     "name": "Iceberg Lettuce",
     "category": "Vegetable",
     "shelfLifeDays": 10,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.318,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.6,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Japanese Eggplant",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.106,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Jicama",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dry place; refrigerate after cutting."
+    "carbonFactor": 0.215,
+    "storageTip": "Store whole in a cool, dry place; refrigerate after cutting.",
+    "unit": "each",
+    "unitWeightKg": 0.5,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Kabocha Squash",
     "category": "Vegetable",
     "shelfLifeDays": 45,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry place."
+    "carbonFactor": 0.636,
+    "storageTip": "Store whole in a cool, dark, dry place.",
+    "unit": "each",
+    "unitWeightKg": 1.2,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Kale",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.153,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Kohlrabi",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.153,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Lacinato Kale",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.153,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Leek",
     "category": "Vegetable",
     "shelfLifeDays": 10,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.1,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.5,
+    "carbonSource": "Onions & Leeks"
   },
   {
     "name": "Lotus Root",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.129,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Mustard Greens",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.153,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Napa Cabbage",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.459,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.9,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Okra",
     "category": "Vegetable",
     "shelfLifeDays": 3,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.122,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "8 oz",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Parsnip",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.065,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.15,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Pearl Onion",
     "category": "Vegetable",
     "shelfLifeDays": 30,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.14,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place.",
+    "unit": "bag",
+    "unitWeightKg": 0.28,
+    "carbonPerKg": 0.5,
+    "carbonSource": "Onions & Leeks"
   },
   {
     "name": "Persian Cucumber",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.053,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Potato",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.092,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.46,
+    "carbonSource": "Potatoes"
   },
   {
     "name": "Pumpkin",
     "category": "Vegetable",
     "shelfLifeDays": 60,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dry place; refrigerate after cutting."
+    "carbonFactor": 1.325,
+    "storageTip": "Store whole in a cool, dry place; refrigerate after cutting.",
+    "unit": "each",
+    "unitWeightKg": 2.5,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Radicchio",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.133,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.25,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Radish",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.102,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Red Bell Pepper",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.09,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.17,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Red Cabbage",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.459,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.9,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Red Leaf Lettuce",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.159,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Red Onion",
     "category": "Vegetable",
     "shelfLifeDays": 30,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.1,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.5,
+    "carbonSource": "Onions & Leeks"
   },
   {
     "name": "Red Potato",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.069,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place.",
+    "unit": "each",
+    "unitWeightKg": 0.15,
+    "carbonPerKg": 0.46,
+    "carbonSource": "Potatoes"
   },
   {
     "name": "Roma Tomato",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store at room temperature away from sunlight; refrigerate when fully ripe."
+    "carbonFactor": 0.209,
+    "storageTip": "Store at room temperature away from sunlight; refrigerate when fully ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 2.09,
+    "carbonSource": "Tomatoes"
   },
   {
     "name": "Romaine Lettuce",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.159,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Russet Potato",
     "category": "Vegetable",
     "shelfLifeDays": 28,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.138,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place.",
+    "unit": "each",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.46,
+    "carbonSource": "Potatoes"
   },
   {
     "name": "Rutabaga",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.255,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.5,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Savoy Cabbage",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.459,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "head",
+    "unitWeightKg": 0.9,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Scallion",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.05,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.5,
+    "carbonSource": "Onions & Leeks"
   },
   {
     "name": "Shallot",
     "category": "Vegetable",
     "shelfLifeDays": 30,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.015,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place.",
+    "unit": "each",
+    "unitWeightKg": 0.03,
+    "carbonPerKg": 0.5,
+    "carbonSource": "Onions & Leeks"
   },
   {
     "name": "Shiitake Mushroom",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Refrigerate unwashed in a paper bag."
+    "carbonFactor": 0.053,
+    "storageTip": "Refrigerate unwashed in a paper bag.",
+    "unit": "pack",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Snow Peas",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.225,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "8 oz",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 0.98,
+    "carbonSource": "Peas"
   },
   {
     "name": "Spaghetti Squash",
     "category": "Vegetable",
     "shelfLifeDays": 45,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry place."
+    "carbonFactor": 0.689,
+    "storageTip": "Store whole in a cool, dark, dry place.",
+    "unit": "each",
+    "unitWeightKg": 1.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Spinach",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.159,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Sugar Snap Peas",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.225,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "8 oz",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 0.98,
+    "carbonSource": "Peas"
   },
   {
     "name": "Sweet Onion",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store cool and dry, or refrigerate for longer keeping."
+    "carbonFactor": 0.125,
+    "storageTip": "Store cool and dry, or refrigerate for longer keeping.",
+    "unit": "each",
+    "unitWeightKg": 0.25,
+    "carbonPerKg": 0.5,
+    "carbonSource": "Onions & Leeks"
   },
   {
     "name": "Sweet Potato",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store in a cool, dark, dry place; do not refrigerate raw."
+    "carbonFactor": 0.107,
+    "storageTip": "Store in a cool, dark, dry place; do not refrigerate raw.",
+    "unit": "each",
+    "unitWeightKg": 0.25,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Swiss Chard",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.159,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Taro Root",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.129,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Tomatillo",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.104,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.05,
+    "carbonPerKg": 2.09,
+    "carbonSource": "Tomatoes"
   },
   {
     "name": "Tomato",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store at room temperature away from sunlight; refrigerate only when very ripe."
+    "carbonFactor": 0.313,
+    "storageTip": "Store at room temperature away from sunlight; refrigerate only when very ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.15,
+    "carbonPerKg": 2.09,
+    "carbonSource": "Tomatoes"
   },
   {
     "name": "Turnip",
     "category": "Vegetable",
     "shelfLifeDays": 14,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.102,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Turnip Greens",
     "category": "Vegetable",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.153,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Watercress",
     "category": "Vegetable",
     "shelfLifeDays": 3,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.051,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "bunch",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.51,
+    "carbonSource": "Brassicas"
   },
   {
     "name": "Wax Beans",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.239,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "1 lb",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "White Onion",
     "category": "Vegetable",
     "shelfLifeDays": 30,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.1,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.5,
+    "carbonSource": "Onions & Leeks"
   },
   {
     "name": "Yam",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.129,
+    "storageTip": "Store in a cool, dark, dry, ventilated place.",
+    "unit": "each",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Root Vegetables"
   },
   {
     "name": "Yellow Bell Pepper",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.09,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.17,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Yellow Onion",
     "category": "Vegetable",
     "shelfLifeDays": 30,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.1,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.5,
+    "carbonSource": "Onions & Leeks"
   },
   {
     "name": "Yellow Squash",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.106,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Yukon Gold Potato",
     "category": "Vegetable",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+    "carbonFactor": 0.092,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.46,
+    "carbonSource": "Potatoes"
   },
   {
     "name": "Zucchini",
     "category": "Vegetable",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated in the crisper drawer."
+    "carbonFactor": 0.106,
+    "storageTip": "Keep refrigerated in the crisper drawer.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 0.53,
+    "carbonSource": "Other Vegetables"
   },
   {
     "name": "Apple",
     "category": "Fruit",
     "shelfLifeDays": 14,
     "estimatedValue": 1.2,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated for longer freshness."
+    "carbonFactor": 0.077,
+    "storageTip": "Keep refrigerated for longer freshness.",
+    "unit": "each",
+    "unitWeightKg": 0.18,
+    "carbonPerKg": 0.43,
+    "carbonSource": "Apples"
   },
   {
     "name": "Apricot",
     "category": "Fruit",
     "shelfLifeDays": 5,
     "estimatedValue": 1.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.042,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.04,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Avocado",
     "category": "Fruit",
     "shelfLifeDays": 4,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.4,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.21,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.2,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Banana",
     "category": "Fruit",
     "shelfLifeDays": 5,
     "estimatedValue": 0.5,
-    "carbonFactor": 0.2,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.103,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.12,
+    "carbonPerKg": 0.86,
+    "carbonSource": "Bananas"
   },
   {
     "name": "Blackberry",
     "category": "Fruit",
     "shelfLifeDays": 3,
     "estimatedValue": 4.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated and unwashed until use."
+    "carbonFactor": 0.26,
+    "storageTip": "Keep refrigerated and unwashed until use.",
+    "unit": "6 oz box",
+    "unitWeightKg": 0.17,
+    "carbonPerKg": 1.53,
+    "carbonSource": "Berries & Grapes"
   },
   {
     "name": "Blueberry",
     "category": "Fruit",
     "shelfLifeDays": 10,
     "estimatedValue": 4.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated and unwashed until use."
+    "carbonFactor": 0.26,
+    "storageTip": "Keep refrigerated and unwashed until use.",
+    "unit": "6 oz box",
+    "unitWeightKg": 0.17,
+    "carbonPerKg": 1.53,
+    "carbonSource": "Berries & Grapes"
   },
   {
     "name": "Cantaloupe",
     "category": "Fruit",
     "shelfLifeDays": 5,
     "estimatedValue": 4.0,
-    "carbonFactor": 0.2,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe or cut."
+    "carbonFactor": 1.47,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe or cut.",
+    "unit": "each",
+    "unitWeightKg": 1.4,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Cherry",
     "category": "Fruit",
     "shelfLifeDays": 7,
     "estimatedValue": 4.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated and unwashed until use."
+    "carbonFactor": 0.473,
+    "storageTip": "Keep refrigerated and unwashed until use.",
+    "unit": "1 lb bag",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Coconut",
     "category": "Fruit",
     "shelfLifeDays": 21,
     "estimatedValue": 3.0,
-    "carbonFactor": 0.4,
-    "storageTip": "Store whole in a cool place; refrigerate after opening."
+    "carbonFactor": 0.735,
+    "storageTip": "Store whole in a cool place; refrigerate after opening.",
+    "unit": "each",
+    "unitWeightKg": 0.7,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Dragon Fruit",
     "category": "Fruit",
     "shelfLifeDays": 7,
     "estimatedValue": 3.0,
-    "carbonFactor": 0.4,
-    "storageTip": "Keep refrigerated when ripe."
+    "carbonFactor": 0.42,
+    "storageTip": "Keep refrigerated when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.4,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Fig",
     "category": "Fruit",
     "shelfLifeDays": 3,
     "estimatedValue": 3.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated and use promptly."
+    "carbonFactor": 0.053,
+    "storageTip": "Keep refrigerated and use promptly.",
+    "unit": "each",
+    "unitWeightKg": 0.05,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Grape",
     "category": "Fruit",
     "shelfLifeDays": 14,
     "estimatedValue": 3.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated and unwashed until use."
+    "carbonFactor": 1.377,
+    "storageTip": "Keep refrigerated and unwashed until use.",
+    "unit": "2 lb bag",
+    "unitWeightKg": 0.9,
+    "carbonPerKg": 1.53,
+    "carbonSource": "Berries & Grapes"
   },
   {
     "name": "Grapefruit",
     "category": "Fruit",
     "shelfLifeDays": 21,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.2,
-    "storageTip": "Keep refrigerated for longer freshness."
+    "carbonFactor": 0.098,
+    "storageTip": "Keep refrigerated for longer freshness.",
+    "unit": "each",
+    "unitWeightKg": 0.25,
+    "carbonPerKg": 0.39,
+    "carbonSource": "Citrus Fruit"
   },
   {
     "name": "Honeydew Melon",
     "category": "Fruit",
     "shelfLifeDays": 7,
     "estimatedValue": 4.0,
-    "carbonFactor": 0.2,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe or cut."
+    "carbonFactor": 2.1,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe or cut.",
+    "unit": "each",
+    "unitWeightKg": 2.0,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Kiwi",
     "category": "Fruit",
     "shelfLifeDays": 14,
     "estimatedValue": 1.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.074,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.07,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Lemon",
     "category": "Fruit",
     "shelfLifeDays": 28,
     "estimatedValue": 0.8,
-    "carbonFactor": 0.2,
-    "storageTip": "Keep refrigerated in a sealed bag."
+    "carbonFactor": 0.039,
+    "storageTip": "Keep refrigerated in a sealed bag.",
+    "unit": "each",
+    "unitWeightKg": 0.1,
+    "carbonPerKg": 0.39,
+    "carbonSource": "Citrus Fruit"
   },
   {
     "name": "Lime",
     "category": "Fruit",
     "shelfLifeDays": 28,
     "estimatedValue": 0.6,
-    "carbonFactor": 0.2,
-    "storageTip": "Keep refrigerated in a sealed bag."
+    "carbonFactor": 0.027,
+    "storageTip": "Keep refrigerated in a sealed bag.",
+    "unit": "each",
+    "unitWeightKg": 0.07,
+    "carbonPerKg": 0.39,
+    "carbonSource": "Citrus Fruit"
   },
   {
     "name": "Mandarin",
     "category": "Fruit",
     "shelfLifeDays": 14,
     "estimatedValue": 0.8,
-    "carbonFactor": 0.2,
-    "storageTip": "Keep refrigerated for longer freshness."
+    "carbonFactor": 0.031,
+    "storageTip": "Keep refrigerated for longer freshness.",
+    "unit": "each",
+    "unitWeightKg": 0.08,
+    "carbonPerKg": 0.39,
+    "carbonSource": "Citrus Fruit"
   },
   {
     "name": "Mango",
     "category": "Fruit",
     "shelfLifeDays": 5,
     "estimatedValue": 1.5,
-    "carbonFactor": 0.4,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.315,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Nectarine",
     "category": "Fruit",
     "shelfLifeDays": 5,
     "estimatedValue": 1.2,
-    "carbonFactor": 0.3,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.158,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.15,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Orange",
     "category": "Fruit",
     "shelfLifeDays": 21,
     "estimatedValue": 1.0,
-    "carbonFactor": 0.2,
-    "storageTip": "Keep refrigerated for longer freshness."
+    "carbonFactor": 0.07,
+    "storageTip": "Keep refrigerated for longer freshness.",
+    "unit": "each",
+    "unitWeightKg": 0.18,
+    "carbonPerKg": 0.39,
+    "carbonSource": "Citrus Fruit"
   },
   {
     "name": "Papaya",
     "category": "Fruit",
     "shelfLifeDays": 5,
     "estimatedValue": 3.0,
-    "carbonFactor": 0.4,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.525,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.5,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Peach",
     "category": "Fruit",
     "shelfLifeDays": 5,
     "estimatedValue": 1.2,
-    "carbonFactor": 0.3,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.158,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.15,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Pear",
     "category": "Fruit",
     "shelfLifeDays": 7,
     "estimatedValue": 1.2,
-    "carbonFactor": 0.3,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.189,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.18,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Pineapple",
     "category": "Fruit",
     "shelfLifeDays": 5,
     "estimatedValue": 4.0,
-    "carbonFactor": 0.4,
-    "storageTip": "Refrigerate when ripe or after cutting."
+    "carbonFactor": 1.575,
+    "storageTip": "Refrigerate when ripe or after cutting.",
+    "unit": "each",
+    "unitWeightKg": 1.5,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Plum",
     "category": "Fruit",
     "shelfLifeDays": 7,
     "estimatedValue": 1.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+    "carbonFactor": 0.074,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe.",
+    "unit": "each",
+    "unitWeightKg": 0.07,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Pomegranate",
     "category": "Fruit",
     "shelfLifeDays": 30,
     "estimatedValue": 3.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated for longer freshness."
+    "carbonFactor": 0.315,
+    "storageTip": "Keep refrigerated for longer freshness.",
+    "unit": "each",
+    "unitWeightKg": 0.3,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "Raspberry",
     "category": "Fruit",
     "shelfLifeDays": 3,
     "estimatedValue": 4.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated and unwashed until use."
+    "carbonFactor": 0.26,
+    "storageTip": "Keep refrigerated and unwashed until use.",
+    "unit": "6 oz box",
+    "unitWeightKg": 0.17,
+    "carbonPerKg": 1.53,
+    "carbonSource": "Berries & Grapes"
   },
   {
     "name": "Strawberry",
     "category": "Fruit",
     "shelfLifeDays": 3,
     "estimatedValue": 4.0,
-    "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated and unwashed until use."
+    "carbonFactor": 0.689,
+    "storageTip": "Keep refrigerated and unwashed until use.",
+    "unit": "1 lb box",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 1.53,
+    "carbonSource": "Berries & Grapes"
   },
   {
     "name": "Watermelon",
     "category": "Fruit",
     "shelfLifeDays": 7,
     "estimatedValue": 6.0,
-    "carbonFactor": 0.2,
-    "storageTip": "Refrigerate after cutting and use promptly."
+    "carbonFactor": 5.25,
+    "storageTip": "Refrigerate after cutting and use promptly.",
+    "unit": "each",
+    "unitWeightKg": 5.0,
+    "carbonPerKg": 1.05,
+    "carbonSource": "Other Fruit"
   },
   {
     "name": "2% Milk",
     "category": "Dairy",
     "shelfLifeDays": 7,
     "estimatedValue": 4.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+    "carbonFactor": 5.985,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date.",
+    "unit": "half gallon",
+    "unitWeightKg": 1.9,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk"
   },
   {
     "name": "Butter",
     "category": "Dairy",
     "shelfLifeDays": 30,
     "estimatedValue": 5.0,
-    "carbonFactor": 1.5,
-    "storageTip": "Keep covered and refrigerated."
+    "carbonFactor": 10.746,
+    "storageTip": "Keep covered and refrigerated.",
+    "unit": "1 lb",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 23.88,
+    "carbonSource": "Cheese (closest match)"
   },
   {
     "name": "Buttermilk",
     "category": "Dairy",
     "shelfLifeDays": 14,
     "estimatedValue": 4.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+    "carbonFactor": 2.992,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date.",
+    "unit": "quart",
+    "unitWeightKg": 0.95,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk"
   },
   {
     "name": "Cheddar Cheese",
     "category": "Dairy",
     "shelfLifeDays": 21,
     "estimatedValue": 5.0,
-    "carbonFactor": 1.8,
-    "storageTip": "Wrap tightly and keep refrigerated."
+    "carbonFactor": 5.492,
+    "storageTip": "Wrap tightly and keep refrigerated.",
+    "unit": "8 oz",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 23.88,
+    "carbonSource": "Cheese"
   },
   {
     "name": "Cottage Cheese",
     "category": "Dairy",
     "shelfLifeDays": 7,
     "estimatedValue": 4.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated at or below 4°C."
+    "carbonFactor": 10.746,
+    "storageTip": "Keep refrigerated at or below 4°C.",
+    "unit": "16 oz tub",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 23.88,
+    "carbonSource": "Cheese"
   },
   {
     "name": "Cream Cheese",
     "category": "Dairy",
     "shelfLifeDays": 14,
     "estimatedValue": 4.0,
-    "carbonFactor": 1.5,
-    "storageTip": "Keep refrigerated at or below 4°C."
+    "carbonFactor": 5.492,
+    "storageTip": "Keep refrigerated at or below 4°C.",
+    "unit": "8 oz",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 23.88,
+    "carbonSource": "Cheese"
   },
   {
     "name": "Eggs",
     "category": "Dairy",
     "shelfLifeDays": 21,
     "estimatedValue": 5.0,
-    "carbonFactor": 0.8,
-    "storageTip": "Keep refrigerated in the original carton."
+    "carbonFactor": 2.802,
+    "storageTip": "Keep refrigerated in the original carton.",
+    "unit": "dozen",
+    "unitWeightKg": 0.6,
+    "carbonPerKg": 4.67,
+    "carbonSource": "Eggs"
   },
   {
     "name": "Greek Yogurt",
     "category": "Dairy",
     "shelfLifeDays": 14,
     "estimatedValue": 2.0,
-    "carbonFactor": 1.0,
-    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+    "carbonFactor": 2.835,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date.",
+    "unit": "32 oz tub",
+    "unitWeightKg": 0.9,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk (closest match)"
   },
   {
     "name": "Half-and-Half",
     "category": "Dairy",
     "shelfLifeDays": 7,
     "estimatedValue": 4.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated at or below 4°C."
+    "carbonFactor": 1.48,
+    "storageTip": "Keep refrigerated at or below 4°C.",
+    "unit": "pint",
+    "unitWeightKg": 0.47,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk (closest match)"
   },
   {
     "name": "Heavy Cream",
     "category": "Dairy",
     "shelfLifeDays": 7,
     "estimatedValue": 5.0,
-    "carbonFactor": 1.5,
-    "storageTip": "Keep refrigerated at or below 4°C."
+    "carbonFactor": 1.48,
+    "storageTip": "Keep refrigerated at or below 4°C.",
+    "unit": "pint",
+    "unitWeightKg": 0.47,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk (closest match)"
   },
   {
     "name": "Lactose-Free Milk",
     "category": "Dairy",
     "shelfLifeDays": 10,
     "estimatedValue": 5.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+    "carbonFactor": 5.985,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date.",
+    "unit": "half gallon",
+    "unitWeightKg": 1.9,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk"
   },
   {
     "name": "Milk",
     "category": "Dairy",
     "shelfLifeDays": 7,
     "estimatedValue": 4.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated below 4°C."
+    "carbonFactor": 5.985,
+    "storageTip": "Keep refrigerated below 4°C.",
+    "unit": "half gallon",
+    "unitWeightKg": 1.9,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk"
   },
   {
     "name": "Mozzarella Cheese",
     "category": "Dairy",
     "shelfLifeDays": 7,
     "estimatedValue": 5.0,
-    "carbonFactor": 1.5,
-    "storageTip": "Keep refrigerated at or below 4°C."
+    "carbonFactor": 5.492,
+    "storageTip": "Keep refrigerated at or below 4°C.",
+    "unit": "8 oz",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 23.88,
+    "carbonSource": "Cheese"
   },
   {
     "name": "Parmesan Cheese",
     "category": "Dairy",
     "shelfLifeDays": 30,
     "estimatedValue": 6.0,
-    "carbonFactor": 1.8,
-    "storageTip": "Wrap tightly and keep refrigerated."
+    "carbonFactor": 3.582,
+    "storageTip": "Wrap tightly and keep refrigerated.",
+    "unit": "5 oz",
+    "unitWeightKg": 0.15,
+    "carbonPerKg": 23.88,
+    "carbonSource": "Cheese"
   },
   {
     "name": "Ricotta Cheese",
     "category": "Dairy",
     "shelfLifeDays": 7,
     "estimatedValue": 5.0,
-    "carbonFactor": 1.5,
-    "storageTip": "Keep refrigerated at or below 4°C."
+    "carbonFactor": 10.268,
+    "storageTip": "Keep refrigerated at or below 4°C.",
+    "unit": "15 oz tub",
+    "unitWeightKg": 0.43,
+    "carbonPerKg": 23.88,
+    "carbonSource": "Cheese"
   },
   {
     "name": "Skim Milk",
     "category": "Dairy",
     "shelfLifeDays": 7,
     "estimatedValue": 4.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+    "carbonFactor": 5.985,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date.",
+    "unit": "half gallon",
+    "unitWeightKg": 1.9,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk"
   },
   {
     "name": "Sour Cream",
     "category": "Dairy",
     "shelfLifeDays": 14,
     "estimatedValue": 3.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated at or below 4°C."
+    "carbonFactor": 1.417,
+    "storageTip": "Keep refrigerated at or below 4°C.",
+    "unit": "16 oz tub",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk (closest match)"
   },
   {
     "name": "Swiss Cheese",
     "category": "Dairy",
     "shelfLifeDays": 21,
     "estimatedValue": 5.0,
-    "carbonFactor": 1.8,
-    "storageTip": "Wrap tightly and keep refrigerated."
+    "carbonFactor": 5.492,
+    "storageTip": "Wrap tightly and keep refrigerated.",
+    "unit": "8 oz",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 23.88,
+    "carbonSource": "Cheese"
   },
   {
     "name": "Whole Milk",
     "category": "Dairy",
     "shelfLifeDays": 7,
     "estimatedValue": 4.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+    "carbonFactor": 5.985,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date.",
+    "unit": "half gallon",
+    "unitWeightKg": 1.9,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk"
   },
   {
     "name": "Yogurt",
     "category": "Dairy",
     "shelfLifeDays": 14,
     "estimatedValue": 2.0,
-    "carbonFactor": 1.0,
-    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+    "carbonFactor": 2.835,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date.",
+    "unit": "32 oz tub",
+    "unitWeightKg": 0.9,
+    "carbonPerKg": 3.15,
+    "carbonSource": "Milk (closest match)"
   },
   {
     "name": "Bacon",
     "category": "Meat",
     "shelfLifeDays": 7,
     "estimatedValue": 7.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep refrigerated; use within 7 days after opening or freeze."
+    "carbonFactor": 4.185,
+    "storageTip": "Keep refrigerated; use within 7 days after opening or freeze.",
+    "unit": "12 oz pack",
+    "unitWeightKg": 0.34,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Beef Roast",
     "category": "Meat",
     "shelfLifeDays": 5,
     "estimatedValue": 18.0,
-    "carbonFactor": 6.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+    "carbonFactor": 139.272,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days.",
+    "unit": "3 lb roast",
+    "unitWeightKg": 1.4,
+    "carbonPerKg": 99.48,
+    "carbonSource": "Beef (beef herd)"
   },
   {
     "name": "Beef Steak",
     "category": "Meat",
     "shelfLifeDays": 5,
     "estimatedValue": 15.0,
-    "carbonFactor": 6.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+    "carbonFactor": 34.818,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days.",
+    "unit": "each",
+    "unitWeightKg": 0.35,
+    "carbonPerKg": 99.48,
+    "carbonSource": "Beef (beef herd)"
   },
   {
     "name": "Beef Stew Meat",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 10.0,
-    "carbonFactor": 6.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 44.766,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 99.48,
+    "carbonSource": "Beef (beef herd)"
   },
   {
     "name": "Chicken",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 8.0,
-    "carbonFactor": 3.0,
-    "storageTip": "Keep refrigerated and cook thoroughly."
+    "carbonFactor": 4.441,
+    "storageTip": "Keep refrigerated and cook thoroughly.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 9.87,
+    "carbonSource": "Poultry Meat"
   },
   {
     "name": "Chicken Breast",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 8.0,
-    "carbonFactor": 3.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 4.441,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 9.87,
+    "carbonSource": "Poultry Meat"
   },
   {
     "name": "Chicken Thighs",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 7.0,
-    "carbonFactor": 3.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 6.909,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1.5 lb pack",
+    "unitWeightKg": 0.7,
+    "carbonPerKg": 9.87,
+    "carbonSource": "Poultry Meat"
   },
   {
     "name": "Cooked Sausage",
     "category": "Meat",
     "shelfLifeDays": 7,
     "estimatedValue": 7.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep refrigerated; use within 7 days after opening."
+    "carbonFactor": 4.924,
+    "storageTip": "Keep refrigerated; use within 7 days after opening.",
+    "unit": "pack",
+    "unitWeightKg": 0.4,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Deli Meat",
     "category": "Meat",
     "shelfLifeDays": 5,
     "estimatedValue": 8.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep refrigerated; use within 3–5 days after opening."
+    "carbonFactor": 2.831,
+    "storageTip": "Keep refrigerated; use within 3–5 days after opening.",
+    "unit": "8 oz pack",
+    "unitWeightKg": 0.23,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Ground Beef",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 8.0,
-    "carbonFactor": 6.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 44.766,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 99.48,
+    "carbonSource": "Beef (beef herd)"
   },
   {
     "name": "Ground Chicken",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 7.0,
-    "carbonFactor": 3.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 4.441,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 9.87,
+    "carbonSource": "Poultry Meat"
   },
   {
     "name": "Ground Lamb",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 10.0,
-    "carbonFactor": 6.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 17.874,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 39.72,
+    "carbonSource": "Lamb & Mutton"
   },
   {
     "name": "Ground Pork",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 7.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 5.54,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Ground Turkey",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 7.0,
-    "carbonFactor": 3.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 4.441,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 9.87,
+    "carbonSource": "Poultry Meat"
   },
   {
     "name": "Ham",
     "category": "Meat",
     "shelfLifeDays": 5,
     "estimatedValue": 9.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep refrigerated; follow the package date when available."
+    "carbonFactor": 5.54,
+    "storageTip": "Keep refrigerated; follow the package date when available.",
+    "unit": "1 lb",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Hot Dogs",
     "category": "Meat",
     "shelfLifeDays": 7,
     "estimatedValue": 6.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep refrigerated; use within 7 days after opening."
+    "carbonFactor": 5.54,
+    "storageTip": "Keep refrigerated; use within 7 days after opening.",
+    "unit": "pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Lamb Chops",
     "category": "Meat",
     "shelfLifeDays": 5,
     "estimatedValue": 15.0,
-    "carbonFactor": 6.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+    "carbonFactor": 17.874,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 39.72,
+    "carbonSource": "Lamb & Mutton"
   },
   {
     "name": "Lamb Roast",
     "category": "Meat",
     "shelfLifeDays": 5,
     "estimatedValue": 18.0,
-    "carbonFactor": 6.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+    "carbonFactor": 55.608,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days.",
+    "unit": "3 lb roast",
+    "unitWeightKg": 1.4,
+    "carbonPerKg": 39.72,
+    "carbonSource": "Lamb & Mutton"
   },
   {
     "name": "Pork Chops",
     "category": "Meat",
     "shelfLifeDays": 5,
     "estimatedValue": 9.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+    "carbonFactor": 5.54,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Pork Roast",
     "category": "Meat",
     "shelfLifeDays": 5,
     "estimatedValue": 12.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+    "carbonFactor": 17.234,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days.",
+    "unit": "3 lb roast",
+    "unitWeightKg": 1.4,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Pork Tenderloin",
     "category": "Meat",
     "shelfLifeDays": 5,
     "estimatedValue": 12.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+    "carbonFactor": 6.155,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days.",
+    "unit": "each",
+    "unitWeightKg": 0.5,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Raw Sausage",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 7.0,
-    "carbonFactor": 4.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 5.54,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 12.31,
+    "carbonSource": "Pig Meat"
   },
   {
     "name": "Turkey",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 12.0,
-    "carbonFactor": 3.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 4.441,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "1 lb pack",
+    "unitWeightKg": 0.45,
+    "carbonPerKg": 9.87,
+    "carbonSource": "Poultry Meat"
   },
   {
     "name": "Turkey Breast",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 9.0,
-    "carbonFactor": 3.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 9.87,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "each",
+    "unitWeightKg": 1.0,
+    "carbonPerKg": 9.87,
+    "carbonSource": "Poultry Meat"
   },
   {
     "name": "Whole Chicken",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 12.0,
-    "carbonFactor": 3.0,
-    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+    "carbonFactor": 17.766,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days.",
+    "unit": "each",
+    "unitWeightKg": 1.8,
+    "carbonPerKg": 9.87,
+    "carbonSource": "Poultry Meat"
   }
 ]

@@ -24,14 +24,18 @@ struct ImpactView: View {
 
     @EnvironmentObject var foodStore: FoodStore
 
-    /// Weekly goal: how many items the user wants to use (not waste) each week.
-    @AppStorage("weeklyUseGoal") private var weeklyGoal = 5
+    // Goal settings (see GoalSettingView). Empty type = no goal yet.
+    @AppStorage("goalType") private var goalTypeRaw = ""
+    @AppStorage("goalTarget") private var goalTarget = 5
 
+    @State private var showGoalSheet = false
+    @State private var showInfo = false
+
+    private var goalType: GoalType? { GoalType(rawValue: goalTypeRaw) }
 
     private var hasNoHistory: Bool {
         foodStore.usedItems.isEmpty && foodStore.wastedItems.isEmpty
     }
-
 
     private let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -43,36 +47,60 @@ struct ImpactView: View {
             ImpactStyle.background
                 .ignoresSafeArea()
 
-            if hasNoHistory {
-                emptyState
-            } else {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        motivationCard
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    streakCard
+                    goalCard
+
+                    if hasNoHistory {
+                        emptyState
+                    } else {
                         statGrid
                         useRateCard
                         weeklyChartCard
                         categoryChartCard
                         historyLink
                     }
-                    .padding(20)
                 }
+                .padding(20)
             }
         }
         .navigationTitle("Impact")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showInfo = true
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+                .accessibilityLabel("How we calculate")
+            }
+        }
+        .sheet(isPresented: $showGoalSheet) {
+            GoalSettingView(goalTypeRaw: $goalTypeRaw, goalTarget: $goalTarget)
+        }
+        .sheet(isPresented: $showInfo) {
+            ImpactInfoView()
+        }
     }
-
-
 
     private var emptyState: some View {
-        ContentUnavailableView(
-            "No impact yet",
-            systemImage: "leaf",
-            description: Text("Use your first item to see your impact.")
-        )
+        VStack(spacing: 10) {
+            Image(systemName: "leaf")
+                .font(.system(size: 34))
+                .foregroundStyle(ImpactStyle.olive)
+            Text("No impact yet")
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundStyle(ImpactStyle.primaryText)
+            Text("Use your first item to see money and carbon saved.")
+                .font(.system(size: 13, design: .rounded))
+                .foregroundStyle(ImpactStyle.secondaryText)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 32)
+        .background(ImpactStyle.surface, in: RoundedRectangle(cornerRadius: 18))
     }
-
-
 
     private var statGrid: some View {
         LazyVGrid(columns: columns, spacing: 12) {
@@ -82,7 +110,7 @@ struct ImpactView: View {
                 icon: "dollarsign.circle"
             )
             statCard(
-                title: "Carbon saved",
+                title: "CO₂e saved",
                 value: String(format: "%.1f kg", foodStore.carbonSaved),
                 icon: "leaf"
             )
@@ -155,60 +183,146 @@ struct ImpactView: View {
 
 
 
-    // MARK: - Streak + weekly goal
+    // MARK: - Streak
 
-    private var motivationCard: some View {
-        let progress = min(Double(foodStore.usedThisWeek) / Double(max(weeklyGoal, 1)), 1)
-        let reached = foodStore.usedThisWeek >= weeklyGoal
+    private var streakCard: some View {
+        HStack(spacing: 14) {
+            Text(foodStore.rescueStreak > 0 ? "🔥" : "🌱")
+                .font(.system(size: 30))
+                .frame(width: 54, height: 54)
+                .background(ImpactStyle.surface, in: RoundedRectangle(cornerRadius: 16))
 
-        return VStack(alignment: .leading, spacing: 14) {
-            HStack(spacing: 14) {
-                Text(foodStore.rescueStreak > 0 ? "🔥" : "🌱")
-                    .font(.system(size: 34))
-                    .frame(width: 58, height: 58)
-                    .background(ImpactStyle.surface, in: RoundedRectangle(cornerRadius: 18))
-
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(foodStore.rescueStreak == 1 ? "1-day streak" : "\(foodStore.rescueStreak)-day streak")
-                        .font(.system(size: 22, weight: .heavy, design: .rounded))
-                        .foregroundStyle(ImpactStyle.primaryText)
-                    Text(foodStore.rescueStreak > 0
-                         ? "Use something every day to keep it going!"
-                         : "Use one item today to start a streak.")
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
-                        .foregroundStyle(ImpactStyle.secondaryText)
-                }
-                Spacer(minLength: 0)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(foodStore.rescueStreak == 1 ? "1-day streak" : "\(foodStore.rescueStreak)-day streak")
+                    .font(.system(size: 20, weight: .heavy, design: .rounded))
+                    .foregroundStyle(ImpactStyle.primaryText)
+                Text(foodStore.rescueStreak > 0
+                     ? "Days in a row you used food. Keep it going!"
+                     : "Use one item today to start a streak.")
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundStyle(ImpactStyle.secondaryText)
             }
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .background(ImpactStyle.softGreen, in: RoundedRectangle(cornerRadius: 18))
+    }
 
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text("This week's goal")
-                        .font(.system(size: 14, weight: .bold, design: .rounded))
-                        .foregroundStyle(ImpactStyle.primaryText)
+    // MARK: - Goal
+
+    @ViewBuilder
+    private var goalCard: some View {
+        if let goalType {
+            activeGoalCard(goalType)
+        } else {
+            Button {
+                showGoalSheet = true
+            } label: {
+                HStack(spacing: 14) {
+                    Image(systemName: "flag.fill")
+                        .font(.system(size: 20))
+                        .foregroundStyle(ImpactStyle.olive)
+                        .frame(width: 44, height: 44)
+                        .background(ImpactStyle.softGreen, in: Circle())
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("Set your first goal")
+                            .font(.system(size: 16, weight: .bold, design: .rounded))
+                            .foregroundStyle(ImpactStyle.primaryText)
+                        Text("Use more, waste less, or save money.")
+                            .font(.system(size: 12, design: .rounded))
+                            .foregroundStyle(ImpactStyle.secondaryText)
+                    }
                     Spacer()
-                    Text("\(foodStore.usedThisWeek) / \(weeklyGoal) used")
-                        .font(.system(size: 14, weight: .heavy, design: .rounded))
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 24))
                         .foregroundStyle(ImpactStyle.olive)
                 }
+                .padding(16)
+                .background(ImpactStyle.surface, in: RoundedRectangle(cornerRadius: 18))
+                .overlay(RoundedRectangle(cornerRadius: 18).stroke(ImpactStyle.border, lineWidth: 1))
+            }
+            .buttonStyle(.plain)
+        }
+    }
 
-                ProgressView(value: progress)
-                    .tint(ImpactStyle.olive)
+    private func activeGoalCard(_ type: GoalType) -> some View {
+        let progress = goalProgress(type)
 
-                HStack {
-                    Text(reached ? "Goal reached! 🎉" : "\(weeklyGoal - foodStore.usedThisWeek) more to go")
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
-                        .foregroundStyle(ImpactStyle.secondaryText)
-                    Spacer()
-                    Stepper("Goal", value: $weeklyGoal, in: 1...50)
-                        .labelsHidden()
-                        .accessibilityLabel("Weekly goal")
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Label(type.title.uppercased(), systemImage: type.icon)
+                        .font(.system(size: 11, weight: .heavy, design: .rounded))
+                        .foregroundStyle(ImpactStyle.olive)
+                    Text(type.headline(goalTarget))
+                        .font(.system(size: 18, weight: .heavy, design: .rounded))
+                        .foregroundStyle(ImpactStyle.primaryText)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
+                Spacer(minLength: 8)
+                Button("Edit") { showGoalSheet = true }
+                    .font(.system(size: 13, weight: .bold, design: .rounded))
+                    .foregroundStyle(ImpactStyle.olive)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(ImpactStyle.softGreen, in: Capsule())
+            }
+
+            ProgressView(value: progress.fraction)
+                .tint(progress.isBad ? ImpactStyle.wasted : ImpactStyle.olive)
+
+            HStack {
+                Text(progress.current)
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(ImpactStyle.primaryText)
+                Spacer()
+                Text(progress.status)
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .foregroundStyle(progress.isBad ? ImpactStyle.wasted : ImpactStyle.olive)
             }
         }
         .padding(16)
-        .background(ImpactStyle.softGreen)
-        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .background(ImpactStyle.surface, in: RoundedRectangle(cornerRadius: 18))
+        .overlay(RoundedRectangle(cornerRadius: 18).stroke(ImpactStyle.border, lineWidth: 1))
+    }
+
+    private struct GoalProgress {
+        let fraction: Double
+        let current: String
+        let status: String
+        let isBad: Bool
+    }
+
+    private func goalProgress(_ type: GoalType) -> GoalProgress {
+        let target = goalTarget
+        switch type {
+        case .useItems:
+            let used = foodStore.usedThisWeek
+            return GoalProgress(
+                fraction: min(Double(used) / Double(max(target, 1)), 1),
+                current: "\(used) of \(target) used",
+                status: used >= target ? "Goal reached! 🎉" : "\(target - used) more to go",
+                isBad: false
+            )
+        case .wasteLess:
+            let wasted = foodStore.wastedThisWeek
+            let over = wasted > target
+            return GoalProgress(
+                fraction: target == 0 ? (wasted == 0 ? 0 : 1) : min(Double(wasted) / Double(target), 1),
+                current: "\(wasted) wasted so far",
+                status: over ? "Over by \(wasted - target)" : (wasted == target && target > 0 ? "At your limit" : "On track ✓"),
+                isBad: over
+            )
+        case .saveMoney:
+            let saved = foodStore.moneySavedThisMonth
+            let goal = Double(target)
+            return GoalProgress(
+                fraction: min(saved / max(goal, 1), 1),
+                current: "\(saved.formatted(.currency(code: "USD"))) of $\(target)",
+                status: saved >= goal ? "Goal reached! 🎉" : "\((goal - saved).formatted(.currency(code: "USD"))) to go",
+                isBad: false
+            )
+        }
     }
 
     // MARK: - Progress over time

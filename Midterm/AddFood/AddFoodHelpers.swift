@@ -56,13 +56,15 @@ extension FoodCategory {
         }
     }
 
+    /// Used when the food isn't in ingredients_preset.json.
+    /// kg CO2e per unit = Poore & Nemecek (2018) kg CO2e/kg × an assumed unit weight.
     var fallbackCarbonFactor: Double {
         switch self {
-        case .vegetable: return 0.3
-        case .fruit: return 0.4
-        case .dairy: return 1.2
-        case .meat: return 5.0
-        default: return 0.5
+        case .vegetable: return 0.53 * 0.2   // "Other Vegetables", ~200 g
+        case .fruit: return 1.05 * 0.2       // "Other Fruit", ~200 g
+        case .dairy: return 3.15 * 0.5       // "Milk", ~500 g
+        case .meat: return 9.87 * 0.45       // "Poultry Meat", 1 lb pack
+        default: return 1.57 * 0.5           // "Wheat & Rye" (pantry staples), ~500 g
         }
     }
 }

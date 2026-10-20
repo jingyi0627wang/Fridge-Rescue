@@ -41,6 +41,12 @@ final class FoodStore: ObservableObject {
     }
 
     func deleteItem(_ item: FoodItem) {
+        undoable("Deleted \(item.name)") {
+            removeFromFridge(item)
+        }
+    }
+
+    private func removeFromFridge(_ item: FoodItem) {
         foodItems.removeAll { $0.id == item.id }
         ExpirationNotificationService.shared.cancel(for: item)
     }
@@ -48,16 +54,23 @@ final class FoodStore: ObservableObject {
     // MARK: - Used / Wasted
 
     func markAsUsed(_ item: FoodItem) {
-        finish(item, as: .used)
+        undoable("\(item.name) marked as used") {
+            finish(item, as: .used)
+        }
     }
 
     func markAsWasted(_ item: FoodItem) {
-        finish(item, as: .wasted)
+        undoable("\(item.name) counted as wasted") {
+            finish(item, as: .wasted)
+        }
     }
 
     /// Used by "I Cooked This" on a recipe.
     func markAsUsed(_ items: [FoodItem]) {
-        items.forEach { finish($0, as: .used) }
+        guard !items.isEmpty else { return }
+        undoable("Cooked! Used \(items.map(\.name).joined(separator: ", "))") {
+            items.forEach { finish($0, as: .used) }
+        }
     }
 
     private func finish(_ item: FoodItem, as status: FoodStatus) {
@@ -65,51 +78,97 @@ final class FoodStore: ObservableObject {
         completedItem.status = status
         completedItem.finishedDate = Date()
         history.append(completedItem)
-        deleteItem(item)
+        removeFromFridge(item)
     }
 
     // MARK: - History
 
-    /// Puts an item back in the fridge (undo a mistake).
+    /// Puts an item back in the fridge.
     func restoreFromHistory(_ item: FoodItem) {
-        history.removeAll { $0.id == item.id }
-        var restored = item
-        restored.status = .active
-        restored.finishedDate = nil
-        addItem(restored)
+        undoable("\(item.name) moved back to the fridge") {
+            history.removeAll { $0.id == item.id }
+            var restored = item
+            restored.status = .active
+            restored.finishedDate = nil
+            addItem(restored)
+        }
     }
 
     func removeFromHistory(_ item: FoodItem) {
-        history.removeAll { $0.id == item.id }
+        undoable("Removed \(item.name) from history") {
+            history.removeAll { $0.id == item.id }
+        }
+    }
+
+    // MARK: - Undo
+    // Instead of "Are you sure?" pop-ups, actions happen right away and a small
+    // bar at the bottom offers "Undo" for a few seconds (see UndoToastView).
+
+    struct UndoToast: Identifiable {
+        let id = UUID()
+        let message: String
+        fileprivate let previousItems: [FoodItem]
+        fileprivate let previousHistory: [FoodItem]
+    }
+
+    @Published var toast: UndoToast?
+
+    private func undoable(_ message: String, _ change: () -> Void) {
+        let items = foodItems
+        let past = history
+        change()
+        toast = UndoToast(message: message, previousItems: items, previousHistory: past)
+    }
+
+    func undo() {
+        guard let toast else { return }
+        let removedFromFridge = foodItems.filter { item in
+            !toast.previousItems.contains { $0.id == item.id }
+        }
+        removedFromFridge.forEach { ExpirationNotificationService.shared.cancel(for: $0) }
+
+        foodItems = toast.previousItems
+        history = toast.previousHistory
+        self.toast = nil
+
+        Task {
+            await ExpirationNotificationService.shared
+                .requestAuthorizationAndSchedule(items: foodItems)
+        }
+    }
+
+    func dismissToast(_ id: UUID) {
+        if toast?.id == id { toast = nil }
     }
 
     // MARK: - Demo
 
     func addDemoItems() {
         let calendar = Calendar.current
-        func daysFromNow(_ days: Int) -> Date {
-            calendar.date(byAdding: .day, value: days, to: Date()) ?? Date()
+        let presets = IngredientPresetService.shared.loadPresets()
+
+        // Uses the preset's category, price and carbon data when available.
+        func demo(_ name: String, _ category: FoodCategory, qty: Int,
+                  boughtDaysAgo: Int, expiresIn: Int, price: Double) -> FoodItem {
+            let preset = PresetMatcher.find(name, in: presets)
+            return FoodItem(
+                name: name,
+                category: preset?.category ?? category,
+                addedDate: calendar.date(byAdding: .day, value: -boughtDaysAgo, to: Date()) ?? Date(),
+                expirationDate: calendar.date(byAdding: .day, value: expiresIn, to: Date()) ?? Date(),
+                quantity: qty,
+                estimatedValue: price,
+                carbonFactor: preset?.carbonFactor ?? category.fallbackCarbonFactor
+            )
         }
 
         foodItems = [
-            FoodItem(name: "Carrot", category: .vegetable,
-                     addedDate: Date(), expirationDate: daysFromNow(7),
-                     quantity: 3, estimatedValue: 1.50, carbonFactor: 0.30),
-            FoodItem(name: "Milk", category: .dairy,
-                     addedDate: daysFromNow(-5), expirationDate: daysFromNow(1),
-                     quantity: 1, estimatedValue: 4.00, carbonFactor: 1.20),
-            FoodItem(name: "Eggs", category: .dairy,
-                     addedDate: daysFromNow(-10), expirationDate: daysFromNow(4),
-                     quantity: 6, estimatedValue: 0.50, carbonFactor: 0.40),
-            FoodItem(name: "Tomato", category: .vegetable,
-                     addedDate: daysFromNow(-4), expirationDate: daysFromNow(2),
-                     quantity: 2, estimatedValue: 0.80, carbonFactor: 0.30),
-            FoodItem(name: "Chicken Breast", category: .meat,
-                     addedDate: daysFromNow(-1), expirationDate: daysFromNow(2),
-                     quantity: 1, estimatedValue: 7.00, carbonFactor: 6.00),
-            FoodItem(name: "Banana", category: .fruit,
-                     addedDate: daysFromNow(-3), expirationDate: daysFromNow(3),
-                     quantity: 4, estimatedValue: 0.30, carbonFactor: 0.20)
+            demo("Carrot", .vegetable, qty: 3, boughtDaysAgo: 0, expiresIn: 10, price: 0.40),
+            demo("Milk", .dairy, qty: 1, boughtDaysAgo: 5, expiresIn: 1, price: 4.00),
+            demo("Eggs", .dairy, qty: 1, boughtDaysAgo: 10, expiresIn: 5, price: 5.00),
+            demo("Tomato", .vegetable, qty: 2, boughtDaysAgo: 4, expiresIn: 2, price: 0.80),
+            demo("Chicken Breast", .meat, qty: 1, boughtDaysAgo: 1, expiresIn: 0, price: 7.00),
+            demo("Banana", .fruit, qty: 4, boughtDaysAgo: 3, expiresIn: 3, price: 0.30)
         ]
     }
 

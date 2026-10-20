@@ -47,7 +47,7 @@ struct EditFoodView: View {
                     Stepper("Quantity: \(quantity)", value: $quantity, in: 1...99)
 
                     HStack {
-                        Text("Price")
+                        Text("Price per unit")
                         Spacer()
                         Text(Locale.current.currencySymbol ?? "$").foregroundStyle(.secondary)
                         TextField("0.00", text: $priceText)

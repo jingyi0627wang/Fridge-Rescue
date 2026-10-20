@@ -6,12 +6,12 @@ struct RecipeDetailView: View {
     @EnvironmentObject var foodStore: FoodStore
     @Environment(\.dismiss) private var dismiss
 
-    @State private var showCookConfirm = false
-    @State private var rescuedNames: [String] = []
-    @State private var showCookedAlert = false
 
     let recipe: Recipe
     var focusIngredient: FoodItem?
+
+    /// Ingredients NOT in the fridge that the user ticked ("I have this").
+    @State private var checked: Set<String> = []
 
     private enum Palette {
         static let background = Color(red: 0.985, green: 0.992, blue: 0.965)
@@ -34,6 +34,11 @@ struct RecipeDetailView: View {
 
     private var ingredientsInFridgeCount: Int {
         recipe.ingredients.filter { isInFridge($0) }.count
+    }
+
+    /// In the fridge + ticked by hand.
+    private var readyCount: Int {
+        recipe.ingredients.filter { isInFridge($0) || checked.contains($0) }.count
     }
 
     private var rescueIngredient: FoodItem? {
@@ -68,21 +73,6 @@ struct RecipeDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Palette.background, for: .navigationBar)
         .tint(Palette.deepGreen)
-        .confirmationDialog(
-            "Mark these as eaten?",
-            isPresented: $showCookConfirm,
-            titleVisibility: .visible
-        ) {
-            Button("Yes, I cooked it") { cook() }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text(itemsToUse.map(\.name).joined(separator: ", "))
-        }
-        .alert("Nice cooking! 🎉", isPresented: $showCookedAlert) {
-            Button("Done") { dismiss() }
-        } message: {
-            Text("You rescued \(rescuedNames.joined(separator: ", ")). Check the Impact tab to see what you saved.")
-        }
     }
 
     // MARK: - I Cooked This
@@ -95,7 +85,7 @@ struct RecipeDetailView: View {
 
     private var cookedButton: some View {
         Button {
-            showCookConfirm = true
+            cook()
         } label: {
             VStack(spacing: 4) {
                 Label("I Cooked This", systemImage: "frying.pan.fill")
@@ -115,11 +105,11 @@ struct RecipeDetailView: View {
         .disabled(itemsToUse.isEmpty)
     }
 
+    /// No pop-ups: marks the items right away, goes back,
+    /// and the Undo bar at the bottom says what was used.
     private func cook() {
-        let items = itemsToUse
-        rescuedNames = items.map(\.name)
-        foodStore.markAsUsed(items)
-        showCookedAlert = true
+        foodStore.markAsUsed(itemsToUse)
+        dismiss()
     }
 
     // MARK: - Hero
@@ -136,11 +126,23 @@ struct RecipeDetailView: View {
                     .foregroundStyle(Palette.orange)
             }
 
-            Text(recipe.emoji)
-                .font(.system(size: 76))
+            if let url = recipe.imageURL {
+                AsyncImage(url: url) { image in
+                    image.resizable().scaledToFill()
+                } placeholder: {
+                    Text(recipe.emoji).font(.system(size: 76))
+                }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
+                .frame(height: 200)
+                .clipShape(RoundedRectangle(cornerRadius: 22))
                 .accessibilityHidden(true)
+            } else {
+                Text(recipe.emoji)
+                    .font(.system(size: 76))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .accessibilityHidden(true)
+            }
 
             Text(recipe.name)
                 .font(.system(size: 30, weight: .heavy, design: .rounded))
@@ -148,10 +150,18 @@ struct RecipeDetailView: View {
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
 
-            Text("A little recipe to save something fresh!")
-                .font(.system(size: 13, weight: .medium, design: .rounded))
-                .foregroundStyle(Palette.secondary)
-                .multilineTextAlignment(.center)
+            if let source = recipe.sourceURL {
+                Link(destination: source) {
+                    Label("Recipe from TheMealDB", systemImage: "arrow.up.right.square")
+                }
+                .font(.system(size: 13, weight: .semibold, design: .rounded))
+                .foregroundStyle(Palette.deepGreen)
+            } else {
+                Text("A little recipe to save something fresh!")
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(Palette.secondary)
+                    .multilineTextAlignment(.center)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(22)
@@ -162,8 +172,8 @@ struct RecipeDetailView: View {
 
     private var quickInfoSection: some View {
         HStack(spacing: 8) {
-            infoPill(icon: "clock", text: "\(recipe.time) min")
-            infoPill(icon: "chart.bar.fill", text: recipe.difficulty)
+            infoPill(icon: recipe.time > 0 ? "clock" : "globe", text: recipe.timeText)
+            infoPill(icon: recipe.isOnline ? "tag.fill" : "chart.bar.fill", text: recipe.difficulty)
             infoPill(icon: "refrigerator", text: "\(ingredientsInFridgeCount) in fridge")
         }
     }
@@ -213,7 +223,7 @@ struct RecipeDetailView: View {
     }
 
     private func rescueDescription(for item: FoodItem) -> String {
-        if item.hpPercentage <= 0 {
+        if item.daysUntilExpiration < 0 {
             return "\(item.name) has expired. Check whether it is safe to use before cooking."
         }
         if item.remainingDays == 0 {
@@ -232,16 +242,20 @@ struct RecipeDetailView: View {
             HStack {
                 sectionTitle("Ingredients", icon: "basket.fill")
                 Spacer(minLength: 8)
-                Text("\(ingredientsInFridgeCount)/\(recipe.ingredients.count) READY")
+                Text("\(readyCount)/\(recipe.items.count) READY")
                     .font(.system(size: 10, weight: .heavy, design: .rounded))
                     .foregroundStyle(Palette.deepGreen)
             }
 
+            Text("Tap a fridge item to see it. Tick the others once you have them.")
+                .font(.system(size: 12, weight: .medium, design: .rounded))
+                .foregroundStyle(Palette.secondary)
+
             VStack(spacing: 0) {
-                ForEach(Array(recipe.ingredients.enumerated()), id: \.offset) { index, ingredient in
-                    ingredientRow(ingredient: ingredient)
-                    if index < recipe.ingredients.count - 1 {
-                        Divider().overlay(Palette.border).padding(.leading, 18)
+                ForEach(Array(recipe.items.enumerated()), id: \.offset) { index, ingredient in
+                    ingredientRow(ingredient)
+                    if index < recipe.items.count - 1 {
+                        Divider().overlay(Palette.border).padding(.leading, 54)
                     }
                 }
             }
@@ -250,27 +264,85 @@ struct RecipeDetailView: View {
         }
     }
 
-    private func ingredientRow(ingredient: String) -> some View {
-        let available = isInFridge(ingredient)
+    @ViewBuilder
+    private func ingredientRow(_ ingredient: RecipeIngredient) -> some View {
+        if let fridgeItem = FoodMatcher.fridgeItem(for: ingredient.name, in: foodStore.foodItems) {
+            // In the fridge → open that food's details
+            NavigationLink {
+                FoodDetailView(item: fridgeItem)
+            } label: {
+                ingredientRowContent(
+                    ingredient,
+                    icon: "checkmark.circle.fill",
+                    iconColor: Palette.deepGreen,
+                    detail: "Your \(fridgeItem.name) · \(fridgeItem.daysLeftText)",
+                    detailColor: fridgeItem.freshnessLevel == .fresh ? Palette.deepGreen : Palette.orange,
+                    showsChevron: true
+                )
+            }
+            .buttonStyle(.plain)
+        } else {
+            // Not in the fridge → tap to tick it off
+            let isChecked = checked.contains(ingredient.name)
+            Button {
+                if isChecked { checked.remove(ingredient.name) } else { checked.insert(ingredient.name) }
+            } label: {
+                ingredientRowContent(
+                    ingredient,
+                    icon: isChecked ? "checkmark.square.fill" : "square",
+                    iconColor: isChecked ? Palette.deepGreen : Palette.secondary.opacity(0.6),
+                    detail: isChecked ? "Got it" : "Not in fridge",
+                    detailColor: Palette.secondary,
+                    showsChevron: false
+                )
+            }
+            .buttonStyle(.plain)
+            .sensoryFeedback(.selection, trigger: isChecked)
+        }
+    }
 
-        return HStack(spacing: 12) {
-            Image(systemName: available ? "checkmark.circle.fill" : "circle.dashed")
-                .font(.system(size: 24))
-                .foregroundStyle(available ? Palette.deepGreen : Palette.orange)
+    private func ingredientRowContent(
+        _ ingredient: RecipeIngredient,
+        icon: String,
+        iconColor: Color,
+        detail: String,
+        detailColor: Color,
+        showsChevron: Bool
+    ) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 22))
+                .foregroundStyle(iconColor)
+                .frame(width: 26)
 
-            Text(ingredient)
-                .font(.system(size: 15, weight: .semibold, design: .rounded))
-                .foregroundStyle(Palette.brown)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(ingredient.name)
+                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Palette.brown)
+                Text(detail)
+                    .font(.system(size: 11, weight: .medium, design: .rounded))
+                    .foregroundStyle(detailColor)
+                    .lineLimit(1)
+            }
 
             Spacer(minLength: 5)
 
-            Text(available ? "In your fridge" : "Need to buy")
-                .font(.system(size: 11, weight: .medium, design: .rounded))
-                .foregroundStyle(available ? Palette.deepGreen : Palette.secondary)
-                .multilineTextAlignment(.trailing)
+            if !ingredient.amount.isEmpty {
+                Text(ingredient.amount)
+                    .font(.system(size: 13, weight: .bold, design: .rounded))
+                    .foregroundStyle(Palette.deepGreen)
+                    .multilineTextAlignment(.trailing)
+            }
+
+            if showsChevron {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundStyle(Palette.secondary)
+            }
         }
         .padding(.horizontal, 17)
-        .padding(.vertical, 16)
+        .padding(.vertical, 14)
+        .contentShape(Rectangle())
     }
 
     // MARK: - Cooking steps
