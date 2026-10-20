@@ -19,7 +19,9 @@ private enum FreshlingsDetailStyle {
 
 struct FoodDetailView: View {
     let item: FoodItem
+    @EnvironmentObject var foodStore: FoodStore
     @Environment(\.dismiss) private var dismiss
+    @State private var showWasteConfirm = false
 
     private var statusColor: Color {
         switch item.freshnessLevel {
@@ -63,6 +65,7 @@ struct FoodDetailView: View {
                     freshnessSection
                     informationSection
                     recipeButton
+                    finishButtons
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
@@ -72,6 +75,55 @@ struct FoodDetailView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
+        .confirmationDialog(
+            "Throw away \(item.name)?",
+            isPresented: $showWasteConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Throw Away", role: .destructive) {
+                foodStore.markAsWasted(item)
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("It will be counted as wasted on the Impact page.")
+        }
+    }
+
+    // MARK: - Used / Wasted
+    // Moves the item into history so the Impact page can count it.
+
+    private var finishButtons: some View {
+        HStack(spacing: 12) {
+            Button {
+                foodStore.markAsUsed(item)
+                dismiss()
+            } label: {
+                Label("I Used It", systemImage: "checkmark.circle.fill")
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsDetailStyle.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(FreshlingsDetailStyle.darkGreen, in: RoundedRectangle(cornerRadius: 20))
+            }
+            .buttonStyle(.plain)
+
+            Button {
+                showWasteConfirm = true
+            } label: {
+                Label("Threw Away", systemImage: "trash")
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsDetailStyle.red)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(FreshlingsDetailStyle.white, in: RoundedRectangle(cornerRadius: 20))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(FreshlingsDetailStyle.red.opacity(0.35), lineWidth: 1)
+                    )
+            }
+            .buttonStyle(.plain)
+        }
     }
 
     // MARK: - Header
@@ -259,3 +311,11 @@ struct FoodDetailView: View {
     }
 }
 
+#Preview {
+    let store = FoodStore()
+    store.addDemoItems()
+    return NavigationStack {
+        FoodDetailView(item: store.foodItems[0])
+    }
+    .environmentObject(store)
+}

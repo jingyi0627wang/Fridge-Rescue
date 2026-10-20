@@ -18,7 +18,6 @@ private enum FreshlingsHomeStyle {
 
 struct HomeView: View {
     @EnvironmentObject var foodStore: FoodStore
-    @State private var showAddFood = false
 
     private var activeItems: [FoodItem] {
         foodStore.foodItems
@@ -53,13 +52,9 @@ struct HomeView: View {
                 .padding(.top, 18)
                 .padding(.bottom, 30)
             }
-
         }
         // MainTabView already embeds HomeView in a NavigationStack.
         .toolbar(.hidden, for: .navigationBar)
-        .sheet(isPresented: $showAddFood) {
-            AddFoodView(store: foodStore)
-        }
     }
 
     // MARK: - Header
@@ -83,22 +78,15 @@ struct HomeView: View {
 
             Spacer(minLength: 4)
 
-            Button {
-                showAddFood = true
-            } label: {
-                Image(systemName: "plus")
-                    .font(.system(size: 21, weight: .bold, design: .rounded))
-                    .foregroundStyle(FreshlingsHomeStyle.darkGreen)
-                    .frame(width: 58, height: 58)
-                    .background(FreshlingsHomeStyle.softGreen)
-                    .clipShape(Circle())
-                    .overlay {
-                        Circle()
-                            .stroke(FreshlingsHomeStyle.green.opacity(0.35), lineWidth: 1.5)
-                    }
+            ZStack {
+                Circle()
+                    .fill(FreshlingsHomeStyle.softGreen)
+                    .frame(width: 62, height: 62)
+
+                Text("🌱")
+                    .font(.system(size: 34))
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Add Food")
+            .accessibilityHidden(true)
         }
     }
 
@@ -364,6 +352,20 @@ struct HomeView: View {
                 .font(.system(size: 13, design: .rounded))
                 .foregroundStyle(FreshlingsHomeStyle.secondary)
                 .multilineTextAlignment(.center)
+
+            // For demos / testing: fills the fridge with sample food.
+            Button {
+                foodStore.addDemoItems()
+            } label: {
+                Text("Try with demo food")
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsHomeStyle.darkGreen)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .background(FreshlingsHomeStyle.green, in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .padding(.top, 6)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 36)

@@ -101,7 +101,7 @@ struct OnboardingView: View {
     }
 
     private func illustration(_ name: String) -> some View {
-        Image(name)
+        Image.asset(name, fallbackAsset: "FreshlingsCharacter")
             .resizable()
             .scaledToFit()
             .frame(maxWidth: .infinity, maxHeight: 340)

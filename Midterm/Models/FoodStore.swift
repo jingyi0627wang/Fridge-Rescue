@@ -20,10 +20,16 @@ final class FoodStore: ObservableObject {
 
     func addItem(_ item: FoodItem) {
         foodItems.append(item)
+        // Remind the user 3 days before the item expires.
+        Task {
+            await ExpirationNotificationService.shared
+                .requestAuthorizationAndSchedule(items: [item])
+        }
     }
 
     func deleteItem(_ item: FoodItem) {
         foodItems.removeAll { $0.id == item.id }
+        ExpirationNotificationService.shared.cancel(for: item)
     }
 
     func markAsUsed(_ item: FoodItem) {

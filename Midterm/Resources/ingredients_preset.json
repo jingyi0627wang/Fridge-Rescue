@@ -1,27 +1,803 @@
 [
   {
-    "name": "Carrot",
+    "name": "Acorn Squash",
+    "category": "Vegetable",
+    "shelfLifeDays": 30,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry place."
+  },
+  {
+    "name": "Artichoke",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Arugula",
+    "category": "Vegetable",
+    "shelfLifeDays": 3,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Asparagus",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Baby Bok Choy",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Baby Carrot",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Baby Spinach",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Bamboo Shoots",
+    "category": "Vegetable",
+    "shelfLifeDays": 3,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Bean Sprouts",
+    "category": "Vegetable",
+    "shelfLifeDays": 3,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Beet",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Beet Greens",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Belgian Endive",
     "category": "Vegetable",
     "shelfLifeDays": 7,
     "estimatedValue": 1.5,
     "carbonFactor": 0.3,
-    "storageTip": "Keep refrigerated."
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Bell Pepper",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Bok Choy",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Broccoli",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Broccoli Rabe",
+    "category": "Vegetable",
+    "shelfLifeDays": 3,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Broccolini",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Brussels Sprouts",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Butter Lettuce",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Butternut Squash",
+    "category": "Vegetable",
+    "shelfLifeDays": 60,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry place."
+  },
+  {
+    "name": "Button Mushroom",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Refrigerate unwashed in a paper bag."
+  },
+  {
+    "name": "Carrot",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Cauliflower",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Celeriac",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Celery",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Chayote",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Cherry Tomato",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store at room temperature away from sunlight; refrigerate when fully ripe."
+  },
+  {
+    "name": "Cilantro",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Collard Greens",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Corn on the Cob",
+    "category": "Vegetable",
+    "shelfLifeDays": 2,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Cucumber",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Daikon Radish",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Delicata Squash",
+    "category": "Vegetable",
+    "shelfLifeDays": 30,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry place."
+  },
+  {
+    "name": "Eggplant",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Endive",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "English Cucumber",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Enoki Mushroom",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Refrigerate in the original package or a paper bag."
+  },
+  {
+    "name": "Escarole",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Fennel",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Fingerling Potato",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Garlic",
+    "category": "Vegetable",
+    "shelfLifeDays": 60,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole bulbs in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Ginger",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Green Beans",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Green Bell Pepper",
+    "category": "Vegetable",
+    "shelfLifeDays": 10,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Green Cabbage",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Green Leaf Lettuce",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Green Peas",
+    "category": "Vegetable",
+    "shelfLifeDays": 3,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Iceberg Lettuce",
+    "category": "Vegetable",
+    "shelfLifeDays": 10,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Japanese Eggplant",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Jicama",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dry place; refrigerate after cutting."
+  },
+  {
+    "name": "Kabocha Squash",
+    "category": "Vegetable",
+    "shelfLifeDays": 45,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry place."
+  },
+  {
+    "name": "Kale",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Kohlrabi",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Lacinato Kale",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Leek",
+    "category": "Vegetable",
+    "shelfLifeDays": 10,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Lotus Root",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Mustard Greens",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Napa Cabbage",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Okra",
+    "category": "Vegetable",
+    "shelfLifeDays": 3,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Parsnip",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Pearl Onion",
+    "category": "Vegetable",
+    "shelfLifeDays": 30,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Persian Cucumber",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Potato",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Pumpkin",
+    "category": "Vegetable",
+    "shelfLifeDays": 60,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dry place; refrigerate after cutting."
+  },
+  {
+    "name": "Radicchio",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Radish",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Red Bell Pepper",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Red Cabbage",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Red Leaf Lettuce",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Red Onion",
+    "category": "Vegetable",
+    "shelfLifeDays": 30,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Red Potato",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Roma Tomato",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store at room temperature away from sunlight; refrigerate when fully ripe."
+  },
+  {
+    "name": "Romaine Lettuce",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Russet Potato",
+    "category": "Vegetable",
+    "shelfLifeDays": 28,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Rutabaga",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Savoy Cabbage",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Scallion",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Shallot",
+    "category": "Vegetable",
+    "shelfLifeDays": 30,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Shiitake Mushroom",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Refrigerate unwashed in a paper bag."
+  },
+  {
+    "name": "Snow Peas",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Spaghetti Squash",
+    "category": "Vegetable",
+    "shelfLifeDays": 45,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry place."
+  },
+  {
+    "name": "Spinach",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Sugar Snap Peas",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Sweet Onion",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store cool and dry, or refrigerate for longer keeping."
+  },
+  {
+    "name": "Sweet Potato",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store in a cool, dark, dry place; do not refrigerate raw."
+  },
+  {
+    "name": "Swiss Chard",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Taro Root",
+    "category": "Vegetable",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Tomatillo",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
   },
   {
     "name": "Tomato",
     "category": "Vegetable",
     "shelfLifeDays": 5,
-    "estimatedValue": 1.0,
-    "carbonFactor": 0.2,
-    "storageTip": "Keep in a cool place."
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store at room temperature away from sunlight; refrigerate only when very ripe."
   },
   {
-    "name": "Milk",
-    "category": "Dairy",
+    "name": "Turnip",
+    "category": "Vegetable",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Turnip Greens",
+    "category": "Vegetable",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Watercress",
+    "category": "Vegetable",
+    "shelfLifeDays": 3,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Wax Beans",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "White Onion",
+    "category": "Vegetable",
+    "shelfLifeDays": 30,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Yam",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Yellow Bell Pepper",
+    "category": "Vegetable",
     "shelfLifeDays": 7,
-    "estimatedValue": 4.0,
-    "carbonFactor": 1.2,
-    "storageTip": "Keep refrigerated below 4°C."
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Yellow Onion",
+    "category": "Vegetable",
+    "shelfLifeDays": 30,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store whole in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Yellow Squash",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
+  },
+  {
+    "name": "Yukon Gold Potato",
+    "category": "Vegetable",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Store unwashed in a cool, dark, dry, ventilated place."
+  },
+  {
+    "name": "Zucchini",
+    "category": "Vegetable",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated in the crisper drawer."
   },
   {
     "name": "Apple",
@@ -32,11 +808,595 @@
     "storageTip": "Keep refrigerated for longer freshness."
   },
   {
+    "name": "Apricot",
+    "category": "Fruit",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Avocado",
+    "category": "Fruit",
+    "shelfLifeDays": 4,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.4,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Banana",
+    "category": "Fruit",
+    "shelfLifeDays": 5,
+    "estimatedValue": 0.5,
+    "carbonFactor": 0.2,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Blackberry",
+    "category": "Fruit",
+    "shelfLifeDays": 3,
+    "estimatedValue": 4.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated and unwashed until use."
+  },
+  {
+    "name": "Blueberry",
+    "category": "Fruit",
+    "shelfLifeDays": 10,
+    "estimatedValue": 4.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated and unwashed until use."
+  },
+  {
+    "name": "Cantaloupe",
+    "category": "Fruit",
+    "shelfLifeDays": 5,
+    "estimatedValue": 4.0,
+    "carbonFactor": 0.2,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe or cut."
+  },
+  {
+    "name": "Cherry",
+    "category": "Fruit",
+    "shelfLifeDays": 7,
+    "estimatedValue": 4.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated and unwashed until use."
+  },
+  {
+    "name": "Coconut",
+    "category": "Fruit",
+    "shelfLifeDays": 21,
+    "estimatedValue": 3.0,
+    "carbonFactor": 0.4,
+    "storageTip": "Store whole in a cool place; refrigerate after opening."
+  },
+  {
+    "name": "Dragon Fruit",
+    "category": "Fruit",
+    "shelfLifeDays": 7,
+    "estimatedValue": 3.0,
+    "carbonFactor": 0.4,
+    "storageTip": "Keep refrigerated when ripe."
+  },
+  {
+    "name": "Fig",
+    "category": "Fruit",
+    "shelfLifeDays": 3,
+    "estimatedValue": 3.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated and use promptly."
+  },
+  {
+    "name": "Grape",
+    "category": "Fruit",
+    "shelfLifeDays": 14,
+    "estimatedValue": 3.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated and unwashed until use."
+  },
+  {
+    "name": "Grapefruit",
+    "category": "Fruit",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.2,
+    "storageTip": "Keep refrigerated for longer freshness."
+  },
+  {
+    "name": "Honeydew Melon",
+    "category": "Fruit",
+    "shelfLifeDays": 7,
+    "estimatedValue": 4.0,
+    "carbonFactor": 0.2,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe or cut."
+  },
+  {
+    "name": "Kiwi",
+    "category": "Fruit",
+    "shelfLifeDays": 14,
+    "estimatedValue": 1.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Lemon",
+    "category": "Fruit",
+    "shelfLifeDays": 28,
+    "estimatedValue": 0.8,
+    "carbonFactor": 0.2,
+    "storageTip": "Keep refrigerated in a sealed bag."
+  },
+  {
+    "name": "Lime",
+    "category": "Fruit",
+    "shelfLifeDays": 28,
+    "estimatedValue": 0.6,
+    "carbonFactor": 0.2,
+    "storageTip": "Keep refrigerated in a sealed bag."
+  },
+  {
+    "name": "Mandarin",
+    "category": "Fruit",
+    "shelfLifeDays": 14,
+    "estimatedValue": 0.8,
+    "carbonFactor": 0.2,
+    "storageTip": "Keep refrigerated for longer freshness."
+  },
+  {
+    "name": "Mango",
+    "category": "Fruit",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.5,
+    "carbonFactor": 0.4,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Nectarine",
+    "category": "Fruit",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.2,
+    "carbonFactor": 0.3,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Orange",
+    "category": "Fruit",
+    "shelfLifeDays": 21,
+    "estimatedValue": 1.0,
+    "carbonFactor": 0.2,
+    "storageTip": "Keep refrigerated for longer freshness."
+  },
+  {
+    "name": "Papaya",
+    "category": "Fruit",
+    "shelfLifeDays": 5,
+    "estimatedValue": 3.0,
+    "carbonFactor": 0.4,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Peach",
+    "category": "Fruit",
+    "shelfLifeDays": 5,
+    "estimatedValue": 1.2,
+    "carbonFactor": 0.3,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Pear",
+    "category": "Fruit",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.2,
+    "carbonFactor": 0.3,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Pineapple",
+    "category": "Fruit",
+    "shelfLifeDays": 5,
+    "estimatedValue": 4.0,
+    "carbonFactor": 0.4,
+    "storageTip": "Refrigerate when ripe or after cutting."
+  },
+  {
+    "name": "Plum",
+    "category": "Fruit",
+    "shelfLifeDays": 7,
+    "estimatedValue": 1.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Ripen at room temperature; refrigerate when ripe."
+  },
+  {
+    "name": "Pomegranate",
+    "category": "Fruit",
+    "shelfLifeDays": 30,
+    "estimatedValue": 3.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated for longer freshness."
+  },
+  {
+    "name": "Raspberry",
+    "category": "Fruit",
+    "shelfLifeDays": 3,
+    "estimatedValue": 4.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated and unwashed until use."
+  },
+  {
+    "name": "Strawberry",
+    "category": "Fruit",
+    "shelfLifeDays": 3,
+    "estimatedValue": 4.0,
+    "carbonFactor": 0.3,
+    "storageTip": "Keep refrigerated and unwashed until use."
+  },
+  {
+    "name": "Watermelon",
+    "category": "Fruit",
+    "shelfLifeDays": 7,
+    "estimatedValue": 6.0,
+    "carbonFactor": 0.2,
+    "storageTip": "Refrigerate after cutting and use promptly."
+  },
+  {
+    "name": "2% Milk",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 4.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+  },
+  {
+    "name": "Butter",
+    "category": "Dairy",
+    "shelfLifeDays": 30,
+    "estimatedValue": 5.0,
+    "carbonFactor": 1.5,
+    "storageTip": "Keep covered and refrigerated."
+  },
+  {
+    "name": "Buttermilk",
+    "category": "Dairy",
+    "shelfLifeDays": 14,
+    "estimatedValue": 4.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+  },
+  {
+    "name": "Cheddar Cheese",
+    "category": "Dairy",
+    "shelfLifeDays": 21,
+    "estimatedValue": 5.0,
+    "carbonFactor": 1.8,
+    "storageTip": "Wrap tightly and keep refrigerated."
+  },
+  {
+    "name": "Cottage Cheese",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 4.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated at or below 4°C."
+  },
+  {
+    "name": "Cream Cheese",
+    "category": "Dairy",
+    "shelfLifeDays": 14,
+    "estimatedValue": 4.0,
+    "carbonFactor": 1.5,
+    "storageTip": "Keep refrigerated at or below 4°C."
+  },
+  {
+    "name": "Eggs",
+    "category": "Dairy",
+    "shelfLifeDays": 21,
+    "estimatedValue": 5.0,
+    "carbonFactor": 0.8,
+    "storageTip": "Keep refrigerated in the original carton."
+  },
+  {
+    "name": "Greek Yogurt",
+    "category": "Dairy",
+    "shelfLifeDays": 14,
+    "estimatedValue": 2.0,
+    "carbonFactor": 1.0,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+  },
+  {
+    "name": "Half-and-Half",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 4.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated at or below 4°C."
+  },
+  {
+    "name": "Heavy Cream",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 5.0,
+    "carbonFactor": 1.5,
+    "storageTip": "Keep refrigerated at or below 4°C."
+  },
+  {
+    "name": "Lactose-Free Milk",
+    "category": "Dairy",
+    "shelfLifeDays": 10,
+    "estimatedValue": 5.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+  },
+  {
+    "name": "Milk",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 4.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated below 4°C."
+  },
+  {
+    "name": "Mozzarella Cheese",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 5.0,
+    "carbonFactor": 1.5,
+    "storageTip": "Keep refrigerated at or below 4°C."
+  },
+  {
+    "name": "Parmesan Cheese",
+    "category": "Dairy",
+    "shelfLifeDays": 30,
+    "estimatedValue": 6.0,
+    "carbonFactor": 1.8,
+    "storageTip": "Wrap tightly and keep refrigerated."
+  },
+  {
+    "name": "Ricotta Cheese",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 5.0,
+    "carbonFactor": 1.5,
+    "storageTip": "Keep refrigerated at or below 4°C."
+  },
+  {
+    "name": "Skim Milk",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 4.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+  },
+  {
+    "name": "Sour Cream",
+    "category": "Dairy",
+    "shelfLifeDays": 14,
+    "estimatedValue": 3.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated at or below 4°C."
+  },
+  {
+    "name": "Swiss Cheese",
+    "category": "Dairy",
+    "shelfLifeDays": 21,
+    "estimatedValue": 5.0,
+    "carbonFactor": 1.8,
+    "storageTip": "Wrap tightly and keep refrigerated."
+  },
+  {
+    "name": "Whole Milk",
+    "category": "Dairy",
+    "shelfLifeDays": 7,
+    "estimatedValue": 4.0,
+    "carbonFactor": 1.2,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+  },
+  {
+    "name": "Yogurt",
+    "category": "Dairy",
+    "shelfLifeDays": 14,
+    "estimatedValue": 2.0,
+    "carbonFactor": 1.0,
+    "storageTip": "Keep refrigerated at or below 4°C; follow the printed date."
+  },
+  {
+    "name": "Bacon",
+    "category": "Meat",
+    "shelfLifeDays": 7,
+    "estimatedValue": 7.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep refrigerated; use within 7 days after opening or freeze."
+  },
+  {
+    "name": "Beef Roast",
+    "category": "Meat",
+    "shelfLifeDays": 5,
+    "estimatedValue": 18.0,
+    "carbonFactor": 6.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+  },
+  {
+    "name": "Beef Steak",
+    "category": "Meat",
+    "shelfLifeDays": 5,
+    "estimatedValue": 15.0,
+    "carbonFactor": 6.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+  },
+  {
+    "name": "Beef Stew Meat",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 10.0,
+    "carbonFactor": 6.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
     "name": "Chicken",
     "category": "Meat",
     "shelfLifeDays": 2,
     "estimatedValue": 8.0,
     "carbonFactor": 3.0,
     "storageTip": "Keep refrigerated and cook thoroughly."
+  },
+  {
+    "name": "Chicken Breast",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 8.0,
+    "carbonFactor": 3.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Chicken Thighs",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 7.0,
+    "carbonFactor": 3.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Cooked Sausage",
+    "category": "Meat",
+    "shelfLifeDays": 7,
+    "estimatedValue": 7.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep refrigerated; use within 7 days after opening."
+  },
+  {
+    "name": "Deli Meat",
+    "category": "Meat",
+    "shelfLifeDays": 5,
+    "estimatedValue": 8.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep refrigerated; use within 3–5 days after opening."
+  },
+  {
+    "name": "Ground Beef",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 8.0,
+    "carbonFactor": 6.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Ground Chicken",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 7.0,
+    "carbonFactor": 3.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Ground Lamb",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 10.0,
+    "carbonFactor": 6.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Ground Pork",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 7.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Ground Turkey",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 7.0,
+    "carbonFactor": 3.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Ham",
+    "category": "Meat",
+    "shelfLifeDays": 5,
+    "estimatedValue": 9.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep refrigerated; follow the package date when available."
+  },
+  {
+    "name": "Hot Dogs",
+    "category": "Meat",
+    "shelfLifeDays": 7,
+    "estimatedValue": 6.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep refrigerated; use within 7 days after opening."
+  },
+  {
+    "name": "Lamb Chops",
+    "category": "Meat",
+    "shelfLifeDays": 5,
+    "estimatedValue": 15.0,
+    "carbonFactor": 6.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+  },
+  {
+    "name": "Lamb Roast",
+    "category": "Meat",
+    "shelfLifeDays": 5,
+    "estimatedValue": 18.0,
+    "carbonFactor": 6.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+  },
+  {
+    "name": "Pork Chops",
+    "category": "Meat",
+    "shelfLifeDays": 5,
+    "estimatedValue": 9.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+  },
+  {
+    "name": "Pork Roast",
+    "category": "Meat",
+    "shelfLifeDays": 5,
+    "estimatedValue": 12.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+  },
+  {
+    "name": "Pork Tenderloin",
+    "category": "Meat",
+    "shelfLifeDays": 5,
+    "estimatedValue": 12.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 3–5 days."
+  },
+  {
+    "name": "Raw Sausage",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 7.0,
+    "carbonFactor": 4.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Turkey",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 12.0,
+    "carbonFactor": 3.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Turkey Breast",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 9.0,
+    "carbonFactor": 3.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
+  },
+  {
+    "name": "Whole Chicken",
+    "category": "Meat",
+    "shelfLifeDays": 2,
+    "estimatedValue": 12.0,
+    "carbonFactor": 3.0,
+    "storageTip": "Keep at or below 4°C; cook or freeze within 1–2 days."
   }
 ]

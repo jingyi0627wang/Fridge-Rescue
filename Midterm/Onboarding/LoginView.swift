@@ -143,10 +143,10 @@ struct LoginView: View {
 
             // 社交登录（目前只是外观）
             HStack(spacing: 14) {
-                socialButton(Image("IconGoogle"), name: "Google")
+                socialButton(Image.asset("IconGoogle", fallbackSystemName: "g.circle.fill"), name: "Google")
                 socialButton(Image(systemName: "apple.logo"), name: "Apple")
-                socialButton(Image("IconFacebook"), name: "Facebook")
-                socialButton(Image("IconDiscord"), name: "Discord")
+                socialButton(Image.asset("IconFacebook", fallbackSystemName: "f.circle.fill"), name: "Facebook")
+                socialButton(Image.asset("IconDiscord", fallbackSystemName: "gamecontroller.fill"), name: "Discord")
             }
             .padding(.top, 28)
         }

@@ -12,12 +12,6 @@ struct MainTabView: View {
         blue: 0.36
     )
 
-    private let creamBackground = Color(
-        red: 0.98,
-        green: 0.99,
-        blue: 0.96
-    )
-
     var body: some View {
 
         TabView {
@@ -41,13 +35,11 @@ struct MainTabView: View {
             }
 
             // MARK: - Add Food
-            NavigationStack {
-                AddFoodPlaceholderView()
-            }
-            .tabItem {
-                Image(systemName: "plus.circle.fill")
-                Text("Add")
-            }
+            AddFoodTabView()
+                .tabItem {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Add")
+                }
 
             // MARK: - Recipes
             NavigationStack {
@@ -60,7 +52,7 @@ struct MainTabView: View {
 
             // MARK: - Impact
             NavigationStack {
-                ImpactPlaceholderView()
+                ImpactView()
             }
             .tabItem {
                 Image(systemName: "chart.bar.fill")
@@ -72,22 +64,20 @@ struct MainTabView: View {
 }
 
 
-// MARK: - Temporary Add Food Page
-// Member 2 can replace this later.
+// MARK: - Add Food Tab
+// AddFoodView (Member 2) has its own NavigationStack + Cancel button,
+// so it is shown as a sheet instead of being pushed inside the tab.
 
-struct AddFoodPlaceholderView: View {
+struct AddFoodTabView: View {
 
-    private let freshGreen = Color(
-        red: 0.53,
-        green: 0.89,
-        blue: 0.36
-    )
+    @EnvironmentObject var foodStore: FoodStore
+    @State private var showAddFood = false
 
-    private let creamBackground = Color(
-        red: 0.98,
-        green: 0.99,
-        blue: 0.96
-    )
+    private let freshGreen = Color(red: 0.53, green: 0.89, blue: 0.36)
+    private let darkGreen = Color(red: 0.22, green: 0.49, blue: 0.19)
+    private let brown = Color(red: 0.34, green: 0.27, blue: 0.22)
+    private let secondary = Color(red: 0.50, green: 0.48, blue: 0.41)
+    private let creamBackground = Color(red: 0.985, green: 0.992, blue: 0.970)
 
     var body: some View {
 
@@ -98,63 +88,39 @@ struct AddFoodPlaceholderView: View {
 
             VStack(spacing: 18) {
 
-                Image(systemName: "plus.circle.fill")
-                    .font(.system(size: 52))
-                    .foregroundStyle(freshGreen)
+                Image("FreshlingsCharacter")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 120)
+                    .accessibilityHidden(true)
 
-                Text("Add Food")
-                    .font(.system(size: 30, weight: .bold))
+                Text("Add a Freshling")
+                    .font(.system(size: 30, weight: .heavy, design: .rounded))
+                    .foregroundStyle(brown)
 
-                Text(
-                    "Manual entry and AI food recognition will appear here."
-                )
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
+                Text("Scan a barcode or type the food name. We'll suggest an expiration date for you.")
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                    .foregroundStyle(secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+
+                Button {
+                    showAddFood = true
+                } label: {
+                    Label("Add Food", systemImage: "plus")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .foregroundStyle(darkGreen)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 18)
+                        .background(freshGreen, in: Capsule())
+                }
+                .buttonStyle(.plain)
                 .padding(.horizontal, 40)
+                .padding(.top, 8)
             }
         }
-    }
-}
-
-
-// MARK: - Temporary Impact Page
-// Member 4 can replace this later.
-
-struct ImpactPlaceholderView: View {
-
-    private let freshGreen = Color(
-        red: 0.53,
-        green: 0.89,
-        blue: 0.36
-    )
-
-    private let creamBackground = Color(
-        red: 0.98,
-        green: 0.99,
-        blue: 0.96
-    )
-
-    var body: some View {
-
-        ZStack {
-
-            creamBackground
-                .ignoresSafeArea()
-
-            VStack(spacing: 18) {
-
-                Image(systemName: "chart.bar.fill")
-                    .font(.system(size: 48))
-                    .foregroundStyle(freshGreen)
-
-                Text("Impact")
-                    .font(.system(size: 30, weight: .bold))
-
-                Text(
-                    "Your food rescue statistics will appear here."
-                )
-                .foregroundStyle(.secondary)
-            }
+        .sheet(isPresented: $showAddFood) {
+            AddFoodView(store: foodStore)
         }
     }
 }
@@ -166,4 +132,3 @@ struct ImpactPlaceholderView: View {
     MainTabView()
         .environmentObject(FoodStore())
 }
-

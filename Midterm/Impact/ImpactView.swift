@@ -8,6 +8,16 @@
 import SwiftUI
 import Charts
 
+// Same Freshlings palette as HomeView / FoodDetailView.
+private enum ImpactStyle {
+    static let background = Color(red: 0.985, green: 0.992, blue: 0.970)
+    static let surface = Color.white
+    static let olive = Color(red: 0.22, green: 0.49, blue: 0.19)        // dark green accent
+    static let primaryText = Color(red: 0.34, green: 0.27, blue: 0.22)  // brown
+    static let secondaryText = Color(red: 0.50, green: 0.48, blue: 0.41)
+    static let border = Color(red: 0.82, green: 0.90, blue: 0.77).opacity(0.55)
+}
+
 struct ImpactView: View {
 
     @EnvironmentObject var foodStore: FoodStore
@@ -25,7 +35,7 @@ struct ImpactView: View {
 
     var body: some View {
         ZStack {
-            PremiumTheme.background
+            ImpactStyle.background
                 .ignoresSafeArea()
 
             if hasNoHistory {
@@ -85,23 +95,23 @@ struct ImpactView: View {
         VStack(alignment: .leading, spacing: 10) {
             Image(systemName: icon)
                 .font(.system(size: 18))
-                .foregroundStyle(PremiumTheme.olive)
+                .foregroundStyle(ImpactStyle.olive)
 
             Text(value)
-                .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(PremiumTheme.primaryText)
+                .font(.system(size: 24, weight: .heavy, design: .rounded))
+                .foregroundStyle(ImpactStyle.primaryText)
 
             Text(title)
                 .font(.system(size: 13))
-                .foregroundStyle(PremiumTheme.secondaryText)
+                .foregroundStyle(ImpactStyle.secondaryText)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
-        .background(PremiumTheme.surface)
+        .background(ImpactStyle.surface)
         .clipShape(RoundedRectangle(cornerRadius: 18))
         .overlay(
             RoundedRectangle(cornerRadius: 18)
-                .stroke(PremiumTheme.border, lineWidth: 1)
+                .stroke(ImpactStyle.border, lineWidth: 1)
         )
     }
 
@@ -112,26 +122,26 @@ struct ImpactView: View {
             HStack {
                 Text("Use rate")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(PremiumTheme.primaryText)
+                    .foregroundStyle(ImpactStyle.primaryText)
                 Spacer()
                 Text("\(Int(foodStore.useRate * 100))%")
                     .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(PremiumTheme.olive)
+                    .foregroundStyle(ImpactStyle.olive)
             }
 
             ProgressView(value: foodStore.useRate)
-                .tint(PremiumTheme.olive)
+                .tint(ImpactStyle.olive)
 
             Text("Share of finished items you used instead of throwing away.")
                 .font(.system(size: 12))
-                .foregroundStyle(PremiumTheme.secondaryText)
+                .foregroundStyle(ImpactStyle.secondaryText)
         }
         .padding(16)
-        .background(PremiumTheme.surface)
+        .background(ImpactStyle.surface)
         .clipShape(RoundedRectangle(cornerRadius: 18))
         .overlay(
             RoundedRectangle(cornerRadius: 18)
-                .stroke(PremiumTheme.border, lineWidth: 1)
+                .stroke(ImpactStyle.border, lineWidth: 1)
         )
     }
 
@@ -141,30 +151,30 @@ struct ImpactView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Used by category")
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(PremiumTheme.primaryText)
+                .foregroundStyle(ImpactStyle.primaryText)
 
             if foodStore.usedByCategory.isEmpty {
                 Text("Nothing used yet.")
                     .font(.system(size: 13))
-                    .foregroundStyle(PremiumTheme.secondaryText)
+                    .foregroundStyle(ImpactStyle.secondaryText)
             } else {
                 Chart(foodStore.usedByCategory) { stat in
                     BarMark(
                         x: .value("Category", stat.category.rawValue),
                         y: .value("Items used", stat.count)
                     )
-                    .foregroundStyle(PremiumTheme.olive)
+                    .foregroundStyle(ImpactStyle.olive)
                     .cornerRadius(6)
                 }
                 .frame(height: 180)
             }
         }
         .padding(16)
-        .background(PremiumTheme.surface)
+        .background(ImpactStyle.surface)
         .clipShape(RoundedRectangle(cornerRadius: 18))
         .overlay(
             RoundedRectangle(cornerRadius: 18)
-                .stroke(PremiumTheme.border, lineWidth: 1)
+                .stroke(ImpactStyle.border, lineWidth: 1)
         )
     }
 }

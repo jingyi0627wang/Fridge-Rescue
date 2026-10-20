@@ -74,3 +74,17 @@ struct PatternBackground: View {
         .ignoresSafeArea()
     }
 }
+
+
+// MARK: - Image fallback
+// Some images (IconGoogle, Onboarding1…) are not in Assets yet.
+// Use the asset if it exists, otherwise show a placeholder so nothing is blank.
+extension Image {
+    static func asset(_ name: String, fallbackSystemName: String) -> Image {
+        UIImage(named: name) != nil ? Image(name) : Image(systemName: fallbackSystemName)
+    }
+
+    static func asset(_ name: String, fallbackAsset: String) -> Image {
+        UIImage(named: name) != nil ? Image(name) : Image(fallbackAsset)
+    }
+}

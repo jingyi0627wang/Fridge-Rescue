@@ -7,8 +7,13 @@ struct MyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            // Title → Login → Onboarding → MainTabView
+            RootView()
                 .environmentObject(foodStore)
+                .task {
+                    await ExpirationNotificationService.shared
+                        .requestAuthorizationAndSchedule(items: foodStore.foodItems)
+                }
         }
     }
 }
