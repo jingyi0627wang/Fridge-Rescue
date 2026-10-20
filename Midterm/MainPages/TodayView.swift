@@ -19,13 +19,12 @@ struct TodayView: View {
 
     // MARK: - Existing data rules (unchanged)
     private var priorityItems: [FoodItem] {
-        foodStore.foodItems
-            .filter {
-                $0.status == .active &&
-                ($0.freshnessLevel == .urgent || $0.freshnessLevel == .useSoon)
-            }
-            .sorted { $0.hpPercentage < $1.hpPercentage }
+        foodStore.activeItemsByUrgency.filter { RecipeData.needsAttention($0) }
     }
+
+    /// With lots of food, show the most urgent few first.
+    @State private var showAllPriority = false
+    private let collapsedCount = 5
 
     @State private var onlineRecipes: [Recipe] = []
 
@@ -131,7 +130,12 @@ struct TodayView: View {
         VStack(alignment: .leading, spacing: 14) {
             sectionTitle("Use These First", label: "LOWEST HP")
 
-            ForEach(priorityItems) { item in
+            // Computed once here instead of once per row (big speed-up with lots of food).
+            let allRecipes = recommendedRecipes
+            let items = priorityItems
+            let visible = showAllPriority ? items : Array(items.prefix(collapsedCount))
+
+            ForEach(visible) { item in
                 VStack(spacing: 0) {
                     // Top: food → Food Details
                     NavigationLink {
@@ -144,13 +148,30 @@ struct TodayView: View {
                     Divider().padding(.horizontal, 18)
 
                     // Bottom: recipe idea → Recipes tab with this food selected
-                    recipeRow(for: item)
+                    recipeRow(for: item, options: recipesUsing(item, in: allRecipes))
                 }
                 .background(cardWhite, in: RoundedRectangle(cornerRadius: 24))
                 .overlay {
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(statusColor(for: item).opacity(0.14), lineWidth: 1)
                 }
+            }
+
+            if items.count > collapsedCount {
+                Button {
+                    withAnimation(.snappy) { showAllPriority.toggle() }
+                } label: {
+                    HStack {
+                        Text(showAllPriority ? "Show less" : "Show \(items.count - collapsedCount) more")
+                        Image(systemName: showAllPriority ? "chevron.up" : "chevron.down")
+                    }
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(deepGreen)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(mint, in: Capsule())
+                }
+                .buttonStyle(.plain)
             }
         }
     }
@@ -217,16 +238,14 @@ struct TodayView: View {
     // MARK: - Recipe idea for one food
     // Today only suggests; the full list lives in the Recipes tab.
 
-    private func recipesUsing(_ item: FoodItem) -> [Recipe] {
-        recommendedRecipes.filter { recipe in
+    private func recipesUsing(_ item: FoodItem, in recipes: [Recipe]) -> [Recipe] {
+        recipes.filter { recipe in
             recipe.ingredients.contains { FoodMatcher.matches(ingredient: $0, foodName: item.name) }
         }
     }
 
-    private func recipeRow(for item: FoodItem) -> some View {
-        let options = recipesUsing(item)
-
-        return Button {
+    private func recipeRow(for item: FoodItem, options: [Recipe]) -> some View {
+        Button {
             router.openRecipes(for: item)
         } label: {
             HStack(spacing: 10) {

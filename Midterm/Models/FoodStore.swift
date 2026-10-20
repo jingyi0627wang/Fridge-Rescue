@@ -4,8 +4,29 @@ import Combine
 
 final class FoodStore: ObservableObject {
     @Published var foodItems: [FoodItem] = [] {
-        didSet { saveItems() }
+        didSet {
+            saveItems()
+            sortedCache = nil
+        }
     }
+
+    /// Active food, most urgent (fewest days left) first.
+    /// Sorted once and reused until the food list or the date changes.
+    var activeItemsByUrgency: [FoodItem] {
+        let today = Calendar.current.startOfDay(for: Date())
+        if let cache = sortedCache, cache.day == today { return cache.items }
+        let active: [FoodItem] = foodItems.filter { $0.status == .active }
+                let keyed: [(item: FoodItem, days: Int)] = active.map { (item: $0, days: $0.daysUntilExpiration) }
+                let ordered = keyed.sorted { a, b in
+                    if a.days != b.days { return a.days < b.days }
+                    return a.item.name < b.item.name
+                }
+                let sorted: [FoodItem] = ordered.map { $0.item }
+        sortedCache = (today, sorted)
+        return sorted
+    }
+
+    private var sortedCache: (day: Date, items: [FoodItem])?
 
     @Published var history: [FoodItem] = [] {
         didSet { saveHistory() }
@@ -153,7 +174,7 @@ final class FoodStore: ObservableObject {
 
     @Published var toast: UndoToast?
 
-    private func undoable(_ message: String, _ change: () -> Void) {
+    func undoable(_ message: String, _ change: () -> Void) {
         let items = foodItems
         let past = history
         change()

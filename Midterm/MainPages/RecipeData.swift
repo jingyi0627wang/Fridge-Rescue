@@ -59,25 +59,35 @@ private func ing(_ amount: String, _ name: String) -> RecipeIngredient {
 enum FoodMatcher {
 
     static func matches(ingredient: String, foodName: String) -> Bool {
+        let key = ingredient + "\u{1}" + foodName
+        if let cached = matchCache[key] { return cached }
         let ingredientWords = words(ingredient)
         let foodWords = Set(words(foodName))
-        guard !ingredientWords.isEmpty else { return false }
-        return ingredientWords.allSatisfy { foodWords.contains($0) }
+        let result = !ingredientWords.isEmpty && ingredientWords.allSatisfy { foodWords.contains($0) }
+        matchCache[key] = result
+        return result
     }
+
+    // Matching runs many times per screen with lots of food, so results are cached.
+    private static var matchCache: [String: Bool] = [:]
+    private static var wordCache: [String: [String]] = [:]
 
     /// The fridge item (lowest HP first) that can be used for this ingredient.
     static func fridgeItem(for ingredient: String, in items: [FoodItem]) -> FoodItem? {
+        // Match first (cheap, cached), then pick the most urgent — no full sort.
         items
-            .filter { $0.status == .active }
-            .sorted { $0.hpPercentage < $1.hpPercentage }
-            .first { matches(ingredient: ingredient, foodName: $0.name) }
+            .filter { $0.status == .active && matches(ingredient: ingredient, foodName: $0.name) }
+            .min { $0.daysUntilExpiration < $1.daysUntilExpiration }
     }
 
     private static func words(_ text: String) -> [String] {
-        text.lowercased()
+        if let cached = wordCache[text] { return cached }
+        let result = text.lowercased()
             .components(separatedBy: CharacterSet.letters.inverted)
             .filter { !$0.isEmpty }
             .map { singular($0) }
+        wordCache[text] = result
+        return result
     }
 
     private static func singular(_ word: String) -> String {

@@ -23,10 +23,12 @@ struct HomeView: View {
     @State private var searchText = ""
     @State private var selectedCategory: FoodCategory? = nil   // nil = All
 
+    /// Collapsed / expanded state per freshness group (title → expanded).
+    /// With lots of food, "Fresh" starts collapsed so urgent food is near the top.
+    @State private var groupExpanded: [String: Bool] = [:]
+
     private var activeItems: [FoodItem] {
-        foodStore.foodItems
-            .filter { $0.status == .active }
-            .sorted { $0.hpPercentage < $1.hpPercentage }
+        foodStore.activeItemsByUrgency
     }
 
     private var attentionItems: [FoodItem] {
@@ -91,15 +93,35 @@ struct HomeView: View {
 
             Spacer(minLength: 4)
 
-            ZStack {
-                Circle()
-                    .fill(FreshlingsHomeStyle.softGreen)
-                    .frame(width: 62, height: 62)
+            // Test data menu (for demos and testing with lots of food).
+            Menu {
+                Button {
+                    foodStore.addDemoItems()
+                } label: {
+                    Label("Load Demo Food (6)", systemImage: "carrot")
+                }
+                Button {
+                    foodStore.loadStressTestData()
+                } label: {
+                    Label("Load Lots of Food (60)", systemImage: "square.stack.3d.up.fill")
+                }
+                Divider()
+                Button(role: .destructive) {
+                    foodStore.clearAllData()
+                } label: {
+                    Label("Clear Fridge & History", systemImage: "trash")
+                }
+            } label: {
+                ZStack {
+                    Circle()
+                        .fill(FreshlingsHomeStyle.softGreen)
+                        .frame(width: 62, height: 62)
 
-                Text("🌱")
-                    .font(.system(size: 34))
+                    Text("🌱")
+                        .font(.system(size: 34))
+                }
             }
-            .accessibilityHidden(true)
+            .accessibilityLabel("Test data")
         }
     }
 
@@ -134,51 +156,7 @@ struct HomeView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(FreshlingsHomeStyle.softGreen)
             .clipShape(RoundedRectangle(cornerRadius: 25))
-
-            HStack(spacing: 12) {
-                summaryCard(
-                    number: activeItems.count,
-                    title: "In Fridge",
-                    symbol: "refrigerator.fill",
-                    background: FreshlingsHomeStyle.white,
-                    accent: FreshlingsHomeStyle.darkGreen
-                )
-
-                summaryCard(
-                    number: attentionItems.count,
-                    title: "Use Soon",
-                    symbol: "clock.fill",
-                    background: FreshlingsHomeStyle.softYellow,
-                    accent: FreshlingsHomeStyle.orange
-                )
-            }
         }
-    }
-
-    private func summaryCard(
-        number: Int,
-        title: String,
-        symbol: String,
-        background: Color,
-        accent: Color
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Image(systemName: symbol)
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(accent)
-
-            Text("\(number)")
-                .font(.system(size: 29, weight: .heavy, design: .rounded))
-                .foregroundStyle(FreshlingsHomeStyle.brown)
-
-            Text(title)
-                .font(.system(size: 13, weight: .bold, design: .rounded))
-                .foregroundStyle(FreshlingsHomeStyle.secondary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(17)
-        .background(background)
-        .clipShape(RoundedRectangle(cornerRadius: 21))
     }
 
     // MARK: - Priority item
@@ -239,7 +217,7 @@ struct HomeView: View {
 
     private var foodSection: some View {
         VStack(alignment: .leading, spacing: 13) {
-            sectionTitle("My Food", subtitle: "Lowest freshness first")
+            sectionTitle("My Food", subtitle: "Tap a group to fold it")
 
             if activeItems.isEmpty {
                 emptyState
@@ -250,56 +228,151 @@ struct HomeView: View {
                 if filteredItems.isEmpty {
                     noMatchState
                 } else {
-                    VStack(spacing: 11) {
-                        ForEach(filteredItems) { item in
-                            NavigationLink {
-                                FoodDetailView(item: item)
-                                    .environmentObject(foodStore)
-                            } label: {
-                                foodRow(item)
-                            }
-                            .buttonStyle(.plain)
-                            .contextMenu {
-                                // With more than 1, the quick actions take ONE out;
-                                // "All" options and exact counts are on Food Details.
-                                if item.quantity > 1 {
-                                    Button {
-                                        foodStore.markAsUsed(item, quantity: 1)
-                                    } label: {
-                                        Label("Used 1 (of \(item.quantity))", systemImage: "checkmark.circle")
-                                    }
-                                    Button {
-                                        foodStore.markAsUsed(item)
-                                    } label: {
-                                        Label("Used All \(item.quantity)", systemImage: "checkmark.circle.fill")
-                                    }
-                                    Button {
-                                        foodStore.markAsWasted(item, quantity: 1)
-                                    } label: {
-                                        Label("Threw Away 1", systemImage: "trash")
-                                    }
-                                } else {
-                                    Button {
-                                        foodStore.markAsUsed(item)
-                                    } label: {
-                                        Label("I Used It", systemImage: "checkmark.circle")
-                                    }
-                                    Button {
-                                        foodStore.markAsWasted(item)
-                                    } label: {
-                                        Label("Threw Away", systemImage: "trash")
-                                    }
-                                }
-                                Button(role: .destructive) {
-                                    foodStore.deleteItem(item)
-                                } label: {
-                                    Label("Delete", systemImage: "xmark.bin")
-                                }
-                            }
+                    // Computed once, then split into freshness groups.
+                    let items = filteredItems
+                    let isSearching = !searchText.trimmingCharacters(in: .whitespaces).isEmpty
+                    ForEach(FreshnessGroup.allCases, id: \.self) { group in
+                        let groupItems = items.filter { group.contains($0) }
+                        if !groupItems.isEmpty {
+                            foodGroup(group, items: groupItems,
+                                      totalCount: items.count, isSearching: isSearching)
                         }
                     }
                 }
             }
+        }
+    }
+
+    // MARK: - Freshness groups
+
+    private enum FreshnessGroup: String, CaseIterable {
+        case expired = "Expired"
+        case urgent = "Urgent"
+        case useSoon = "Use Soon"
+        case fresh = "Fresh"
+
+        func contains(_ item: FoodItem) -> Bool {
+            switch self {
+            case .expired: return item.freshnessLevel == .expired
+            case .urgent: return item.freshnessLevel == .urgent
+            case .useSoon: return item.freshnessLevel == .useSoon
+            case .fresh: return item.freshnessLevel == .fresh
+            }
+        }
+
+        var hint: String {
+            switch self {
+            case .expired: return "Check before using"
+            case .urgent: return "0–2 days left"
+            case .useSoon: return "3–6 days left"
+            case .fresh: return "7+ days left"
+            }
+        }
+    }
+
+    private func isExpanded(_ group: FreshnessGroup, totalCount: Int, isSearching: Bool) -> Bool {
+        if isSearching { return true }
+        if let saved = groupExpanded[group.rawValue] { return saved }
+        // Default: collapse Fresh when the fridge is big.
+        return !(group == .fresh && totalCount > 12)
+    }
+
+    private func foodGroup(_ group: FreshnessGroup, items: [FoodItem],
+                           totalCount: Int, isSearching: Bool) -> some View {
+        let expanded = isExpanded(group, totalCount: totalCount, isSearching: isSearching)
+
+        return VStack(alignment: .leading, spacing: 8) {
+            Button {
+                withAnimation(.snappy) { groupExpanded[group.rawValue] = !expanded }
+            } label: {
+                HStack(spacing: 8) {
+                    Circle()
+                        .fill(groupColor(group))
+                        .frame(width: 9, height: 9)
+                    Text(group.rawValue)
+                        .font(.system(size: 15, weight: .heavy, design: .rounded))
+                        .foregroundStyle(FreshlingsHomeStyle.brown)
+                    Text("\(items.count)")
+                        .font(.system(size: 12, weight: .heavy, design: .rounded))
+                        .foregroundStyle(groupColor(group))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
+                        .background(groupColor(group).opacity(0.13), in: Capsule())
+                    Text(group.hint)
+                        .font(.system(size: 11, weight: .medium, design: .rounded))
+                        .foregroundStyle(FreshlingsHomeStyle.secondary)
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(FreshlingsHomeStyle.secondary)
+                        .rotationEffect(.degrees(expanded ? 0 : -90))
+                }
+                .padding(.vertical, 6)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            if expanded {
+                LazyVStack(spacing: 8) {
+                    ForEach(items) { item in
+                        NavigationLink {
+                            FoodDetailView(item: item)
+                        } label: {
+                            foodRow(item)
+                        }
+                        .buttonStyle(.plain)
+                        .contextMenu { quickActions(item) }
+                    }
+                }
+            }
+        }
+    }
+
+    private func groupColor(_ group: FreshnessGroup) -> Color {
+        switch group {
+        case .expired: return FreshlingsHomeStyle.secondary
+        case .urgent: return FreshlingsHomeStyle.orange
+        case .useSoon: return FreshlingsHomeStyle.gold
+        case .fresh: return FreshlingsHomeStyle.darkGreen
+        }
+    }
+
+    /// Long-press menu. With more than 1, quick actions take ONE out;
+    /// exact counts are on Food Details.
+    @ViewBuilder
+    private func quickActions(_ item: FoodItem) -> some View {
+        if item.quantity > 1 {
+            Button {
+                foodStore.markAsUsed(item, quantity: 1)
+            } label: {
+                Label("Used 1 (of \(item.quantity))", systemImage: "checkmark.circle")
+            }
+            Button {
+                foodStore.markAsUsed(item)
+            } label: {
+                Label("Used All \(item.quantity)", systemImage: "checkmark.circle.fill")
+            }
+            Button {
+                foodStore.markAsWasted(item, quantity: 1)
+            } label: {
+                Label("Threw Away 1", systemImage: "trash")
+            }
+        } else {
+            Button {
+                foodStore.markAsUsed(item)
+            } label: {
+                Label("I Used It", systemImage: "checkmark.circle")
+            }
+            Button {
+                foodStore.markAsWasted(item)
+            } label: {
+                Label("Threw Away", systemImage: "trash")
+            }
+        }
+        Button(role: .destructive) {
+            foodStore.deleteItem(item)
+        } label: {
+            Label("Delete", systemImage: "xmark.bin")
         }
     }
 
@@ -371,53 +444,44 @@ struct HomeView: View {
         .background(FreshlingsHomeStyle.white, in: RoundedRectangle(cornerRadius: 21))
     }
 
+    /// Compact row (~64 pt tall) so long lists don't need endless scrolling.
     private func foodRow(_ item: FoodItem) -> some View {
-        VStack(alignment: .leading, spacing: 13) {
-            HStack(spacing: 12) {
-                foodSymbol(for: item, size: 53)
+        HStack(spacing: 12) {
+            foodSymbol(for: item, size: 44)
 
-                VStack(alignment: .leading, spacing: 5) {
-                    Text(item.name)
-                        .font(.system(size: 17, weight: .bold, design: .rounded))
-                        .foregroundStyle(FreshlingsHomeStyle.brown)
-                        .lineLimit(1)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(item.name)
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsHomeStyle.brown)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
 
-                    Text("\(item.category.rawValue.capitalized) · Qty \(item.quantity)")
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
-                        .foregroundStyle(FreshlingsHomeStyle.secondary)
-                }
-
-                Spacer(minLength: 4)
-
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("\(Int(item.hpPercentage))%")
-                        .font(.system(size: 16, weight: .heavy, design: .rounded))
-                        .foregroundStyle(statusColor(for: item))
-
-                    Text(item.freshnessLevel.title)
-                        .font(.system(size: 10, weight: .bold, design: .rounded))
-                        .foregroundStyle(FreshlingsHomeStyle.secondary)
-                }
-
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .bold))
+                Text("Qty \(item.quantity) · \(item.daysLeftText)")
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
                     .foregroundStyle(FreshlingsHomeStyle.secondary)
+                    .lineLimit(1)
             }
 
-            freshnessLine(item)
+            Spacer(minLength: 6)
 
-            HStack(spacing: 5) {
-                Image(systemName: "clock")
-                Text(daysText(for: item))
-                Spacer()
-                Text(expirationText(for: item))
+            VStack(alignment: .trailing, spacing: 5) {
+                Text("\(Int(item.hpPercentage))%")
+                    .font(.system(size: 15, weight: .heavy, design: .rounded))
+                    .foregroundStyle(statusColor(for: item))
+                    .monospacedDigit()
+                freshnessLine(item)
+                    .frame(width: 56)
             }
-            .font(.system(size: 11, weight: .medium, design: .rounded))
-            .foregroundStyle(FreshlingsHomeStyle.secondary)
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 11, weight: .bold))
+                .foregroundStyle(FreshlingsHomeStyle.secondary)
         }
-        .padding(15)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .background(FreshlingsHomeStyle.white)
-        .clipShape(RoundedRectangle(cornerRadius: 21))
+        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .contentShape(Rectangle())
     }
 
     // MARK: - Shared UI
