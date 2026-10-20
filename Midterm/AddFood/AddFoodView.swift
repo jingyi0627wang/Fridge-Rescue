@@ -1,20 +1,13 @@
 import SwiftUI
 
-// Add Food is a normal tab page (like Fridge and Today), not a pop-up.
-// MainTabView puts it in its own NavigationStack. After "Add to Fridge"
-// the page resets for the next item and the bottom bar confirms (with Undo).
+// MARK: - Add Food tab
+// A normal tab page (like Fridge and Today), not a pop-up.
+// Scan, pick from Quick Add or the ingredient list, or type it in.
+// "Next" goes to the expiration date; after "Add to Fridge" the page resets
+// for the next item and the bottom bar confirms (with Undo).
+
 struct AddFoodView: View {
     @ObservedObject var store: FoodStore
-
-    // Freshlings page style (same palette as Home / Today)
-    private enum Style {
-        static let background = Color(red: 0.985, green: 0.992, blue: 0.970)
-        static let green = Color(red: 0.53, green: 0.89, blue: 0.36)
-        static let darkGreen = Color(red: 0.22, green: 0.49, blue: 0.19)
-        static let brown = Color(red: 0.34, green: 0.27, blue: 0.22)
-        static let secondary = Color(red: 0.50, green: 0.48, blue: 0.41)
-        static let softGreen = Color(red: 0.931, green: 0.976, blue: 0.869)
-    }
 
     @State private var presets: [IngredientPreset] = []
     @State private var lastAutoFilledName = ""
@@ -24,6 +17,7 @@ struct AddFoodView: View {
     @State private var quantity = 1
     @State private var priceText = ""
     @State private var addedDate = Date()
+    @FocusState private var keyboardFocused: Bool
 
     @State private var showScanner = false
     @State private var isLookingUp = false
@@ -36,18 +30,31 @@ struct AddFoodView: View {
 
     var body: some View {
         Form {
-            headerSection
             scanSection
             quickAddSection
             detailsSection
             amountSection
         }
-        .scrollContentBackground(.hidden)
-        .background(Style.background.ignoresSafeArea())
-        .tint(Style.darkGreen)
-        .scrollDismissesKeyboard(.interactively)
-        // Same as the other tabs: custom header instead of a navigation bar.
-        .toolbar(.hidden, for: .navigationBar)
+        .font(.game(16, .medium))
+        .foregroundStyle(Game.brown)
+        .gameBackground()
+        .tint(Game.greenDark)
+        .scrollDismissesKeyboard(.immediately)
+        .navigationTitle("Add a Freshling")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                if !trimmedName.isEmpty {
+                    Button("Clear", action: resetForm)
+                }
+            }
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    keyboardFocused = false
+                }
+                .fontWeight(.semibold)
+            }
+        }
         .safeAreaInset(edge: .bottom) { nextButton }
         .navigationDestination(isPresented: $showConfirm) {
             ExpirationConfirmView(draft: makeDraft(), store: store) {
@@ -65,63 +72,25 @@ struct AddFoodView: View {
         }
     }
 
-    // MARK: - Header (matches Home / Today)
-
-    private var headerSection: some View {
-        Section {
-            HStack(alignment: .center, spacing: 12) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("ADD FOOD")
-                        .font(.system(size: 12, weight: .bold, design: .rounded))
-                        .tracking(1.5)
-                        .foregroundStyle(Style.darkGreen)
-                    Text("Add a Freshling")
-                        .font(.system(size: 32, weight: .heavy, design: .rounded))
-                        .foregroundStyle(Style.brown)
-                    Text("Scan it, pick a favorite, or type it in.")
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .foregroundStyle(Style.secondary)
-                }
-                Spacer(minLength: 4)
-                if !trimmedName.isEmpty {
-                    Button("Clear", action: resetForm)
-                        .font(.system(size: 13, weight: .bold, design: .rounded))
-                        .foregroundStyle(Style.darkGreen)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 7)
-                        .background(Style.softGreen, in: Capsule())
-                        .buttonStyle(.plain)
-                }
-            }
-            .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 4, trailing: 4))
-        }
-    }
-
-    // MARK: - Next (big button at the bottom)
+    // MARK: - Next (button at the bottom)
 
     private var nextButton: some View {
         Button {
+            keyboardFocused = false
             showConfirm = true
         } label: {
-            HStack {
-                Text(trimmedName.isEmpty ? "Enter a food to continue" : "Next: Expiration Date")
-                if !trimmedName.isEmpty { Image(systemName: "arrow.right") }
-            }
-            .font(.system(size: 17, weight: .bold, design: .rounded))
-            .foregroundStyle(trimmedName.isEmpty ? Style.secondary : Style.darkGreen)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(trimmedName.isEmpty ? Style.softGreen : Style.green, in: Capsule())
+            Text(trimmedName.isEmpty ? "Enter a Food to Continue" : "Next: Expiration Date")
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.chunky(.green))
         .disabled(trimmedName.isEmpty)
-        .padding(.horizontal, 20)
-        .padding(.vertical, 10)
-        .background(Style.background.opacity(0.95))
+        .padding(.horizontal, 18)
+        .padding(.top, 10)
+        .padding(.bottom, 4)
+        .background(Game.cream.opacity(0.97).ignoresSafeArea(edges: .bottom))
     }
 
     private func resetForm() {
+        keyboardFocused = false
         name = ""
         category = .other
         quantity = 1
@@ -132,19 +101,27 @@ struct AddFoodView: View {
         lastAutoFilledName = ""
     }
 
+    // MARK: - Scan
+
     private var scanSection: some View {
         Section {
             Button {
                 scanMessage = nil
                 showScanner = true
             } label: {
-                Label("Scan Barcode or Produce Sticker", systemImage: "barcode.viewfinder")
-                    .frame(maxWidth: .infinity)
+                Label {
+                    Text("Scan Barcode or Sticker")
+                } icon: {
+                    Image("IconScan")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 26, height: 26)
+                }
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.chunky(.orange))
             .disabled(!BarcodeScannerView.isSupported || isLookingUp)
             .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets())
+            .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
 
             if isLookingUp {
                 HStack(spacing: 10) {
@@ -154,11 +131,10 @@ struct AddFoodView: View {
             } else if let scanned {
                 VStack(alignment: .leading, spacing: 2) {
                     Label(scanned.name, systemImage: "checkmark.circle.fill")
-                        .font(.headline)
-                        .foregroundStyle(.green)
+                        .foregroundStyle(Color.brand)
                     if !scanned.detail.isEmpty {
                         Text(scanned.detail)
-                            .font(.subheadline)
+                            .font(.game(14, .medium))
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -186,9 +162,9 @@ struct AddFoodView: View {
         if !recent.isEmpty {
             Section {
                 if !usual.isEmpty {
-                    suggestionRow("Usually", icon: "repeat", items: usual, showsCount: true)
+                    suggestionRow("Usually", items: usual, showsCount: true)
                 }
-                suggestionRow("Recent", icon: "clock.arrow.circlepath", items: recent, showsCount: false)
+                suggestionRow("Recent", items: recent, showsCount: false)
             } header: {
                 Text("Quick Add")
             } footer: {
@@ -197,11 +173,11 @@ struct AddFoodView: View {
         }
     }
 
-    private func suggestionRow(_ title: String, icon: String,
+    private func suggestionRow(_ title: LocalizedStringKey,
                                items: [QuickAddSuggestion], showsCount: Bool) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(title, systemImage: icon)
-                .font(.caption.weight(.semibold))
+            Text(title)
+                .font(.game(13, .medium))
                 .foregroundStyle(.secondary)
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -228,22 +204,25 @@ struct AddFoodView: View {
             ? "×\(suggestion.quantity) · \(suggestion.timesAdded) times"
             : "×\(suggestion.quantity)\(price) · \(suggestion.lastAdded.formatted(.relative(presentation: .named)))"
 
-        return VStack(alignment: .leading, spacing: 2) {
-            Text("\(suggestion.category.addFoodIcon) \(suggestion.name)")
-                .font(.subheadline.weight(.semibold))
-                .lineLimit(1)
-            Text(detail)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
+        return HStack(spacing: 8) {
+            FreshlingAvatar(category: suggestion.category, name: suggestion.name, size: 30, showsStatus: false)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(suggestion.name)
+                    .font(.game(14, .semibold))
+                    .lineLimit(1)
+                Text(detail)
+                    .font(.game(11, .medium))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(isSelected ? Color.green.opacity(0.18) : Color(.secondarySystemBackground),
-                    in: RoundedRectangle(cornerRadius: 12))
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(isSelected ? Game.mint : Game.cream,
+                    in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(isSelected ? Color.green : .clear, lineWidth: 1.5)
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(isSelected ? Game.greenDark : Game.edge, lineWidth: 2)
         )
     }
 
@@ -258,35 +237,49 @@ struct AddFoodView: View {
         scanMessage = nil
     }
 
+    // MARK: - Details
+
     private var detailsSection: some View {
         Section("Details") {
             HStack {
                 TextField("Food name (e.g. Carrot)", text: $name)
                     .textInputAutocapitalization(.words)
+                    .focused($keyboardFocused)
+                    .submitLabel(.done)
+                    .onSubmit {
+                        keyboardFocused = false
+                    }
 
+                // Common ingredients list
                 if !presets.isEmpty {
                     Menu {
                         ForEach(presets) { preset in
-                            Button("\(preset.category.addFoodIcon) \(preset.name)") {
+                            Button {
                                 name = preset.name
+                            } label: {
+                                FreshMenuLabel(title: preset.name,
+                                               symbol: FoodIcon.symbol(for: preset.name, category: preset.category))
                             }
                         }
                     } label: {
-                        Image(systemName: "list.bullet.circle")
-                            .font(.title3)
+                        Image(systemName: "list.bullet")
                     }
+                    .accessibilityLabel("Common ingredients")
                 }
             }
 
             Picker("Category", selection: $category) {
                 ForEach(FoodCategory.allCases, id: \.self) { category in
-                    Text("\(category.addFoodIcon) \(category.rawValue)").tag(category)
+                    CategoryLabel(category: category)
+                        .tag(category)
                 }
             }
 
             DatePicker("Bought on", selection: $addedDate, in: ...Date(), displayedComponents: .date)
         }
     }
+
+    // MARK: - Amount & price
 
     private var amountSection: some View {
         Section {
@@ -298,6 +291,7 @@ struct AddFoodView: View {
                 Text(Locale.current.currencySymbol ?? "$").foregroundStyle(.secondary)
                 TextField("0.00", text: $priceText)
                     .keyboardType(.decimalPad)
+                    .focused($keyboardFocused)
                     .multilineTextAlignment(.trailing)
                     .frame(maxWidth: 100)
             }
@@ -318,12 +312,16 @@ struct AddFoodView: View {
         return " × \(unit)"
     }
 
+    // MARK: - Scanning
+
     private func handle(_ result: ScanResult) {
         scanned = nil
         isLookingUp = true
+
         Task {
             let food: ScannedFood?
             let code: String
+
             switch result {
             case .barcode(let value):
                 code = value
@@ -332,12 +330,14 @@ struct AddFoodView: View {
                 code = value
                 food = ProductLookup.lookup(plu: value)
             }
+
             isLookingUp = false
 
             if let food {
                 scanned = food
                 name = food.name
                 if food.category != .other { category = food.category }
+                FreshlingsHaptics.success()
             } else {
                 scanMessage = "Couldn't find code \(code). Type the name below."
             }

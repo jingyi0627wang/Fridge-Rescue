@@ -32,11 +32,7 @@ struct MainTabView: View {
     @StateObject private var router = AppRouter()
 
     // MARK: - Freshlings Colors
-    private let freshGreen = Color(
-        red: 0.53,
-        green: 0.89,
-        blue: 0.36
-    )
+    private let freshGreen = FL.leafDeep   // selected tab (design: leaf-deep)
 
     var body: some View {
 
@@ -47,7 +43,7 @@ struct MainTabView: View {
                 HomeView()
             }
             .tabItem {
-                Image(systemName: "refrigerator")
+                tabIcon("TabFridge", for: .fridge)
                 Text("Fridge")
             }
             .tag(AppTab.fridge)
@@ -57,7 +53,7 @@ struct MainTabView: View {
                 TodayView()
             }
             .tabItem {
-                Image(systemName: "clock.fill")
+                tabIcon("TabToday", for: .today)
                 Text("Today")
             }
             .tag(AppTab.today)
@@ -67,7 +63,7 @@ struct MainTabView: View {
                 AddFoodView(store: foodStore)
             }
             .tabItem {
-                Image(systemName: "plus.circle.fill")
+                tabIcon("TabAdd", for: .add)
                 Text("Add")
             }
             .tag(AppTab.add)
@@ -78,7 +74,7 @@ struct MainTabView: View {
             }
             .id(router.recipesStackID)
             .tabItem {
-                Image(systemName: "fork.knife")
+                tabIcon("TabRecipes", for: .recipes)
                 Text("Recipes")
             }
             .tag(AppTab.recipes)
@@ -88,13 +84,17 @@ struct MainTabView: View {
                 ImpactView()
             }
             .tabItem {
-                Image(systemName: "chart.bar.fill")
+                tabIcon("TabImpact", for: .impact)
                 Text("Impact")
             }
             .tag(AppTab.impact)
         }
         .environmentObject(router)
         .tint(freshGreen)
+        .sensoryFeedback(
+                   .selection,
+                   trigger: router.selectedTab
+               )
         // Undo bar for used / wasted / deleted / cooked actions.
         .overlay(alignment: .bottom) {
             if let toast = foodStore.toast {
@@ -104,6 +104,24 @@ struct MainTabView: View {
             }
         }
         .animation(.spring(duration: 0.35), value: foodStore.toast?.id)
+        // "Level up" celebration
+        .overlay {
+            if let level = foodStore.levelUp {
+                LevelUpView(level: level) {
+                    withAnimation { foodStore.levelUp = nil }
+                }
+                .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: foodStore.levelUp)
+    }
+
+    // MARK: - Tab icons
+    // Freshlings drawings from Assets.xcassets/Tabs (28pt, 1x/2x/3x).
+    // Selected tab = full color, other tabs = the gray "Inactive" version.
+    private func tabIcon(_ name: String, for tab: AppTab) -> Image {
+        let asset = router.selectedTab == tab ? name : name + "Inactive"
+        return Image(asset).renderingMode(.original)
     }
 }
 
@@ -113,4 +131,5 @@ struct MainTabView: View {
 #Preview {
     MainTabView()
         .environmentObject(FoodStore())
+        .environmentObject(MyRecipeStore())
 }

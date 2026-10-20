@@ -89,6 +89,23 @@ enum MealDBService {
         return OnlineResult(recipes: sorted, isOffline: false)
     }
 
+    // MARK: Search by name (Recipes tab search bar)
+
+    /// Online recipes whose name matches, e.g. "pancake". Empty if offline.
+    ///   GET /search.php?s=pancake
+    static func search(_ query: String) async -> [Recipe] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.count >= 2,
+              let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: baseURL + "search.php?s=" + encoded),
+              let data = try? await download(url),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let meals = json["meals"] as? [[String: Any]] else {
+            return []
+        }
+        return meals.prefix(12).compactMap { makeRecipe(from: $0) }
+    }
+
     // MARK: Step 1 — meals that use an ingredient
 
     private static func meals(using foodName: String) async throws -> [MealSummary] {
@@ -236,7 +253,7 @@ enum MealDBService {
         case "dessert": return "🍰"
         case "side": return "🥔"
         case "starter": return "🥟"
-        default: return "🍽️"
+        default: return ""   // no emoji → the recipe tile shows a fork & knife icon
         }
     }
 

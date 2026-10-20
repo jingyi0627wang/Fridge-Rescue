@@ -1,0 +1,5385 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@  ·  ×%lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@  ·  ×%2$lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@  ·  ×%2$lld"
+          }
+        }
+      }
+    },
+    "%@ · %@ · %lld in your fridge" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@ · 冰箱里有 %3$lld 种"
+          }
+        }
+      }
+    },
+    "%@ · %lld quests left" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · 还剩 %2$lld 个任务"
+          }
+        }
+      }
+    },
+    "%@ · 1 quest left" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · 还剩 1 个任务"
+          }
+        }
+      }
+    },
+    "%@ · still good?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · 还能吃吗？"
+          }
+        }
+      }
+    },
+    "%@ %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@ and %@ are almost out of HP. Can you save them today?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 和 %2$@ 的 HP 快没了，今天能救救它们吗？"
+          }
+        }
+      }
+    },
+    "%@ is almost out of HP. Can you save it today?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 的 HP 快没了，今天能救救它吗？"
+          }
+        }
+      }
+    },
+    "%@ should be eaten this week. Want a recipe idea?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 最好这周吃掉。要不要看看菜谱？"
+          }
+        }
+      }
+    },
+    "%@, %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@，%2$@"
+          }
+        }
+      }
+    },
+    "%@, %lld left" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@，还剩 %2$lld 个"
+          }
+        }
+      }
+    },
+    "%@, %lld things to use up" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@，有 %2$lld 样要吃掉"
+          }
+        }
+      }
+    },
+    "%@, 1 thing to use up" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@，有 1 样要吃掉"
+          }
+        }
+      }
+    },
+    "%@, all caught up" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@，都处理好了"
+          }
+        }
+      }
+    },
+    "%@, locked" : {
+
+    },
+    "%@, unlocked" : {
+
+    },
+    "%@: %@." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@：%2$@。"
+          }
+        }
+      }
+    },
+    "%lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
+    },
+    "%lld / %lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "%lld %@ attention" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld %2$@ attention"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要关注的食物：%1$lld %2$@"
+          }
+        }
+      }
+    },
+    "%lld Freshlings" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 个食物伙伴"
+          }
+        }
+      }
+    },
+    "%lld Freshlings · %lld need rescuing" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld 个鲜灵 · %2$lld 个需要拯救"
+          }
+        }
+      }
+    },
+    "%lld Freshlings · all happy" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 个鲜灵 · 都很开心"
+          }
+        }
+      }
+    },
+    "%lld items to check" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有 %lld 种食物需要确认"
+          }
+        }
+      }
+    },
+    "%lld items, %lld to use soon" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld 样食物，%2$lld 样要尽快吃"
+          }
+        }
+      }
+    },
+    "%lld items, all fresh" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 样食物，都很新鲜"
+          }
+        }
+      }
+    },
+    "%lld min" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 分钟"
+          }
+        }
+      }
+    },
+    "%lld need some love!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 种食物需要关注！"
+          }
+        }
+      }
+    },
+    "%lld of %lld" : {
+      "comment" : "A number that represents the selected quantity of an item. The number is followed by a slash and the total available quantity.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "%lld of %lld in your fridge" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱里有 %1$lld/%2$lld 种"
+          }
+        }
+      }
+    },
+    "%lld of %lld in your fridge · %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱里有 %1$lld/%2$lld 种 · %3$@"
+          }
+        }
+      }
+    },
+    "%lld of %lld ready" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已备好 %1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "%lld percent" : {
+      "comment" : "A value that describes the freshness of a food item.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 百分比"
+          }
+        }
+      }
+    },
+    "%lld-day streak" : {
+      "comment" : "A title that shows the length of a user's food rescue streak. The argument is the number of days in the streak.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连续 %lld 天"
+          }
+        }
+      }
+    },
+    "%lld." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld."
+          }
+        }
+      }
+    },
+    "%lld/%lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "%lld/%lld in your fridge" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld in your fridge"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱中已有 %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "%lld/%lld ready" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已备好 %1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "%lld/%lld READY" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld READY"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已准备 %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "•" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "•"
+          }
+        }
+      }
+    },
+    "+%lld XP" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld 经验"
+          }
+        }
+      }
+    },
+    "+%lld XP available" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可获得 +%lld 经验"
+          }
+        }
+      }
+    },
+    "+1 day" : {
+      "comment" : "A button that adds one day to the expiration date.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "增加 1 天"
+          }
+        }
+      }
+    },
+    "+1 week" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "增加 1 周"
+          }
+        }
+      }
+    },
+    "$%lld" : {
+      "comment" : "A label showing the target value for a goal. The argument is the target value.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "$%lld"
+          }
+        }
+      }
+    },
+    "0 HP" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0 HP"
+          }
+        }
+      }
+    },
+    "0.00" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0.00"
+          }
+        }
+      }
+    },
+    "0/1" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0/1"
+          }
+        }
+      }
+    },
+    "1 day" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 天"
+          }
+        }
+      }
+    },
+    "1 item to check" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有 1 种食物需要确认"
+          }
+        }
+      }
+    },
+    "1-day streak" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连续 1 天"
+          }
+        }
+      }
+    },
+    "1. Pick a goal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 选择目标"
+          }
+        }
+      }
+    },
+    "2 days" : {
+      "comment" : "A label for a 2-day option in the settings.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 天"
+          }
+        }
+      }
+    },
+    "2. Choose your target" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. 设定目标值"
+          }
+        }
+      }
+    },
+    "3 days" : {
+      "comment" : "A label displayed in the settings view.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3 天"
+          }
+        }
+      }
+    },
+    "3-Day Streak" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连续 3 天"
+          }
+        }
+      }
+    },
+    "5 days" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 天"
+          }
+        }
+      }
+    },
+    "7 days" : {
+      "comment" : "A label for a 7-day reminder selection.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7 天"
+          }
+        }
+      }
+    },
+    "7-Day Streak" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连续 7 天"
+          }
+        }
+      }
+    },
+    "10 Rescued" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救 10 个"
+          }
+        }
+      }
+    },
+    "50 Rescued" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救 50 个"
+          }
+        }
+      }
+    },
+    "A friendly food-management app to help reduce food waste." : {
+      "comment" : "A description of the app.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一款友好的食品管理应用，帮助减少食物浪费。"
+          }
+        }
+      }
+    },
+    "A little care keeps your food happy." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用一点关心，让食物保持好状态。"
+          }
+        }
+      }
+    },
+    "A little recipe to save something fresh!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用一道小菜谱，拯救新鲜食材！"
+          }
+        }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关于"
+          }
+        }
+      }
+    },
+    "Account" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账号"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "comment" : "A tab in the app.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加"
+          }
+        }
+      }
+    },
+    "Add a Freshling" : {
+      "comment" : "A description of the purpose of the Add Food screen.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加食物伙伴"
+          }
+        }
+      }
+    },
+    "Add a photo of your dish" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加菜品照片"
+          }
+        }
+      }
+    },
+    "Add food" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加食物"
+          }
+        }
+      }
+    },
+    "Add Food" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加食物"
+          }
+        }
+      }
+    },
+    "ADD FOOD" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加食物"
+          }
+        }
+      }
+    },
+    "Add food and it becomes a Freshling. Keep its HP up by eating it in time." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加的食物会变成鲜灵。及时吃掉，别让它的 HP 掉光！"
+          }
+        }
+      }
+    },
+    "Add food to keep track of when it expires." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加食物，随时掌握保质期。"
+          }
+        }
+      }
+    },
+    "Add food to start growing your Freshlings garden." : {
+      "comment" : "A description of the benefits of adding food to your fridge.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加食物，让你的 Freshlings 小花园成长起来。"
+          }
+        }
+      }
+    },
+    "Add food to your fridge to get recipe ideas, or search above." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "往冰箱里添加食物来获得菜谱推荐，或在上方搜索。"
+          }
+        }
+      }
+    },
+    "Add food to your fridge to get recipe ideas." : {
+      "comment" : "A description of the empty state when there are no recipes.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "向冰箱添加食材，即可获取菜谱灵感。"
+          }
+        }
+      }
+    },
+    "Add from My Fridge" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从我的冰箱添加"
+          }
+        }
+      }
+    },
+    "Add Ingredient" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加食材"
+          }
+        }
+      }
+    },
+    "Add my recipe" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加我的菜谱"
+          }
+        }
+      }
+    },
+    "Add My Recipe" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加我的菜谱"
+          }
+        }
+      }
+    },
+    "Add Step" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加步骤"
+          }
+        }
+      }
+    },
+    "Add to Fridge" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加入冰箱"
+          }
+        }
+      }
+    },
+    "Add to Fridge!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放进冰箱！"
+          }
+        }
+      }
+    },
+    "Add what you bought and Freshlings will tell you what to eat first." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加你买的食物，Freshlings 会告诉你先吃哪个。"
+          }
+        }
+      }
+    },
+    "Add your first freshling" : {
+      "comment" : "A button that adds a new pet.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加第一个食物伙伴"
+          }
+        }
+      }
+    },
+    "Add Your First Freshling" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加第一个鲜灵"
+          }
+        }
+      }
+    },
+    "Added by scan" : {
+      "comment" : "A label that indicates that a food item was added by scanning a barcode.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通过扫码添加"
+          }
+        }
+      }
+    },
+    "All" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全部"
+          }
+        }
+      }
+    },
+    "All Food" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全部食物"
+          }
+        }
+      }
+    },
+    "All fresh and happy!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所有食物都很新鲜！"
+          }
+        }
+      }
+    },
+    "All quests done! Every Freshling is happy and fresh." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "任务全部完成！所有鲜灵都开心又新鲜。"
+          }
+        }
+      }
+    },
+    "Already expired %@ ago" : {
+      "comment" : "A label that indicates that a food item has already expired. The argument is the number of days.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已过期 %@"
+          }
+        }
+      }
+    },
+    "Already have an account? Log in" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已有账号？登录"
+          }
+        }
+      }
+    },
+    "Amount" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用量"
+          }
+        }
+      }
+    },
+    "Amount & Price" : {
+      "comment" : "A heading for the amount and price of a food item.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数量与价格"
+          }
+        }
+      }
+    },
+    "App Language" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用语言"
+          }
+        }
+      }
+    },
+    "Ate %lld · +%lld XP" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "吃掉 %1$lld 个 · +%2$lld 经验"
+          }
+        }
+      }
+    },
+    "Ate 1" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "吃了 1 个"
+          }
+        }
+      }
+    },
+    "Ate 1 of %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "吃掉 1 个（共 %lld 个）"
+          }
+        }
+      }
+    },
+    "Ate it" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "吃掉了"
+          }
+        }
+      }
+    },
+    "Awesome!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "太棒了！"
+          }
+        }
+      }
+    },
+    "Back" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "返回"
+          }
+        }
+      }
+    },
+    "Back to Fridge" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "返回冰箱"
+          }
+        }
+      }
+    },
+    "Badges" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "徽章"
+          }
+        }
+      }
+    },
+    "Banana Rescue" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "香蕉拯救"
+          }
+        }
+      }
+    },
+    "Bought" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "购买日期"
+          }
+        }
+      }
+    },
+    "Bought on" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "购买日期"
+          }
+        }
+      }
+    },
+    "Camera" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "相机"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        }
+      }
+    },
+    "Carbon saved" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "减少的碳排放"
+          }
+        }
+      }
+    },
+    "Category" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "类别"
+          }
+        }
+      }
+    },
+    "Change Goal" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更改目标"
+          }
+        }
+      }
+    },
+    "CHECK" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "检查"
+          }
+        }
+      }
+    },
+    "Check on %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "检查 %@"
+          }
+        }
+      }
+    },
+    "Check On These" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "检查一下"
+          }
+        }
+      }
+    },
+    "Choose the language used in Freshlings." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择 Freshlings 的显示语言。"
+          }
+        }
+      }
+    },
+    "Clear" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除"
+          }
+        }
+      }
+    },
+    "Clear Fridge & History" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清空冰箱与历史记录"
+          }
+        }
+      }
+    },
+    "Clear search" : {
+      "comment" : "A button to clear the search field.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除搜索"
+          }
+        }
+      }
+    },
+    "Clear your fridge and history?" : {
+      "comment" : "A confirmation dialog asking the user to clear their fridge and history.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定清空冰箱与历史记录吗？"
+          }
+        }
+      }
+    },
+    "CO₂ saved" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "减少的 CO₂"
+          }
+        }
+      }
+    },
+    "CO₂e per kg × weight of one unit × quantity" : {
+      "comment" : "A description of the calculation of CO₂ emissions.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每千克的 CO₂e × 单位重量 × 数量"
+          }
+        }
+      }
+    },
+    "CO₂e per unit" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每份 CO₂e"
+          }
+        }
+      }
+    },
+    "CO₂e saved" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "减少的 CO₂e"
+          }
+        }
+      }
+    },
+    "Coins saved" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "省下的金币"
+          }
+        }
+      }
+    },
+    "Coming soon" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "即将推出"
+          }
+        }
+      }
+    },
+    "Common ingredients" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "常见食材"
+          }
+        }
+      }
+    },
+    "Community" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "社区"
+          }
+        }
+      }
+    },
+    "Completed this week!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本周已完成！"
+          }
+        }
+      }
+    },
+    "Confirm Date" : {
+      "comment" : "A section that lets the user confirm the expiration date of a food item.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确认日期"
+          }
+        }
+      }
+    },
+    "Continue with %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用 %@ 继续"
+          }
+        }
+      }
+    },
+    "Cook Something" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "做点什么"
+          }
+        }
+      }
+    },
+    "Cook with %@ before it expires" : {
+      "comment" : "A description of a button that opens a screen to find recipes for a given food item.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "趁 %@ 过期前做道菜"
+          }
+        }
+      }
+    },
+    "Cook your Freshlings before they run out of HP" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在鲜灵 HP 耗尽前把它们做成菜"
+          }
+        }
+      }
+    },
+    "Cooking uses" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "烹饪用量"
+          }
+        }
+      }
+    },
+    "Cooking uses %lld of %lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "做菜会用掉 %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "Daily Quests" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每日任务"
+          }
+        }
+      }
+    },
+    "Dates" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日期"
+          }
+        }
+      }
+    },
+    "Days in a row you used food." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连续吃掉食物的天数。"
+          }
+        }
+      }
+    },
+    "Days in a row you used food. Keep it going!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连续使用食材的天数。继续保持！"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除"
+          }
+        }
+      }
+    },
+    "Delete Item" : {
+      "comment" : "A button that deletes an item.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除食物"
+          }
+        }
+      }
+    },
+    "Delete Recipe" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除菜谱"
+          }
+        }
+      }
+    },
+    "Delete this recipe?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除这道菜谱？"
+          }
+        }
+      }
+    },
+    "Demo & Testing" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "演示与测试"
+          }
+        }
+      }
+    },
+    "Describe this step" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "描述这一步"
+          }
+        }
+      }
+    },
+    "Details" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "详细信息"
+          }
+        }
+      }
+    },
+    "Difficulty" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "难度"
+          }
+        }
+      }
+    },
+    "Discover" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发现"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "comment" : "A button that dismisses the keyboard.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
+          }
+        }
+      }
+    },
+    "Done this week" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本周已完成"
+          }
+        }
+      }
+    },
+    "Easy" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "简单"
+          }
+        }
+      }
+    },
+    "Eat first!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先吃这些！"
+          }
+        }
+      }
+    },
+    "Eat this week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本周吃掉"
+          }
+        }
+      }
+    },
+    "Eat your spinach, lettuce or kale in time." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "及时吃掉菠菜、生菜或羽衣甘蓝。"
+          }
+        }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑"
+          }
+        }
+      }
+    },
+    "Edit Food" : {
+      "comment" : "The title of the screen that lets you edit a food item.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑食物"
+          }
+        }
+      }
+    },
+    "Egg-cellent Week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鸡蛋周"
+          }
+        }
+      }
+    },
+    "Emissions per kg: Poore, J. & Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science, 360(6392), 987–992." : {
+      "comment" : "A citation for the source of the CO₂e per kg values.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每千克食物的排放数据来源：Poore, J. & Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science, 360(6392), 987–992."
+          }
+        }
+      }
+    },
+    "English" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "英语"
+          }
+        }
+      }
+    },
+    "Enter a food to continue" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请输入食物名称以继续"
+          }
+        }
+      }
+    },
+    "Enter a Food to Continue" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先输入食物"
+          }
+        }
+      }
+    },
+    "Enter the price of ONE %@. Money saved = price × quantity." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请输入每 %@ 的价格。节省金额 = 单价 × 数量。"
+          }
+        }
+      }
+    },
+    "Everything is looking fresh!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所有食物看起来都很新鲜！"
+          }
+        }
+      }
+    },
+    "Example: 1 lb pack of chicken breast = 9.87 kg CO₂e/kg × 0.45 kg ≈ 4.4 kg CO₂e" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "例如：1 磅鸡胸肉 = 9.87 kg CO₂e/kg × 0.45 kg ≈ 4.4 kg CO₂e"
+          }
+        }
+      }
+    },
+    "Expiration Date" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "过期日期"
+          }
+        }
+      }
+    },
+    "Expiration reminders" : {
+      "comment" : "A toggle that enables or disables expiration reminders.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "过期提醒"
+          }
+        }
+      }
+    },
+    "Expired" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已过期"
+          }
+        }
+      }
+    },
+    "Expires" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "过期日期"
+          }
+        }
+      }
+    },
+    "Expires in %@" : {
+      "comment" : "A label that indicates that a food item will expire in a given number of days.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还有 %@ 过期"
+          }
+        }
+      }
+    },
+    "Expires in %@ — eat it soon!" : {
+      "comment" : "A label that warns the user that a food item will expire in a few days.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还有 %@ 过期——尽快食用！"
+          }
+        }
+      }
+    },
+    "Expires in %@. Use it soon." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@后过期，请尽快食用。"
+          }
+        }
+      }
+    },
+    "Expires on" : {
+      "comment" : "A label for the date picker that lets the user select an expiration date.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "过期日期"
+          }
+        }
+      }
+    },
+    "Expires today" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天过期"
+          }
+        }
+      }
+    },
+    "Explore recipes" : {
+      "comment" : "A button that opens a new screen to explore recipes.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "探索菜谱"
+          }
+        }
+      }
+    },
+    "Fills in the name, amount and the price you paid last time. You can still change them." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动填入上次的名称、数量和购买单价，你仍然可以修改。"
+          }
+        }
+      }
+    },
+    "Filter by category" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按分类筛选"
+          }
+        }
+      }
+    },
+    "Find Recipes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查找菜谱"
+          }
+        }
+      }
+    },
+    "Find recipes with %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查找使用 %@ 的菜谱"
+          }
+        }
+      }
+    },
+    "Find Recipes with %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查找用 %@ 做的菜"
+          }
+        }
+      }
+    },
+    "Finding more recipes online…" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在网上寻找更多菜谱…"
+          }
+        }
+      }
+    },
+    "Finish a carton of milk before it expires." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在过期前喝完一盒牛奶。"
+          }
+        }
+      }
+    },
+    "Finished with It?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "吃完或丢掉了？"
+          }
+        }
+      }
+    },
+    "First Rescue" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第一次拯救"
+          }
+        }
+      }
+    },
+    "Food Details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物详情"
+          }
+        }
+      }
+    },
+    "Food History" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物记录"
+          }
+        }
+      }
+    },
+    "Food Information" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食品信息"
+          }
+        }
+      }
+    },
+    "Food name" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物名称"
+          }
+        }
+      }
+    },
+    "Food name (e.g. Carrot)" : {
+      "comment" : "A placeholder for a text field.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物名称（例如：胡萝卜）"
+          }
+        }
+      }
+    },
+    "Food records are stored locally and do not automatically sync across devices. Removing this app may remove its local records." : {
+      "comment" : "A description of how the app stores user data.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食品记录保存在本机，不会自动同步到其他设备。删除应用可能会同时删除本地记录。"
+          }
+        }
+      }
+    },
+    "Food rescued vs. lost each week." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每周拯救与失去的食物。"
+          }
+        }
+      }
+    },
+    "Food that expires within a week will show up here." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一周内过期的食物会显示在这里。"
+          }
+        }
+      }
+    },
+    "Food you mark as used or thrown away shows up here." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标记为已吃掉或已丢弃的食物会显示在这里。"
+          }
+        }
+      }
+    },
+    "For each item you used:" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "对于每件已使用的食物："
+          }
+        }
+      }
+    },
+    "Forgot Password?" : {
+      "comment" : "A button that displays a sheet for resetting a user's password.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "忘记密码？"
+          }
+        }
+      }
+    },
+    "Forgot your password?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "忘记密码了吗？"
+          }
+        }
+      }
+    },
+    "Fresh" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新鲜"
+          }
+        }
+      }
+    },
+    "Freshling Legend" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鲜灵传奇"
+          }
+        }
+      }
+    },
+    "Freshlings" : {
+      "comment" : "The title of the app.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freshlings"
+          }
+        }
+      }
+    },
+    "FRESHLINGS KITCHEN" : {
+      "comment" : "The name of the app.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FRESHLINGS 厨房"
+          }
+        }
+      }
+    },
+    "Freshlings rescued" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救的鲜灵"
+          }
+        }
+      }
+    },
+    "Freshness" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新鲜程度"
+          }
+        }
+      }
+    },
+    "FRESHNESS" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新鲜程度"
+          }
+        }
+      }
+    },
+    "Freshness Hero" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新鲜英雄"
+          }
+        }
+      }
+    },
+    "Freshness HP" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新鲜度 HP"
+          }
+        }
+      }
+    },
+    "Fridge" : {
+      "comment" : "A label displayed in the tab bar for the fridge.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱"
+          }
+        }
+      }
+    },
+    "Fridge Rescuer" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱救援员"
+          }
+        }
+      }
+    },
+    "Goal" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目标"
+          }
+        }
+      }
+    },
+    "Happy & fresh" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开心又新鲜"
+          }
+        }
+      }
+    },
+    "Hard" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "困难"
+          }
+        }
+      }
+    },
+    "Help rescue %@!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一起拯救 %@！"
+          }
+        }
+      }
+    },
+    "History" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "历史记录"
+          }
+        }
+      }
+    },
+    "How many: %lld of %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数量：%1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "How many?" : {
+      "comment" : "A label displayed above the count picker.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要多少？"
+          }
+        }
+      }
+    },
+    "How we calculate" : {
+      "comment" : "A label for the button that shows more information about the impact calculation.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "计算方式"
+          }
+        }
+      }
+    },
+    "How We Calculate" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "计算方式"
+          }
+        }
+      }
+    },
+    "HP" : {
+      "comment" : "A label displayed under the health percentage of a food item.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HP"
+          }
+        }
+      }
+    },
+    "HP %lld/%lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HP %1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "I ate it!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我吃掉了！"
+          }
+        }
+      }
+    },
+    "I ate it! +%lld XP" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我吃掉了！+%lld 经验"
+          }
+        }
+      }
+    },
+    "I Cooked This" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我做了这道菜"
+          }
+        }
+      }
+    },
+    "I Cooked This!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我做了这道菜！"
+          }
+        }
+      }
+    },
+    "I Cooked This! +%lld XP" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我做了这道菜！+%lld 经验"
+          }
+        }
+      }
+    },
+    "I Used It" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我已使用"
+          }
+        }
+      }
+    },
+    "Icon" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "图标"
+          }
+        }
+      }
+    },
+    "Impact" : {
+      "comment" : "A title for the screen.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "环保成果"
+          }
+        }
+      }
+    },
+    "Ingredient" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食材"
+          }
+        }
+      }
+    },
+    "Ingredients" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食材"
+          }
+        }
+      }
+    },
+    "Ingredients that match your fridge food help this recipe show up as a rescue idea." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "和冰箱食物匹配的食材会让这道菜出现在拯救推荐里。"
+          }
+        }
+      }
+    },
+    "Items" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "物品"
+          }
+        }
+      }
+    },
+    "Items used" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已使用食物"
+          }
+        }
+      }
+    },
+    "Items used vs. wasted each week." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每周已使用与浪费的食物数量。"
+          }
+        }
+      }
+    },
+    "Items wasted" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已浪费"
+          }
+        }
+      }
+    },
+    "Keep your food fresh and happy!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "让食物保持新鲜好状态！"
+          }
+        }
+      }
+    },
+    "Key" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标识"
+          }
+        }
+      }
+    },
+    "Language / 语言" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "语言 / Language"
+          }
+        }
+      }
+    },
+    "Last 6 weeks" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近 6 周"
+          }
+        }
+      }
+    },
+    "Last 6 Weeks" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近 6 周"
+          }
+        }
+      }
+    },
+    "Last-Minute Hero" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最后关头英雄"
+          }
+        }
+      }
+    },
+    "Leaf Helper" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "小叶帮手"
+          }
+        }
+      }
+    },
+    "Leafy Greens Week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "绿叶菜周"
+          }
+        }
+      }
+    },
+    "Less to buy." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要买的更少。"
+          }
+        }
+      }
+    },
+    "Let us know what happened so your Impact stays accurate." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "告诉我们这些食物的去向，让你的成果数据更准确。"
+          }
+        }
+      }
+    },
+    "Let's cook!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始做饭吧！"
+          }
+        }
+      }
+    },
+    "Let's save some food!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一起拯救食物吧！"
+          }
+        }
+      }
+    },
+    "Let's use %@!" : {
+      "comment" : "A title that changes depending on whether the user has selected a fridge item to focus on.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "来用掉 %@ 吧！"
+          }
+        }
+      }
+    },
+    "Level %lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "等级 %lld"
+          }
+        }
+      }
+    },
+    "Level %lld · %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "等级 %1$lld · %2$@"
+          }
+        }
+      }
+    },
+    "Level up!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升级啦！"
+          }
+        }
+      }
+    },
+    "LEVEL UP!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升级啦！"
+          }
+        }
+      }
+    },
+    "Library" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "相册"
+          }
+        }
+      }
+    },
+    "Like" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "点赞"
+          }
+        }
+      }
+    },
+    "Load Demo Food" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "载入示例食物"
+          }
+        }
+      }
+    },
+    "Load Demo Food (6)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加载演示食物（6 种）"
+          }
+        }
+      }
+    },
+    "Load Lots of Food (60)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加载大量测试食物（60 种）"
+          }
+        }
+      }
+    },
+    "Locked: %@ to unlock it." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未解锁：%@ 即可解锁。"
+          }
+        }
+      }
+    },
+    "Log in" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登录"
+          }
+        }
+      }
+    },
+    "Log Out" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "退出登录"
+          }
+        }
+      }
+    },
+    "Log out of Freshlings?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要退出 Freshlings 吗？"
+          }
+        }
+      }
+    },
+    "Looking up product…" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在查询商品…"
+          }
+        }
+      }
+    },
+    "Lost" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "失去的"
+          }
+        }
+      }
+    },
+    "Lv %lld" : {
+
+    },
+    "Make your fridge work for you." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "让你的冰箱更懂你。"
+          }
+        }
+      }
+    },
+    "Mark %lld as Thrown Away" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标记 %lld 个已丢弃"
+          }
+        }
+      }
+    },
+    "Mark %lld as Used" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标记 %lld 个已吃掉"
+          }
+        }
+      }
+    },
+    "Mark as Thrown Away" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标记为已丢弃"
+          }
+        }
+      }
+    },
+    "Mark as Used" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标记为已吃掉"
+          }
+        }
+      }
+    },
+    "Mark food as used to see the money and CO₂ you save." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "把食物标记为已吃掉，就能看到省下的钱和减少的 CO₂。"
+          }
+        }
+      }
+    },
+    "Medium" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中等"
+          }
+        }
+      }
+    },
+    "Milk Mission" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "牛奶任务"
+          }
+        }
+      }
+    },
+    "Money saved" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "节省金额"
+          }
+        }
+      }
+    },
+    "More Ideas" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更多灵感"
+          }
+        }
+      }
+    },
+    "My Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的数据"
+          }
+        }
+      }
+    },
+    "My Freshlings" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的鲜灵"
+          }
+        }
+      }
+    },
+    "MY FRESHLINGS" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的 FRESHLINGS"
+          }
+        }
+      }
+    },
+    "My Fridge" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的冰箱"
+          }
+        }
+      }
+    },
+    "My Impact" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的成果"
+          }
+        }
+      }
+    },
+    "My Recipes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的菜谱"
+          }
+        }
+      }
+    },
+    "New" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新建"
+          }
+        }
+      }
+    },
+    "New Recipe" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新菜谱"
+          }
+        }
+      }
+    },
+    "Next: Expiration Date" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下一步：过期日期"
+          }
+        }
+      }
+    },
+    "Nice! You rescued %lld today. Every Freshling is happy." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "太棒了！你今天拯救了 %lld 个。大家都很开心。"
+          }
+        }
+      }
+    },
+    "No Freshlings found" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有找到鲜灵"
+          }
+        }
+      }
+    },
+    "No Freshlings yet" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还没有鲜灵"
+          }
+        }
+      }
+    },
+    "No impact yet" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂无环保成果"
+          }
+        }
+      }
+    },
+    "No Impact Yet" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还没有成果"
+          }
+        }
+      }
+    },
+    "No matches" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有匹配结果"
+          }
+        }
+      }
+    },
+    "No matching food" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有匹配的食物"
+          }
+        }
+      }
+    },
+    "No Matching Food" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有符合的食物"
+          }
+        }
+      }
+    },
+    "No posts match that search." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有匹配的帖子。"
+          }
+        }
+      }
+    },
+    "No recipes found for this food. Try another ingredient or All." : {
+      "comment" : "A description of the empty state when there are no recipes found for the selected ingredients.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有找到适合这种食物的菜谱。试试其他食材或选择“全部”。"
+          }
+        }
+      }
+    },
+    "No recipes found for this food. Try another ingredient or search above." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有找到用这个食物的菜谱，换个食材或在上方搜索。"
+          }
+        }
+      }
+    },
+    "No recipes found for this food. Try another ingredient." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有找到用这个食物的菜谱，试试别的食材。"
+          }
+        }
+      }
+    },
+    "No Recipes Yet" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还没有菜谱"
+          }
+        }
+      }
+    },
+    "No recipes yet!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂无菜谱！"
+          }
+        }
+      }
+    },
+    "None of your recipes match that search." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的菜谱里没有匹配的。"
+          }
+        }
+      }
+    },
+    "Nothing Here Yet" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这里还没有内容"
+          }
+        }
+      }
+    },
+    "Nothing here yet." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这里还没有内容。"
+          }
+        }
+      }
+    },
+    "Nothing in here yet" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱里还没有东西"
+          }
+        }
+      }
+    },
+    "Nothing matches" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有匹配的食物"
+          }
+        }
+      }
+    },
+    "Nothing needs your attention right now." : {
+      "comment" : "A description of the state when the user has no urgent items.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目前没有需要关注的食物。"
+          }
+        }
+      }
+    },
+    "Nothing rescued yet." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还没有拯救任何食物。"
+          }
+        }
+      }
+    },
+    "Nothing to Use Up Today" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天没有需要吃完的食物"
+          }
+        }
+      }
+    },
+    "Nothing urgent today!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天没有紧急需要处理的食物！"
+          }
+        }
+      }
+    },
+    "Nothing used yet." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还没有已使用的食物。"
+          }
+        }
+      }
+    },
+    "Offline: showing built-in recipes only" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当前离线，仅显示内置菜谱"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定"
+          }
+        }
+      }
+    },
+    "Packaged food: scan the barcode. Fruit & vegetables: scan the 4-digit number on the sticker." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "包装食品：扫描条形码。水果和蔬菜：扫描贴纸上的四位数字。"
+          }
+        }
+      }
+    },
+    "Page %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Page %1$lld of %2$lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第 %1$lld 页，共 %2$lld 页"
+          }
+        }
+      }
+    },
+    "Past Its Date" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已过期"
+          }
+        }
+      }
+    },
+    "Past their date" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已过期"
+          }
+        }
+      }
+    },
+    "Past Their Date" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已过期"
+          }
+        }
+      }
+    },
+    "Pick a food that expires soon, or browse everything." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选一个快过期的食物，或浏览全部菜谱。"
+          }
+        }
+      }
+    },
+    "Pick a goal: rescue more, waste less, or save money." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选个目标：多拯救、少浪费，或者省钱。"
+          }
+        }
+      }
+    },
+    "Planet Pal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地球好朋友"
+          }
+        }
+      }
+    },
+    "Point at a barcode, or the number sticker on fruit and vegetables" : {
+      "comment" : "A description of how to scan a barcode.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将摄像头对准条形码，或水果、蔬菜贴纸上的数字"
+          }
+        }
+      }
+    },
+    "Preferences are saved on this device. Notification scheduling is not yet connected to these settings." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "偏好设置保存在本机。通知发送时间目前尚未与这些设置关联。"
+          }
+        }
+      }
+    },
+    "Press and hold a Freshling for quick actions." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "长按鲜灵可以快速操作。"
+          }
+        }
+      }
+    },
+    "Price per unit" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "单位价格"
+          }
+        }
+      }
+    },
+    "Price per unit × quantity, for every item you used instead of throwing away." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "对于每件使用而非丢弃的食物：单位价格 × 数量。"
+          }
+        }
+      }
+    },
+    "Qty %lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数量 %lld"
+          }
+        }
+      }
+    },
+    "Qty %lld · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Qty %1$lld · %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数量 %1$lld · %2$@"
+          }
+        }
+      }
+    },
+    "Quantity" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数量"
+          }
+        }
+      }
+    },
+    "Quantity: %lld" : {
+      "comment" : "A stepper that lets the user select the quantity of a food item.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数量：%lld"
+          }
+        }
+      }
+    },
+    "Quantity: %lld%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Quantity: %1$lld%2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数量：%1$lld%2$@"
+          }
+        }
+      }
+    },
+    "QUEST #%lld · %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "任务 #%1$lld · %2$@"
+          }
+        }
+      }
+    },
+    "Quests" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "任务"
+          }
+        }
+      }
+    },
+    "Quick Add" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快速添加"
+          }
+        }
+      }
+    },
+    "Rainbow Eater" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "彩虹吃货"
+          }
+        }
+      }
+    },
+    "Recent" : {
+
+    },
+    "Recipe" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "菜谱"
+          }
+        }
+      }
+    },
+    "Recipe Book" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "菜谱书"
+          }
+        }
+      }
+    },
+    "Recipe from TheMealDB" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "菜谱来源：TheMealDB"
+          }
+        }
+      }
+    },
+    "Recipe Ideas" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "菜谱推荐"
+          }
+        }
+      }
+    },
+    "Recipe name" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "菜谱名称"
+          }
+        }
+      }
+    },
+    "Recipes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "菜谱"
+          }
+        }
+      }
+    },
+    "Recipes for the food already in your fridge." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用冰箱现有食材制作的菜谱。"
+          }
+        }
+      }
+    },
+    "Recipes that use %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用到 %@ 的菜谱"
+          }
+        }
+      }
+    },
+    "Recipes that use %@ · %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用到 %1$@ 的菜谱 · %2$@"
+          }
+        }
+      }
+    },
+    "Recipes with photos are from TheMealDB.com" : {
+      "comment" : "A description of the source of the recipe images.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "带图片的菜谱来自 TheMealDB.com"
+          }
+        }
+      }
+    },
+    "Recipes with photos are from TheMealDB.com." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "带图片的菜谱来自 TheMealDB.com。"
+          }
+        }
+      }
+    },
+    "Remind me before" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提前提醒"
+          }
+        }
+      }
+    },
+    "Reminder preferences" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提醒设置"
+          }
+        }
+      }
+    },
+    "Reminders are off. You can still check the Today tab." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提醒已关闭。你仍然可以在“今日”页面查看。"
+          }
+        }
+      }
+    },
+    "Remove" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除"
+          }
+        }
+      }
+    },
+    "Remove from Community" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从社区移除"
+          }
+        }
+      }
+    },
+    "Remove goal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除目标"
+          }
+        }
+      }
+    },
+    "Remove Goal" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除目标"
+          }
+        }
+      }
+    },
+    "Remove photo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除照片"
+          }
+        }
+      }
+    },
+    "RESCUE" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救"
+          }
+        }
+      }
+    },
+    "Rescue %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救 %@"
+          }
+        }
+      }
+    },
+    "Rescue %@ · %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Rescue %1$@ · %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救 %1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "Rescue a tomato before it gets soft." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在番茄变软前拯救它。"
+          }
+        }
+      }
+    },
+    "Rescue food to earn XP. Food with 2 days or less left is worth double!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救食物可以获得经验。剩 2 天或更少的食物经验翻倍！"
+          }
+        }
+      }
+    },
+    "Rescue Kitchen" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救厨房"
+          }
+        }
+      }
+    },
+    "Rescue one food today to start a streak." : {
+
+    },
+    "Rescue one to complete it" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救一个即可完成"
+          }
+        }
+      }
+    },
+    "Rescue Quests" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救任务"
+          }
+        }
+      }
+    },
+    "Rescue Recipes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救菜谱"
+          }
+        }
+      }
+    },
+    "Rescue something today to keep it going!" : {
+
+    },
+    "Rescue soon!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快去拯救！"
+          }
+        }
+      }
+    },
+    "Rescue the Freshlings!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救食物伙伴！"
+          }
+        }
+      }
+    },
+    "Rescued" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已拯救"
+          }
+        }
+      }
+    },
+    "Rescued by Category" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按分类统计拯救数"
+          }
+        }
+      }
+    },
+    "Rescues" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救"
+          }
+        }
+      }
+    },
+    "Rescues %@ · %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救 %1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "Reset" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重置"
+          }
+        }
+      }
+    },
+    "Reset account" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重置账号"
+          }
+        }
+      }
+    },
+    "Results" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索结果"
+          }
+        }
+      }
+    },
+    "Sample" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "示例"
+          }
+        }
+      }
+    },
+    "Sample posts are examples for this demo. Sharing between phones needs an online account system." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "示例帖子仅用于演示。手机之间分享需要在线账号系统。"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存"
+          }
+        }
+      }
+    },
+    "Save your go-to dishes with a photo. Recipes that use your fridge food show up as rescue ideas." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "带上照片保存你的拿手菜。用到冰箱食物的菜谱会出现在拯救推荐里。"
+          }
+        }
+      }
+    },
+    "Saved" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已保存"
+          }
+        }
+      }
+    },
+    "Saved $25" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "省下 $25"
+          }
+        }
+      }
+    },
+    "Saved $100" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "省下 $100"
+          }
+        }
+      }
+    },
+    "Scan Barcode or Produce Sticker" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "扫描条形码或蔬果贴纸"
+          }
+        }
+      }
+    },
+    "Scan Barcode or Sticker" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "扫描条形码或标签"
+          }
+        }
+      }
+    },
+    "Scan it, pick a favorite, or type it in." : {
+      "comment" : "A description of how to add a new item.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "扫码、选择常用食物，或手动输入。"
+          }
+        }
+      }
+    },
+    "Scanning needs a real iPhone. Type the food below instead." : {
+      "comment" : "A message that appears when the user is on a device that doesn't support scanning barcodes.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "扫码需要使用真实 iPhone。也可以在下方输入食物名称。"
+          }
+        }
+      }
+    },
+    "Search recipes or ingredients" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索菜谱或食材"
+          }
+        }
+      }
+    },
+    "Search your Freshlings" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索你的鲜灵"
+          }
+        }
+      }
+    },
+    "Search your fridge" : {
+      "comment" : "A label for a search bar in a home view.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索冰箱里的食物"
+          }
+        }
+      }
+    },
+    "See All Recipes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看全部菜谱"
+          }
+        }
+      }
+    },
+    "See All Rescue Recipes" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看所有拯救食材菜谱"
+          }
+        }
+      }
+    },
+    "Seedling" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "幼苗"
+          }
+        }
+      }
+    },
+    "Set a Goal" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置目标"
+          }
+        }
+      }
+    },
+    "Set your first goal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置你的第一个目标"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置"
+          }
+        }
+      }
+    },
+    "Share" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享"
+          }
+        }
+      }
+    },
+    "Share of finished food you used instead of throwing away." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "吃掉（而不是丢掉）的食物所占的比例。"
+          }
+        }
+      }
+    },
+    "Share of finished items you used instead of throwing away." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已处理食物中，被使用而非丢弃的比例。"
+          }
+        }
+      }
+    },
+    "Share recipe" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享菜谱"
+          }
+        }
+      }
+    },
+    "Share to Community" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享到社区"
+          }
+        }
+      }
+    },
+    "Shared Recipes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享的菜谱"
+          }
+        }
+      }
+    },
+    "Shared recipes appear in the Community tab with your name." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享的菜谱会带着你的名字出现在社区里。"
+          }
+        }
+      }
+    },
+    "Show" : {
+      "comment" : "A label for a picker that lets the user filter their history.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示"
+          }
+        }
+      }
+    },
+    "Show %lld more" : {
+      "comment" : "A button that toggles between showing and hiding the list of priority items.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再显示 %lld 项"
+          }
+        }
+      }
+    },
+    "Show %lld More" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再显示 %lld 个"
+          }
+        }
+      }
+    },
+    "Show All" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示全部"
+          }
+        }
+      }
+    },
+    "Show all %lld" : {
+      "comment" : "A button that shows/hides more recipe cards.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示全部 %lld 项"
+          }
+        }
+      }
+    },
+    "Show All %lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示全部 %lld 个"
+          }
+        }
+      }
+    },
+    "Show less" : {
+      "comment" : "A button to show fewer items.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收起"
+          }
+        }
+      }
+    },
+    "Show Less" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收起"
+          }
+        }
+      }
+    },
+    "Sign up" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "注册"
+          }
+        }
+      }
+    },
+    "Skip" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "跳过"
+          }
+        }
+      }
+    },
+    "Sleepy (past their date)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "睡着了（已过期）"
+          }
+        }
+      }
+    },
+    "Social sign-in isn't available yet. Please use a username and password for now." : {
+      "comment" : "A message displayed in an alert when social sign-in isn't available.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂不支持社交账号登录，请先使用用户名和密码。"
+          }
+        }
+      }
+    },
+    "Some food is past its date. Let us know what happened to it." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有些食物已经过期了，告诉我们它们的去向吧。"
+          }
+        }
+      }
+    },
+    "Some Freshlings are past their date. Are they still good?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有些鲜灵已经过期了，它们还能吃吗？"
+          }
+        }
+      }
+    },
+    "Sprout" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "嫩芽"
+          }
+        }
+      }
+    },
+    "Status" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "状态"
+          }
+        }
+      }
+    },
+    "Steps" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "步骤"
+          }
+        }
+      }
+    },
+    "Still good" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还能吃"
+          }
+        }
+      }
+    },
+    "Still Good" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还能吃"
+          }
+        }
+      }
+    },
+    "Storage Tip" : {
+      "comment" : "A label displayed above a storage tip.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "储存建议"
+          }
+        }
+      }
+    },
+    "Stored on this iPhone" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "存储在此 iPhone 上"
+          }
+        }
+      }
+    },
+    "Streak %lld days" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连续 %lld 天"
+          }
+        }
+      }
+    },
+    "Suggested Expiration" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "建议过期日期"
+          }
+        }
+      }
+    },
+    "Swipe right to move an item back to the fridge." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "向右滑动，可将食物移回冰箱。"
+          }
+        }
+      }
+    },
+    "Tap a fridge item to see it. Tick the others once you have them." : {
+      "comment" : "A description of how to interact with the ingredients list.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "点击冰箱中的食物查看详情。准备好其他食材后将其勾选。"
+          }
+        }
+      }
+    },
+    "Tap to open · hold for quick actions" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "点击查看 · 长按快速操作"
+          }
+        }
+      }
+    },
+    "Target" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目标数"
+          }
+        }
+      }
+    },
+    "These use food that expires soon." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这些菜谱会用到快过期的食物。"
+          }
+        }
+      }
+    },
+    "This is an estimate. If the package has a printed date, use that instead." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这只是估计日期。如包装印有日期，请以包装为准。"
+          }
+        }
+      }
+    },
+    "This removes your stored food and history. This action cannot be undone." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这会删除已保存的食物与历史记录，且无法撤销。"
+          }
+        }
+      }
+    },
+    "This removes your stored food and history. You can undo it for a few seconds." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这会删除保存的食物和记录。几秒内可以撤销。"
+          }
+        }
+      }
+    },
+    "This week" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本周内"
+          }
+        }
+      }
+    },
+    "This week's challenge" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本周挑战"
+          }
+        }
+      }
+    },
+    "Threw Away" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已丢弃"
+          }
+        }
+      }
+    },
+    "Threw Away %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已丢弃 %lld 件"
+          }
+        }
+      }
+    },
+    "Threw Away 1" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "丢弃 1 件"
+          }
+        }
+      }
+    },
+    "Time: %lld min" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "时间：%lld 分钟"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日"
+          }
+        }
+      }
+    },
+    "TODAY'S FRESHLINGS" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日 FRESHLINGS"
+          }
+        }
+      }
+    },
+    "Tomato Time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "番茄时间"
+          }
+        }
+      }
+    },
+    "Tossed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "丢掉了"
+          }
+        }
+      }
+    },
+    "Tossed %lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "丢掉 %lld 个"
+          }
+        }
+      }
+    },
+    "Tossed it" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "丢掉了"
+          }
+        }
+      }
+    },
+    "Try %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "试试 %@"
+          }
+        }
+      }
+    },
+    "Try another dish or ingredient, like \"pasta\" or \"banana\"." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "换个菜名或食材试试，比如“意面”或“香蕉”。"
+          }
+        }
+      }
+    },
+    "Try another name or category." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "试试其他名称或类别。"
+          }
+        }
+      }
+    },
+    "Try with demo food" : {
+      "comment" : "A button that adds sample food to the user's fridge.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用演示食物试试看"
+          }
+        }
+      }
+    },
+    "Undo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "撤销"
+          }
+        }
+      }
+    },
+    "Unit weights (e.g. one carrot ≈ 60 g, a half gallon of milk ≈ 1.9 kg) are typical US grocery sizes. Foods not in our list use an average for their category." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "单位重量（例如一根胡萝卜约 60 克、半加仑牛奶约 1.9 千克）采用美国超市常见规格。不在列表中的食物采用所在类别的平均重量。"
+          }
+        }
+      }
+    },
+    "Unlike" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消点赞"
+          }
+        }
+      }
+    },
+    "Unlocked! %@." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已解锁！%@。"
+          }
+        }
+      }
+    },
+    "Urgent" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "紧急"
+          }
+        }
+      }
+    },
+    "Use first" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先吃这些"
+          }
+        }
+      }
+    },
+    "Use food while it's fresh" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "趁新鲜及时使用食物"
+          }
+        }
+      }
+    },
+    "Use more, waste less, or save money." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "多利用食材、减少浪费，或节省开支。"
+          }
+        }
+      }
+    },
+    "Use one item today to start a streak." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天使用一件食物，开始连续记录。"
+          }
+        }
+      }
+    },
+    "use rate" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "利用率"
+          }
+        }
+      }
+    },
+    "Use rate" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物利用率"
+          }
+        }
+      }
+    },
+    "Use Soon" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "尽快食用"
+          }
+        }
+      }
+    },
+    "Use these ingredients first to reduce waste." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "优先使用这些食材，减少浪费。"
+          }
+        }
+      }
+    },
+    "Use This Week" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本周内食用"
+          }
+        }
+      }
+    },
+    "Use up a banana before it goes brown." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在香蕉变黑前把它吃掉。"
+          }
+        }
+      }
+    },
+    "Use up your eggs." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "把鸡蛋用完。"
+          }
+        }
+      }
+    },
+    "Use Within 2 Days" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 天内食用"
+          }
+        }
+      }
+    },
+    "Use your first item to see money and carbon saved." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用第一件食物后，即可查看节省金额与减少的碳排放。"
+          }
+        }
+      }
+    },
+    "Used" : {
+      "comment" : "A label that indicates whether a food item was consumed or discarded.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已使用"
+          }
+        }
+      }
+    },
+    "Used %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已使用 %lld 件"
+          }
+        }
+      }
+    },
+    "Used 1 (of %lld)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已使用 1 件（共 %lld 件）"
+          }
+        }
+      }
+    },
+    "Used All %lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已使用全部 %lld 件"
+          }
+        }
+      }
+    },
+    "Used by category" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按类别统计已使用食物"
+          }
+        }
+      }
+    },
+    "Used by Category" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按分类统计已吃掉"
+          }
+        }
+      }
+    },
+    "Used food counts toward money and CO₂ saved on the Impact tab." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "吃掉的食物会计入“成果”页的省钱和减碳数据。"
+          }
+        }
+      }
+    },
+    "Uses" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用到"
+          }
+        }
+      }
+    },
+    "Uses %@ · %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用到 %1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "Uses Most of Your Fridge" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最能用上冰箱里的食物"
+          }
+        }
+      }
+    },
+    "Usually" : {
+
+    },
+    "Usually lasts about %@." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通常可保存约 %@。"
+          }
+        }
+      }
+    },
+    "View Food History" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看食品历史记录"
+          }
+        }
+      }
+    },
+    "View on TheMealDB" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在 TheMealDB 上查看"
+          }
+        }
+      }
+    },
+    "View the data on Our World in Data" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在 Our World in Data 查看数据"
+          }
+        }
+      }
+    },
+    "Waste Warrior" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反浪费战士"
+          }
+        }
+      }
+    },
+    "Wasted" : {
+      "comment" : "A label that indicates whether a food item was consumed or discarded.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已浪费"
+          }
+        }
+      }
+    },
+    "Week" : {
+      "comment" : "Label for the x-axis in the weekly chart.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "周"
+          }
+        }
+      }
+    },
+    "WEEKLY CHALLENGE" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每周挑战"
+          }
+        }
+      }
+    },
+    "Weekly Goal" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每周目标"
+          }
+        }
+      }
+    },
+    "When food is thrown away, all the emissions from growing, processing and transporting it are wasted. Using it means those emissions weren't for nothing." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物被丢弃时，种植、加工及运输过程中产生的排放也失去了应有的价值。充分利用食物，能避免这些投入白白浪费。"
+          }
+        }
+      }
+    },
+    "Where the numbers come from" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数据来源"
+          }
+        }
+      }
+    },
+    "Why This Recipe" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "为什么推荐这道菜"
+          }
+        }
+      }
+    },
+    "Won't be used up" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不会全部用完"
+          }
+        }
+      }
+    },
+    "x%lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "x%lld"
+          }
+        }
+      }
+    },
+    "XP" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "经验"
+          }
+        }
+      }
+    },
+    "You" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你"
+          }
+        }
+      }
+    },
+    "You'll get a reminder at 9 AM, %lld days before food expires." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物过期前 %lld 天的早上 9 点会提醒你。"
+          }
+        }
+      }
+    },
+    "You'll get a reminder at 9 AM, 1 day before food expires." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物过期前 1 天的早上 9 点会提醒你。"
+          }
+        }
+      }
+    },
+    "You're now a" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你现在是"
+          }
+        }
+      }
+    },
+    "Your food is in good shape. Check back later for more rescue ideas." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的食物状态良好。稍后再来看看新的食材利用建议。"
+          }
+        }
+      }
+    },
+    "Your food stays saved on this phone. Log in again with the same username and password." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的食物记录会保存在这台手机上。用同样的用户名和密码就能重新登录。"
+          }
+        }
+      }
+    },
+    "Your Freshness Garden" : {
+      "comment" : "A heading for the user's current freshness status.",
+      "extractionState" : "stale",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的新鲜小花园"
+          }
+        }
+      }
+    },
+    "Your fridge is empty" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱是空的"
+          }
+        }
+      }
+    },
+    "Your Fridge Is Empty" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱是空的"
+          }
+        }
+      }
+    },
+    "Your fridge is empty!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱是空的！"
+          }
+        }
+      }
+    },
+    "Your fridge is empty. Add some food and I'll keep an eye on it!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "冰箱是空的。添加一些食物，我会帮你看着！"
+          }
+        }
+      }
+    },
+    "Your fridge is waiting!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的冰箱正等着你！"
+          }
+        }
+      }
+    },
+    "Your password is saved only on this phone, so it can't be recovered. You can reset the account and create a new one. Your fridge won't be affected." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密码仅保存在这部手机上，无法找回。你可以重置账号并创建新账号，冰箱记录不会受到影响。"
+          }
+        }
+      }
+    },
+    "Your recipe book is empty" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的菜谱本还是空的"
+          }
+        }
+      }
+    },
+    "简体中文" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "简体中文"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.3"
+}

@@ -1,13 +1,13 @@
 import SwiftUI
 
-/// 一页引导的内容
+
 struct OnboardingPage {
     let image: String       // Assets 里的插画名称
     let title: String       // 大标题，用 \n 换行
     let textOnTop: Bool     // true：字在上、图在下；false：图在上、字在下
 }
 
-/// 登录后看到的 4 页引导。左右滑动换页，最后一页按按钮进入 App。
+
 struct OnboardingView: View {
 
     @AppStorage("hasSeenGuide") private var hasSeenGuide = false
@@ -25,7 +25,7 @@ struct OnboardingView: View {
     var body: some View {
         VStack(spacing: 0) {
 
-            // 顶部的小角色
+            
             Image("FreshlingsCharacter")
                 .resizable()
                 .scaledToFit()
@@ -37,7 +37,7 @@ struct OnboardingView: View {
                 .padding(.top, 28)
                 .padding(.horizontal, 48)
 
-            // 可以左右滑动的 4 页
+  
             TabView(selection: $page) {
                 ForEach(pages.indices, id: \.self) { index in
                     pageContent(pages[index])
@@ -46,7 +46,7 @@ struct OnboardingView: View {
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
 
-            // 底部：前 3 页是 Skip，最后一页是按钮
+
             bottomArea
                 .frame(height: 96)
                 .padding(.horizontal, 48)
@@ -56,7 +56,7 @@ struct OnboardingView: View {
         .animation(.easeInOut(duration: 0.25), value: page)
     }
 
-    // MARK: - 进度条
+
 
     private var progressBars: some View {
         HStack(spacing: 10) {
@@ -70,7 +70,7 @@ struct OnboardingView: View {
         .accessibilityLabel("Page \(page + 1) of \(pages.count)")
     }
 
-    // MARK: - 每一页
+
 
     @ViewBuilder
     private func pageContent(_ item: OnboardingPage) -> some View {
