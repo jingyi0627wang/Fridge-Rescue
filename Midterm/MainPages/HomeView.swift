@@ -260,15 +260,35 @@ struct HomeView: View {
                             }
                             .buttonStyle(.plain)
                             .contextMenu {
-                                Button {
-                                    foodStore.markAsUsed(item)
-                                } label: {
-                                    Label("I Used It", systemImage: "checkmark.circle")
-                                }
-                                Button {
-                                    foodStore.markAsWasted(item)
-                                } label: {
-                                    Label("Threw Away", systemImage: "trash")
+                                // With more than 1, the quick actions take ONE out;
+                                // "All" options and exact counts are on Food Details.
+                                if item.quantity > 1 {
+                                    Button {
+                                        foodStore.markAsUsed(item, quantity: 1)
+                                    } label: {
+                                        Label("Used 1 (of \(item.quantity))", systemImage: "checkmark.circle")
+                                    }
+                                    Button {
+                                        foodStore.markAsUsed(item)
+                                    } label: {
+                                        Label("Used All \(item.quantity)", systemImage: "checkmark.circle.fill")
+                                    }
+                                    Button {
+                                        foodStore.markAsWasted(item, quantity: 1)
+                                    } label: {
+                                        Label("Threw Away 1", systemImage: "trash")
+                                    }
+                                } else {
+                                    Button {
+                                        foodStore.markAsUsed(item)
+                                    } label: {
+                                        Label("I Used It", systemImage: "checkmark.circle")
+                                    }
+                                    Button {
+                                        foodStore.markAsWasted(item)
+                                    } label: {
+                                        Label("Threw Away", systemImage: "trash")
+                                    }
                                 }
                                 Button(role: .destructive) {
                                     foodStore.deleteItem(item)

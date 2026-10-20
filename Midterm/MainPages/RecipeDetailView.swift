@@ -13,6 +13,10 @@ struct RecipeDetailView: View {
     /// Ingredients NOT in the fridge that the user ticked ("I have this").
     @State private var checked: Set<String> = []
 
+    /// How many of each fridge item cooking will use (key = fridge item id).
+    /// Starts from a guess based on the recipe amount; the user can change it.
+    @State private var useCounts: [UUID: Int] = [:]
+
     private enum Palette {
         static let background = Color(red: 0.985, green: 0.992, blue: 0.965)
         static let surface = Color.white
@@ -79,36 +83,53 @@ struct RecipeDetailView: View {
     // Marks every fridge item this recipe uses as "used",
     // so it leaves the fridge and counts on the Impact page.
 
-    private var itemsToUse: [FoodItem] {
-        RecipeData.fridgeItems(for: recipe, in: foodStore.foodItems)
+    private var matches: [(ingredient: RecipeIngredient, item: FoodItem)] {
+        RecipeData.fridgeMatches(for: recipe, in: foodStore.foodItems)
+    }
+
+    private func useCount(for match: (ingredient: RecipeIngredient, item: FoodItem)) -> Int {
+        let value = useCounts[match.item.id]
+            ?? RecipeData.defaultUseCount(amount: match.ingredient.amount, for: match.item)
+        return min(max(value, 0), match.item.quantity)
+    }
+
+    /// Fridge items that will actually be used (count > 0).
+    private var plannedUses: [(item: FoodItem, quantity: Int)] {
+        matches
+            .map { (item: $0.item, quantity: useCount(for: $0)) }
+            .filter { $0.quantity > 0 }
     }
 
     private var cookedButton: some View {
-        Button {
+        let uses = plannedUses
+
+        return Button {
             cook()
         } label: {
             VStack(spacing: 4) {
                 Label("I Cooked This", systemImage: "frying.pan.fill")
                     .font(.system(size: 18, weight: .bold, design: .rounded))
-                Text(itemsToUse.isEmpty
+                Text(uses.isEmpty
                      ? "No ingredients from your fridge"
-                     : "Marks \(itemsToUse.count) fridge \(itemsToUse.count == 1 ? "item" : "items") as eaten")
+                     : "Uses " + uses.map { "\($0.quantity) \($0.item.name)" }.joined(separator: ", "))
                     .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .multilineTextAlignment(.center)
             }
-            .foregroundStyle(itemsToUse.isEmpty ? Palette.secondary : Palette.deepGreen)
+            .foregroundStyle(uses.isEmpty ? Palette.secondary : Palette.deepGreen)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
-            .background(itemsToUse.isEmpty ? Palette.border : Palette.green,
+            .padding(.horizontal, 12)
+            .background(uses.isEmpty ? Palette.border : Palette.green,
                         in: RoundedRectangle(cornerRadius: 22))
         }
         .buttonStyle(.plain)
-        .disabled(itemsToUse.isEmpty)
+        .disabled(uses.isEmpty)
     }
 
-    /// No pop-ups: marks the items right away, goes back,
+    /// No pop-ups: takes the chosen amounts out of the fridge, goes back,
     /// and the Undo bar at the bottom says what was used.
     private func cook() {
-        foodStore.markAsUsed(itemsToUse)
+        foodStore.cook(plannedUses)
         dismiss()
     }
 
@@ -266,21 +287,26 @@ struct RecipeDetailView: View {
 
     @ViewBuilder
     private func ingredientRow(_ ingredient: RecipeIngredient) -> some View {
-        if let fridgeItem = FoodMatcher.fridgeItem(for: ingredient.name, in: foodStore.foodItems) {
-            // In the fridge → open that food's details
-            NavigationLink {
-                FoodDetailView(item: fridgeItem)
-            } label: {
-                ingredientRowContent(
-                    ingredient,
-                    icon: "checkmark.circle.fill",
-                    iconColor: Palette.deepGreen,
-                    detail: "Your \(fridgeItem.name) · \(fridgeItem.daysLeftText)",
-                    detailColor: fridgeItem.freshnessLevel == .fresh ? Palette.deepGreen : Palette.orange,
-                    showsChevron: true
-                )
+        if let match = matches.first(where: { $0.ingredient == ingredient }) {
+            let fridgeItem = match.item
+            VStack(spacing: 0) {
+                // In the fridge → open that food's details
+                NavigationLink {
+                    FoodDetailView(item: fridgeItem)
+                } label: {
+                    ingredientRowContent(
+                        ingredient,
+                        icon: "checkmark.circle.fill",
+                        iconColor: Palette.deepGreen,
+                        detail: "Your \(fridgeItem.name) · \(fridgeItem.daysLeftText)",
+                        detailColor: fridgeItem.freshnessLevel == .fresh ? Palette.deepGreen : Palette.orange,
+                        showsChevron: true
+                    )
+                }
+                .buttonStyle(.plain)
+
+                useCountRow(match)
             }
-            .buttonStyle(.plain)
         } else {
             // Not in the fridge → tap to tick it off
             let isChecked = checked.contains(ingredient.name)
@@ -299,6 +325,49 @@ struct RecipeDetailView: View {
             .buttonStyle(.plain)
             .sensoryFeedback(.selection, trigger: isChecked)
         }
+    }
+
+    /// "Cooking uses  −  2 of 5  +"  (0 = you still have some left, don't use it up)
+    private func useCountRow(_ match: (ingredient: RecipeIngredient, item: FoodItem)) -> some View {
+        let count = useCount(for: match)
+        let maxCount = match.item.quantity
+
+        return HStack(spacing: 10) {
+            Text(count == 0 ? "Won't be used up" : "Cooking uses")
+                .font(.system(size: 12, weight: .medium, design: .rounded))
+                .foregroundStyle(Palette.secondary)
+
+            Spacer(minLength: 4)
+
+            stepperButton("minus", enabled: count > 0) {
+                useCounts[match.item.id] = count - 1
+            }
+
+            Text("\(count) of \(maxCount)")
+                .font(.system(size: 13, weight: .heavy, design: .rounded))
+                .foregroundStyle(count == 0 ? Palette.secondary : Palette.deepGreen)
+                .monospacedDigit()
+                .frame(minWidth: 48)
+
+            stepperButton("plus", enabled: count < maxCount) {
+                useCounts[match.item.id] = count + 1
+            }
+        }
+        .padding(.leading, 55)
+        .padding(.trailing, 17)
+        .padding(.bottom, 12)
+    }
+
+    private func stepperButton(_ icon: String, enabled: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.system(size: 11, weight: .bold))
+                .foregroundStyle(enabled ? Palette.deepGreen : Palette.secondary.opacity(0.4))
+                .frame(width: 28, height: 28)
+                .background(Palette.paleGreen, in: Circle())
+        }
+        .buttonStyle(.plain)
+        .disabled(!enabled)
     }
 
     private func ingredientRowContent(
