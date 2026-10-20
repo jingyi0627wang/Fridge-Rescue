@@ -77,7 +77,7 @@ enum FoodMatcher {
         text.lowercased()
             .components(separatedBy: CharacterSet.letters.inverted)
             .filter { !$0.isEmpty }
-            .map(singular)
+            .map { singular($0) }
     }
 
     private static func singular(_ word: String) -> String {
@@ -330,5 +330,61 @@ enum RecipeData {
             }
         }
         return used
+    }
+}
+
+// MARK: - Recipe categories (Recipes tab)
+
+struct RecipeSections {
+    /// Uses food that expires soon, most urgent first.
+    let rescue: [Recipe]
+    /// Uses 2+ things from your fridge.
+    let usesMost: [Recipe]
+    /// Everything else (often online recipes using 1 item).
+    let moreIdeas: [Recipe]
+
+    var isEmpty: Bool { rescue.isEmpty && usesMost.isEmpty && moreIdeas.isEmpty }
+}
+
+extension RecipeData {
+
+    /// Food that "needs attention" (expires within 6 days).
+    static func needsAttention(_ item: FoodItem) -> Bool {
+        item.status == .active && (item.freshnessLevel == .urgent || item.freshnessLevel == .useSoon)
+    }
+
+    /// The most urgent fridge item this recipe would rescue (nil if none are urgent).
+    static func rescueItem(for recipe: Recipe, in items: [FoodItem]) -> FoodItem? {
+        fridgeItems(for: recipe, in: items)
+            .filter { needsAttention($0) }
+            .min { $0.daysUntilExpiration < $1.daysUntilExpiration }
+    }
+
+    /// Splits recipes into the three Recipes-tab sections. Each recipe appears once.
+    static func sections(for recipes: [Recipe], items: [FoodItem]) -> RecipeSections {
+        var rescue: [(Recipe, Int, Int)] = []   // recipe, days left of rescued item, match count
+        var usesMost: [(Recipe, Int)] = []
+        var more: [Recipe] = []
+
+        for recipe in recipes {
+            let count = matchCount(recipe, items)
+            if let item = rescueItem(for: recipe, in: items) {
+                rescue.append((recipe, item.daysUntilExpiration, count))
+            } else if count >= 2 {
+                usesMost.append((recipe, count))
+            } else {
+                more.append(recipe)
+            }
+        }
+
+        return RecipeSections(
+            rescue: rescue
+                .sorted { $0.1 != $1.1 ? $0.1 < $1.1 : $0.2 > $1.2 }
+                .map(\.0),
+            usesMost: usesMost
+                .sorted { $0.1 > $1.1 }
+                .map(\.0),
+            moreIdeas: more
+        )
     }
 }

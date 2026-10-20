@@ -18,6 +18,7 @@ private enum FreshlingsHomeStyle {
 
 struct HomeView: View {
     @EnvironmentObject var foodStore: FoodStore
+    @EnvironmentObject var router: AppRouter
 
     @State private var searchText = ""
     @State private var selectedCategory: FoodCategory? = nil   // nil = All
@@ -209,9 +210,9 @@ struct HomeView: View {
 
                 freshnessLine(item)
 
-                NavigationLink {
-                    RecipeListView(focusIngredient: item)
-                        .environmentObject(foodStore)
+                // Opens the Recipes tab with this food selected.
+                Button {
+                    router.openRecipes(for: item)
                 } label: {
                     HStack {
                         Image(systemName: "fork.knife")
@@ -549,5 +550,6 @@ enum PremiumTheme {
         HomeView()
     }
     .environmentObject(FoodStore())
+    .environmentObject(AppRouter())
 }
 

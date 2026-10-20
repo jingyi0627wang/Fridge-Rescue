@@ -1,9 +1,35 @@
 
 import SwiftUI
+import Combine
+
+// MARK: - App navigation
+// Lets any page jump to another tab, e.g. "Find recipes for Milk"
+// from Home, Today or Food Details opens the Recipes tab with Milk selected.
+
+enum AppTab: Hashable {
+    case fridge, today, add, recipes, impact
+}
+
+final class AppRouter: ObservableObject {
+    @Published var selectedTab: AppTab = .fridge
+
+    /// Fridge item selected in the Recipes tab's ingredient chips (nil = All).
+    @Published var recipeFocusID: UUID?
+
+    /// Changing this resets the Recipes tab back to its main list.
+    @Published var recipesStackID = UUID()
+
+    func openRecipes(for item: FoodItem? = nil) {
+        recipeFocusID = item?.id
+        recipesStackID = UUID()
+        selectedTab = .recipes
+    }
+}
 
 struct MainTabView: View {
 
     @EnvironmentObject var foodStore: FoodStore
+    @StateObject private var router = AppRouter()
 
     // MARK: - Freshlings Colors
     private let freshGreen = Color(
@@ -14,7 +40,7 @@ struct MainTabView: View {
 
     var body: some View {
 
-        TabView {
+        TabView(selection: $router.selectedTab) {
 
             // MARK: - My Fridge
             NavigationStack {
@@ -24,6 +50,7 @@ struct MainTabView: View {
                 Image(systemName: "refrigerator")
                 Text("Fridge")
             }
+            .tag(AppTab.fridge)
 
             // MARK: - Today
             NavigationStack {
@@ -33,6 +60,7 @@ struct MainTabView: View {
                 Image(systemName: "clock.fill")
                 Text("Today")
             }
+            .tag(AppTab.today)
 
             // MARK: - Add Food
             AddFoodTabView()
@@ -40,15 +68,18 @@ struct MainTabView: View {
                     Image(systemName: "plus.circle.fill")
                     Text("Add")
                 }
+                .tag(AppTab.add)
 
             // MARK: - Recipes
             NavigationStack {
                 RecipeListView()
             }
+            .id(router.recipesStackID)
             .tabItem {
                 Image(systemName: "fork.knife")
                 Text("Recipes")
             }
+            .tag(AppTab.recipes)
 
             // MARK: - Impact
             NavigationStack {
@@ -58,7 +89,9 @@ struct MainTabView: View {
                 Image(systemName: "chart.bar.fill")
                 Text("Impact")
             }
+            .tag(AppTab.impact)
         }
+        .environmentObject(router)
         .tint(freshGreen)
         // Undo bar for used / wasted / deleted / cooked actions.
         .overlay(alignment: .bottom) {

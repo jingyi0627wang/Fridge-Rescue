@@ -19,6 +19,7 @@ private enum FreshlingsDetailStyle {
 
 struct FoodDetailView: View {
     @EnvironmentObject var foodStore: FoodStore
+    @EnvironmentObject var router: AppRouter
     @Environment(\.dismiss) private var dismiss
     @State private var showEdit = false
 
@@ -334,8 +335,8 @@ struct FoodDetailView: View {
     // MARK: - Recipes
 
     private var recipeButton: some View {
-        NavigationLink {
-            RecipeListView(focusIngredient: item)
+        Button {
+            router.openRecipes(for: item)
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: "fork.knife")
@@ -374,4 +375,5 @@ struct FoodDetailView: View {
         FoodDetailView(item: store.foodItems[0])
     }
     .environmentObject(store)
+    .environmentObject(AppRouter())
 }
