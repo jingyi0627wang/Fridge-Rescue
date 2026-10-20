@@ -3,6 +3,7 @@ import SwiftUI
 // MARK: - Food Details
 // One Freshling up close: its HP, a storage tip from the mascot, its info,
 // and the actions: eat it (earn XP) / toss it (all or some), recipes, edit, delete.
+// Eating or tossing always returns to the fridge.
 
 struct FoodDetailView: View {
     @EnvironmentObject var foodStore: FoodStore
@@ -210,10 +211,8 @@ struct FoodDetailView: View {
         .disabled(!enabled)
     }
 
-    /// Takes `count` out of the fridge. Goes back only if none are left.
+    /// Takes `count` out of the fridge, then goes back to the fridge.
     private func finish(_ status: FoodStatus) {
-        let usesAll = count >= item.quantity
-
         if status == .used {
             foodStore.markAsUsed(item, quantity: count)
             FreshlingsHaptics.success()
@@ -223,10 +222,7 @@ struct FoodDetailView: View {
         }
 
         actionCount = 1
-
-        if usesAll {
-            dismiss()
-        }
+        dismiss()
     }
 
     // MARK: - Info

@@ -1,5 +1,6 @@
 
 import SwiftUI
+import FirebaseAuth
 
 // MARK: - Freshlings Settings
 
@@ -27,6 +28,7 @@ struct SettingsView: View {
 
     @State private var showClearConfirmation = false
     @State private var showLogOutConfirmation = false
+    @State private var signOutError: String?
 
     // MARK: - Main View
 
@@ -85,11 +87,6 @@ struct SettingsView: View {
             } header: {
 
                 Text("Language / 语言")
-            } footer: {
-
-                Text(
-                    "Choose the language used in Freshlings."
-                )
             }
 
             // MARK: Reminder Preferences
@@ -269,6 +266,15 @@ struct SettingsView: View {
             rescheduleReminders()
         }
 
+        .alert("Could not log out", isPresented: Binding(
+            get: { signOutError != nil },
+            set: { if !$0 { signOutError = nil } }
+        )) {
+            Button("OK", role: .cancel) { signOutError = nil }
+        } message: {
+            Text(signOutError ?? "Please try again.")
+        }
+
         // MARK: Log Out Confirmation
 
         .confirmationDialog(
@@ -282,8 +288,14 @@ struct SettingsView: View {
                 role: .destructive
             ) {
 
-                dismiss()
-                isLoggedIn = false
+                do {
+                    try Auth.auth().signOut()
+                    KeychainHelper.deletePassword()
+                    isLoggedIn = false
+                    dismiss()
+                } catch {
+                    signOutError = error.localizedDescription
+                }
             }
 
             Button(

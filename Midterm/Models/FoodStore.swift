@@ -48,9 +48,16 @@ final class FoodStore: ObservableObject {
 
     // MARK: - Fridge
 
+    private var fridgeArrivals = FridgeArrivalTracker()
+
+    func consumeFridgeArrival(for id: UUID) -> Bool {
+        fridgeArrivals.consume(id)
+    }
+
     /// `logPurchase`: remember this in "Recent / Usually" on the Add Food page.
     /// (Off when an item is just moved back from History.)
     func addItem(_ item: FoodItem, logPurchase: Bool = true) {
+        if logPurchase { fridgeArrivals.markAdded(item.id) }
         foodItems.append(item)
         if logPurchase { logAdd(item) }
         // Remind the user 3 days before the item expires.
@@ -78,6 +85,7 @@ final class FoodStore: ObservableObject {
     }
 
     private func removeFromFridge(_ item: FoodItem) {
+        fridgeArrivals.remove(item.id)
         foodItems.removeAll { $0.id == item.id }
         ExpirationNotificationService.shared.cancel(for: item)
     }

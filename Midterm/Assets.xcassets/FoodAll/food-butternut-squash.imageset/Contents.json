@@ -1,0 +1,15 @@
+{
+  "images": [
+    {
+      "filename": "food-butternut-squash.svg",
+      "idiom": "universal"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "preserves-vector-representation": true
+  }
+}

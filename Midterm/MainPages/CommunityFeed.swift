@@ -260,7 +260,7 @@ private struct PostCard: View {
         ZStack {
             LinearGradient(colors: [post.authorColor.opacity(0.25), Game.cream],
                            startPoint: .topLeading, endPoint: .bottomTrailing)
-            FreshSymbol(symbol: FoodIcon.symbol(forEmoji: post.recipe.emoji), size: 92)
+            FreshSymbol(symbol: RecipeIcon.symbol(for: post.recipe.emoji), size: 92)
         }
     }
 }

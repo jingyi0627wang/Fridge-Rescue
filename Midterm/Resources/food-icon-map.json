@@ -1,0 +1,2114 @@
+[
+  {
+    "name": "Artichoke",
+    "assetName": "food-artichoke",
+    "svg": "IconSources/SVG/artichoke.svg",
+    "png512": "png-512/artichoke.png",
+    "iconFamily": "artichoke",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Arugula",
+    "assetName": "food-arugula",
+    "svg": "IconSources/SVG/arugula.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Asparagus",
+    "assetName": "food-asparagus",
+    "svg": "IconSources/SVG/asparagus.svg",
+    "png512": "png-512/asparagus.png",
+    "iconFamily": "asparagus",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Bamboo Shoots",
+    "assetName": "food-bamboo-shoots",
+    "svg": "IconSources/SVG/bamboo-shoots.svg",
+    "png512": "png-512/bamboo-shoots.png",
+    "iconFamily": "bamboo-shoots",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Beet",
+    "assetName": "food-beet",
+    "svg": "IconSources/SVG/beet.svg",
+    "png512": "png-512/beet.png",
+    "iconFamily": "beet",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Beet Greens",
+    "assetName": "food-beet-greens",
+    "svg": "IconSources/SVG/beet-greens.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Belgian Endive",
+    "assetName": "food-belgian-endive",
+    "svg": "IconSources/SVG/belgian-endive.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Bell Pepper",
+    "assetName": "food-bell-pepper",
+    "svg": "IconSources/SVG/bell-pepper.svg",
+    "png512": "png-512/bell-pepper.png",
+    "iconFamily": "bell-pepper",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Green Bell Pepper",
+    "assetName": "food-green-bell-pepper",
+    "svg": "IconSources/SVG/green-bell-pepper.svg",
+    "png512": "png-512/green-bell-pepper.png",
+    "iconFamily": "green bell pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Red Bell Pepper",
+    "assetName": "food-red-bell-pepper",
+    "svg": "IconSources/SVG/red-bell-pepper.svg",
+    "png512": "png-512/red-bell-pepper.png",
+    "iconFamily": "red bell pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Yellow Bell Pepper",
+    "assetName": "food-yellow-bell-pepper",
+    "svg": "IconSources/SVG/yellow-bell-pepper.svg",
+    "png512": "png-512/yellow-bell-pepper.png",
+    "iconFamily": "yellow bell pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Bok Choy",
+    "assetName": "food-bok-choy",
+    "svg": "IconSources/SVG/bok-choy.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Baby Bok Choy",
+    "assetName": "food-baby-bok-choy",
+    "svg": "IconSources/SVG/baby-bok-choy.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Broccoli",
+    "assetName": "food-broccoli",
+    "svg": "IconSources/SVG/broccoli.svg",
+    "png512": "png-512/broccoli.png",
+    "iconFamily": "broccoli",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Broccoli Rabe",
+    "assetName": "food-broccoli-rabe",
+    "svg": "IconSources/SVG/broccoli-rabe.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Broccolini",
+    "assetName": "food-broccolini",
+    "svg": "IconSources/SVG/broccolini.svg",
+    "png512": "png-512/broccolini.png",
+    "iconFamily": "broccolini",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Brussels Sprouts",
+    "assetName": "food-brussels-sprouts",
+    "svg": "IconSources/SVG/brussels-sprouts.svg",
+    "png512": "png-512/brussels-sprouts.png",
+    "iconFamily": "brussels-sprouts",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Green Cabbage",
+    "assetName": "food-green-cabbage",
+    "svg": "IconSources/SVG/green-cabbage.svg",
+    "png512": "png-512/green-cabbage.png",
+    "iconFamily": "green cabbage",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Red Cabbage",
+    "assetName": "food-red-cabbage",
+    "svg": "IconSources/SVG/red-cabbage.svg",
+    "png512": "png-512/red-cabbage.png",
+    "iconFamily": "red cabbage",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Napa Cabbage",
+    "assetName": "food-napa-cabbage",
+    "svg": "IconSources/SVG/napa-cabbage.svg",
+    "png512": "png-512/napa-cabbage.png",
+    "iconFamily": "napa cabbage",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Savoy Cabbage",
+    "assetName": "food-savoy-cabbage",
+    "svg": "IconSources/SVG/savoy-cabbage.svg",
+    "png512": "png-512/savoy-cabbage.png",
+    "iconFamily": "savoy cabbage",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Carrot",
+    "assetName": "food-carrot",
+    "svg": "IconSources/SVG/carrot.svg",
+    "png512": "png-512/carrot.png",
+    "iconFamily": "carrot",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Baby Carrot",
+    "assetName": "food-baby-carrot",
+    "svg": "IconSources/SVG/baby-carrot.svg",
+    "png512": "png-512/baby-carrot.png",
+    "iconFamily": "carrot",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Cauliflower",
+    "assetName": "food-cauliflower",
+    "svg": "IconSources/SVG/cauliflower.svg",
+    "png512": "png-512/cauliflower.png",
+    "iconFamily": "cauliflower",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Celeriac",
+    "assetName": "food-celeriac",
+    "svg": "IconSources/SVG/celeriac.svg",
+    "png512": "png-512/celeriac.png",
+    "iconFamily": "celeriac",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Celery",
+    "assetName": "food-celery",
+    "svg": "IconSources/SVG/celery.svg",
+    "png512": "png-512/celery.png",
+    "iconFamily": "celery",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Swiss Chard",
+    "assetName": "food-swiss-chard",
+    "svg": "IconSources/SVG/swiss-chard.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Collard Greens",
+    "assetName": "food-collard-greens",
+    "svg": "IconSources/SVG/collard-greens.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Corn on the Cob",
+    "assetName": "food-corn-on-the-cob",
+    "svg": "IconSources/SVG/corn-on-the-cob.svg",
+    "png512": "png-512/corn-on-the-cob.png",
+    "iconFamily": "corn",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Cucumber",
+    "assetName": "food-cucumber",
+    "svg": "IconSources/SVG/cucumber.svg",
+    "png512": "png-512/cucumber.png",
+    "iconFamily": "cucumber",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "English Cucumber",
+    "assetName": "food-english-cucumber",
+    "svg": "IconSources/SVG/english-cucumber.svg",
+    "png512": "png-512/english-cucumber.png",
+    "iconFamily": "cucumber",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Persian Cucumber",
+    "assetName": "food-persian-cucumber",
+    "svg": "IconSources/SVG/persian-cucumber.svg",
+    "png512": "png-512/persian-cucumber.png",
+    "iconFamily": "cucumber",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Daikon Radish",
+    "assetName": "food-daikon-radish",
+    "svg": "IconSources/SVG/daikon-radish.svg",
+    "png512": "png-512/daikon-radish.png",
+    "iconFamily": "daikon",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Eggplant",
+    "assetName": "food-eggplant",
+    "svg": "IconSources/SVG/eggplant.svg",
+    "png512": "png-512/eggplant.png",
+    "iconFamily": "eggplant",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Japanese Eggplant",
+    "assetName": "food-japanese-eggplant",
+    "svg": "IconSources/SVG/japanese-eggplant.svg",
+    "png512": "png-512/japanese-eggplant.png",
+    "iconFamily": "eggplant",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Endive",
+    "assetName": "food-endive",
+    "svg": "IconSources/SVG/endive.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Escarole",
+    "assetName": "food-escarole",
+    "svg": "IconSources/SVG/escarole.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Fennel",
+    "assetName": "food-fennel",
+    "svg": "IconSources/SVG/fennel.svg",
+    "png512": "png-512/fennel.png",
+    "iconFamily": "fennel",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Garlic",
+    "assetName": "food-garlic",
+    "svg": "IconSources/SVG/garlic.svg",
+    "png512": "png-512/garlic.png",
+    "iconFamily": "garlic",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Ginger",
+    "assetName": "food-ginger",
+    "svg": "IconSources/SVG/ginger.svg",
+    "png512": "png-512/ginger.png",
+    "iconFamily": "ginger",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Green Beans",
+    "assetName": "food-green-beans",
+    "svg": "IconSources/SVG/green-beans.svg",
+    "png512": "png-512/green-beans.png",
+    "iconFamily": "green-beans",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Wax Beans",
+    "assetName": "food-wax-beans",
+    "svg": "IconSources/SVG/wax-beans.svg",
+    "png512": "png-512/wax-beans.png",
+    "iconFamily": "wax-beans",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Kale",
+    "assetName": "food-kale",
+    "svg": "IconSources/SVG/kale.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Lacinato Kale",
+    "assetName": "food-lacinato-kale",
+    "svg": "IconSources/SVG/lacinato-kale.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Kohlrabi",
+    "assetName": "food-kohlrabi",
+    "svg": "IconSources/SVG/kohlrabi.svg",
+    "png512": "png-512/kohlrabi.png",
+    "iconFamily": "kohlrabi",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Leek",
+    "assetName": "food-leek",
+    "svg": "IconSources/SVG/leek.svg",
+    "png512": "png-512/leek.png",
+    "iconFamily": "allium",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Butter Lettuce",
+    "assetName": "food-butter-lettuce",
+    "svg": "IconSources/SVG/butter-lettuce.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Green Leaf Lettuce",
+    "assetName": "food-green-leaf-lettuce",
+    "svg": "IconSources/SVG/green-leaf-lettuce.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Red Leaf Lettuce",
+    "assetName": "food-red-leaf-lettuce",
+    "svg": "IconSources/SVG/red-leaf-lettuce.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Iceberg Lettuce",
+    "assetName": "food-iceberg-lettuce",
+    "svg": "IconSources/SVG/iceberg-lettuce.svg",
+    "png512": "png-512/iceberg-lettuce.png",
+    "iconFamily": "iceberg lettuce",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Romaine Lettuce",
+    "assetName": "food-romaine-lettuce",
+    "svg": "IconSources/SVG/romaine-lettuce.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Mache",
+    "assetName": "food-mache",
+    "svg": "IconSources/SVG/mache.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Mustard Greens",
+    "assetName": "food-mustard-greens",
+    "svg": "IconSources/SVG/mustard-greens.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Okra",
+    "assetName": "food-okra",
+    "svg": "IconSources/SVG/okra.svg",
+    "png512": "png-512/okra.png",
+    "iconFamily": "okra",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Yellow Onion",
+    "assetName": "food-yellow-onion",
+    "svg": "IconSources/SVG/yellow-onion.svg",
+    "png512": "png-512/yellow-onion.png",
+    "iconFamily": "yellow onion",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Red Onion",
+    "assetName": "food-red-onion",
+    "svg": "IconSources/SVG/red-onion.svg",
+    "png512": "png-512/red-onion.png",
+    "iconFamily": "red onion",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "White Onion",
+    "assetName": "food-white-onion",
+    "svg": "IconSources/SVG/white-onion.svg",
+    "png512": "png-512/white-onion.png",
+    "iconFamily": "white onion",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Sweet Onion",
+    "assetName": "food-sweet-onion",
+    "svg": "IconSources/SVG/sweet-onion.svg",
+    "png512": "png-512/sweet-onion.png",
+    "iconFamily": "sweet onion",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Pearl Onion",
+    "assetName": "food-pearl-onion",
+    "svg": "IconSources/SVG/pearl-onion.svg",
+    "png512": "png-512/pearl-onion.png",
+    "iconFamily": "pearl onion",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Scallion",
+    "assetName": "food-scallion",
+    "svg": "IconSources/SVG/scallion.svg",
+    "png512": "png-512/scallion.png",
+    "iconFamily": "allium",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Shallot",
+    "assetName": "food-shallot",
+    "svg": "IconSources/SVG/shallot.svg",
+    "png512": "png-512/shallot.png",
+    "iconFamily": "shallot",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Snow Peas",
+    "assetName": "food-snow-peas",
+    "svg": "IconSources/SVG/snow-peas.svg",
+    "png512": "png-512/snow-peas.png",
+    "iconFamily": "pea-pod",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Sugar Snap Peas",
+    "assetName": "food-sugar-snap-peas",
+    "svg": "IconSources/SVG/sugar-snap-peas.svg",
+    "png512": "png-512/sugar-snap-peas.png",
+    "iconFamily": "pea-pod",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Green Peas",
+    "assetName": "food-green-peas",
+    "svg": "IconSources/SVG/green-peas.svg",
+    "png512": "png-512/green-peas.png",
+    "iconFamily": "peas",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Potato",
+    "assetName": "food-potato",
+    "svg": "IconSources/SVG/potato.svg",
+    "png512": "png-512/potato.png",
+    "iconFamily": "potato",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Red Potato",
+    "assetName": "food-red-potato",
+    "svg": "IconSources/SVG/red-potato.svg",
+    "png512": "png-512/red-potato.png",
+    "iconFamily": "potato-red potato",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Yukon Gold Potato",
+    "assetName": "food-yukon-gold-potato",
+    "svg": "IconSources/SVG/yukon-gold-potato.svg",
+    "png512": "png-512/yukon-gold-potato.png",
+    "iconFamily": "potato-yukon gold potato",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Russet Potato",
+    "assetName": "food-russet-potato",
+    "svg": "IconSources/SVG/russet-potato.svg",
+    "png512": "png-512/russet-potato.png",
+    "iconFamily": "potato-russet potato",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Fingerling Potato",
+    "assetName": "food-fingerling-potato",
+    "svg": "IconSources/SVG/fingerling-potato.svg",
+    "png512": "png-512/fingerling-potato.png",
+    "iconFamily": "potato-fingerling potato",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Sweet Potato",
+    "assetName": "food-sweet-potato",
+    "svg": "IconSources/SVG/sweet-potato.svg",
+    "png512": "png-512/sweet-potato.png",
+    "iconFamily": "potato-sweet potato",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Yam",
+    "assetName": "food-yam",
+    "svg": "IconSources/SVG/yam.svg",
+    "png512": "png-512/yam.png",
+    "iconFamily": "potato-yam",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Pumpkin",
+    "assetName": "food-pumpkin",
+    "svg": "IconSources/SVG/pumpkin.svg",
+    "png512": "png-512/pumpkin.png",
+    "iconFamily": "squash-pumpkin",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Radicchio",
+    "assetName": "food-radicchio",
+    "svg": "IconSources/SVG/radicchio.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Radish",
+    "assetName": "food-radish",
+    "svg": "IconSources/SVG/radish.svg",
+    "png512": "png-512/radish.png",
+    "iconFamily": "radish",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Rutabaga",
+    "assetName": "food-rutabaga",
+    "svg": "IconSources/SVG/rutabaga.svg",
+    "png512": "png-512/rutabaga.png",
+    "iconFamily": "rutabaga",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Spinach",
+    "assetName": "food-spinach",
+    "svg": "IconSources/SVG/spinach.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Baby Spinach",
+    "assetName": "food-baby-spinach",
+    "svg": "IconSources/SVG/baby-spinach.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Acorn Squash",
+    "assetName": "food-acorn-squash",
+    "svg": "IconSources/SVG/acorn-squash.svg",
+    "png512": "png-512/acorn-squash.png",
+    "iconFamily": "squash-acorn squash",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Butternut Squash",
+    "assetName": "food-butternut-squash",
+    "svg": "IconSources/SVG/butternut-squash.svg",
+    "png512": "png-512/butternut-squash.png",
+    "iconFamily": "squash-butternut squash",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Delicata Squash",
+    "assetName": "food-delicata-squash",
+    "svg": "IconSources/SVG/delicata-squash.svg",
+    "png512": "png-512/delicata-squash.png",
+    "iconFamily": "squash-delicata squash",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Spaghetti Squash",
+    "assetName": "food-spaghetti-squash",
+    "svg": "IconSources/SVG/spaghetti-squash.svg",
+    "png512": "png-512/spaghetti-squash.png",
+    "iconFamily": "squash-spaghetti squash",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Kabocha Squash",
+    "assetName": "food-kabocha-squash",
+    "svg": "IconSources/SVG/kabocha-squash.svg",
+    "png512": "png-512/kabocha-squash.png",
+    "iconFamily": "squash-kabocha squash",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Yellow Squash",
+    "assetName": "food-yellow-squash",
+    "svg": "IconSources/SVG/yellow-squash.svg",
+    "png512": "png-512/yellow-squash.png",
+    "iconFamily": "squash-yellow squash",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Zucchini",
+    "assetName": "food-zucchini",
+    "svg": "IconSources/SVG/zucchini.svg",
+    "png512": "png-512/zucchini.png",
+    "iconFamily": "zucchini",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Chayote",
+    "assetName": "food-chayote",
+    "svg": "IconSources/SVG/chayote.svg",
+    "png512": "png-512/chayote.png",
+    "iconFamily": "squash-chayote",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Tomatillo",
+    "assetName": "food-tomatillo",
+    "svg": "IconSources/SVG/tomatillo.svg",
+    "png512": "png-512/tomatillo.png",
+    "iconFamily": "tomatillo",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Tomato",
+    "assetName": "food-tomato",
+    "svg": "IconSources/SVG/tomato.svg",
+    "png512": "png-512/tomato.png",
+    "iconFamily": "tomato",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Cherry Tomato",
+    "assetName": "food-cherry-tomato",
+    "svg": "IconSources/SVG/cherry-tomato.svg",
+    "png512": "png-512/cherry-tomato.png",
+    "iconFamily": "tomato",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Roma Tomato",
+    "assetName": "food-roma-tomato",
+    "svg": "IconSources/SVG/roma-tomato.svg",
+    "png512": "png-512/roma-tomato.png",
+    "iconFamily": "tomato",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Turnip",
+    "assetName": "food-turnip",
+    "svg": "IconSources/SVG/turnip.svg",
+    "png512": "png-512/turnip.png",
+    "iconFamily": "turnip",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Turnip Greens",
+    "assetName": "food-turnip-greens",
+    "svg": "IconSources/SVG/turnip-greens.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Watercress",
+    "assetName": "food-watercress",
+    "svg": "IconSources/SVG/watercress.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Jicama",
+    "assetName": "food-jicama",
+    "svg": "IconSources/SVG/jicama.svg",
+    "png512": "png-512/jicama.png",
+    "iconFamily": "jicama",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Parsnip",
+    "assetName": "food-parsnip",
+    "svg": "IconSources/SVG/parsnip.svg",
+    "png512": "png-512/parsnip.png",
+    "iconFamily": "pale-root",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Horseradish Root",
+    "assetName": "food-horseradish-root",
+    "svg": "IconSources/SVG/horseradish-root.svg",
+    "png512": "png-512/horseradish-root.png",
+    "iconFamily": "pale-root",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Cassava",
+    "assetName": "food-cassava",
+    "svg": "IconSources/SVG/cassava.svg",
+    "png512": "png-512/cassava.png",
+    "iconFamily": "brown-root",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Taro Root",
+    "assetName": "food-taro-root",
+    "svg": "IconSources/SVG/taro-root.svg",
+    "png512": "png-512/taro-root.png",
+    "iconFamily": "taro",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Lotus Root",
+    "assetName": "food-lotus-root",
+    "svg": "IconSources/SVG/lotus-root.svg",
+    "png512": "png-512/lotus-root.png",
+    "iconFamily": "lotus-root",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Burdock Root",
+    "assetName": "food-burdock-root",
+    "svg": "IconSources/SVG/burdock-root.svg",
+    "png512": "png-512/burdock-root.png",
+    "iconFamily": "brown-root",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Jerusalem Artichoke",
+    "assetName": "food-jerusalem-artichoke",
+    "svg": "IconSources/SVG/jerusalem-artichoke.svg",
+    "png512": "png-512/jerusalem-artichoke.png",
+    "iconFamily": "potato-jerusalem artichoke",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Fiddlehead Fern",
+    "assetName": "food-fiddlehead-fern",
+    "svg": "IconSources/SVG/fiddlehead-fern.svg",
+    "png512": "png-512/fiddlehead-fern.png",
+    "iconFamily": "fiddlehead",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Bean Sprouts",
+    "assetName": "food-bean-sprouts",
+    "svg": "IconSources/SVG/bean-sprouts.svg",
+    "png512": "png-512/bean-sprouts.png",
+    "iconFamily": "sprouts",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Alfalfa Sprouts",
+    "assetName": "food-alfalfa-sprouts",
+    "svg": "IconSources/SVG/alfalfa-sprouts.svg",
+    "png512": "png-512/alfalfa-sprouts.png",
+    "iconFamily": "sprouts",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Enoki Mushroom",
+    "assetName": "food-enoki-mushroom",
+    "svg": "IconSources/SVG/enoki-mushroom.svg",
+    "png512": "png-512/enoki-mushroom.png",
+    "iconFamily": "enoki mushroom",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Button Mushroom",
+    "assetName": "food-button-mushroom",
+    "svg": "IconSources/SVG/button-mushroom.svg",
+    "png512": "png-512/button-mushroom.png",
+    "iconFamily": "button mushroom",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Cremini Mushroom",
+    "assetName": "food-cremini-mushroom",
+    "svg": "IconSources/SVG/cremini-mushroom.svg",
+    "png512": "png-512/cremini-mushroom.png",
+    "iconFamily": "cremini mushroom",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Portobello Mushroom",
+    "assetName": "food-portobello-mushroom",
+    "svg": "IconSources/SVG/portobello-mushroom.svg",
+    "png512": "png-512/portobello-mushroom.png",
+    "iconFamily": "portobello mushroom",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Shiitake Mushroom",
+    "assetName": "food-shiitake-mushroom",
+    "svg": "IconSources/SVG/shiitake-mushroom.svg",
+    "png512": "png-512/shiitake-mushroom.png",
+    "iconFamily": "shiitake mushroom",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Oyster Mushroom",
+    "assetName": "food-oyster-mushroom",
+    "svg": "IconSources/SVG/oyster-mushroom.svg",
+    "png512": "png-512/oyster-mushroom.png",
+    "iconFamily": "oyster mushroom",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Maitake Mushroom",
+    "assetName": "food-maitake-mushroom",
+    "svg": "IconSources/SVG/maitake-mushroom.svg",
+    "png512": "png-512/maitake-mushroom.png",
+    "iconFamily": "maitake mushroom",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Cilantro",
+    "assetName": "food-cilantro",
+    "svg": "IconSources/SVG/cilantro.svg",
+    "png512": "png-512/cilantro.png",
+    "iconFamily": "broad-herbs",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Vegetable"
+  },
+  {
+    "name": "Parsley",
+    "assetName": "food-parsley",
+    "svg": "IconSources/SVG/parsley.svg",
+    "png512": "png-512/parsley.png",
+    "iconFamily": "broad-herbs",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Basil",
+    "assetName": "food-basil",
+    "svg": "IconSources/SVG/basil.svg",
+    "png512": "png-512/basil.png",
+    "iconFamily": "broad-herbs",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Mint",
+    "assetName": "food-mint",
+    "svg": "IconSources/SVG/mint.svg",
+    "png512": "png-512/mint.png",
+    "iconFamily": "broad-herbs",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Dill",
+    "assetName": "food-dill",
+    "svg": "IconSources/SVG/dill.svg",
+    "png512": "png-512/dill.png",
+    "iconFamily": "needle-herbs",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Rosemary",
+    "assetName": "food-rosemary",
+    "svg": "IconSources/SVG/rosemary.svg",
+    "png512": "png-512/rosemary.png",
+    "iconFamily": "needle-herbs",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Thyme",
+    "assetName": "food-thyme",
+    "svg": "IconSources/SVG/thyme.svg",
+    "png512": "png-512/thyme.png",
+    "iconFamily": "needle-herbs",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Oregano",
+    "assetName": "food-oregano",
+    "svg": "IconSources/SVG/oregano.svg",
+    "png512": "png-512/oregano.png",
+    "iconFamily": "broad-herbs",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Sage",
+    "assetName": "food-sage",
+    "svg": "IconSources/SVG/sage.svg",
+    "png512": "png-512/sage.png",
+    "iconFamily": "broad-herbs",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Chives",
+    "assetName": "food-chives",
+    "svg": "IconSources/SVG/chives.svg",
+    "png512": "png-512/chives.png",
+    "iconFamily": "slender-allium",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Lemongrass",
+    "assetName": "food-lemongrass",
+    "svg": "IconSources/SVG/lemongrass.svg",
+    "png512": "png-512/lemongrass.png",
+    "iconFamily": "slender-allium",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Jalapeno Pepper",
+    "assetName": "food-jalapeno-pepper",
+    "svg": "IconSources/SVG/jalapeno-pepper.svg",
+    "png512": "png-512/jalapeno-pepper.png",
+    "iconFamily": "chili-jalapeno pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Serrano Pepper",
+    "assetName": "food-serrano-pepper",
+    "svg": "IconSources/SVG/serrano-pepper.svg",
+    "png512": "png-512/serrano-pepper.png",
+    "iconFamily": "chili-serrano pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Poblano Pepper",
+    "assetName": "food-poblano-pepper",
+    "svg": "IconSources/SVG/poblano-pepper.svg",
+    "png512": "png-512/poblano-pepper.png",
+    "iconFamily": "chili-poblano pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Habanero Pepper",
+    "assetName": "food-habanero-pepper",
+    "svg": "IconSources/SVG/habanero-pepper.svg",
+    "png512": "png-512/habanero-pepper.png",
+    "iconFamily": "chili-habanero pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Anaheim Pepper",
+    "assetName": "food-anaheim-pepper",
+    "svg": "IconSources/SVG/anaheim-pepper.svg",
+    "png512": "png-512/anaheim-pepper.png",
+    "iconFamily": "chili-anaheim pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Shishito Pepper",
+    "assetName": "food-shishito-pepper",
+    "svg": "IconSources/SVG/shishito-pepper.svg",
+    "png512": "png-512/shishito-pepper.png",
+    "iconFamily": "chili-shishito pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Banana Pepper",
+    "assetName": "food-banana-pepper",
+    "svg": "IconSources/SVG/banana-pepper.svg",
+    "png512": "png-512/banana-pepper.png",
+    "iconFamily": "chili-banana pepper",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Thai Chili",
+    "assetName": "food-thai-chili",
+    "svg": "IconSources/SVG/thai-chili.svg",
+    "png512": "png-512/thai-chili.png",
+    "iconFamily": "chili-thai chili",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Nopales",
+    "assetName": "food-nopales",
+    "svg": "IconSources/SVG/nopales.svg",
+    "png512": "png-512/nopales.png",
+    "iconFamily": "nopales",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Romanesco",
+    "assetName": "food-romanesco",
+    "svg": "IconSources/SVG/romanesco.svg",
+    "png512": "png-512/romanesco.png",
+    "iconFamily": "romanesco",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Gai Lan",
+    "assetName": "food-gai-lan",
+    "svg": "IconSources/SVG/gai-lan.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Yu Choy",
+    "assetName": "food-yu-choy",
+    "svg": "IconSources/SVG/yu-choy.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Chinese Celery",
+    "assetName": "food-chinese-celery",
+    "svg": "IconSources/SVG/chinese-celery.svg",
+    "png512": "png-512/chinese-celery.png",
+    "iconFamily": "celery",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Water Spinach",
+    "assetName": "food-water-spinach",
+    "svg": "IconSources/SVG/water-spinach.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Bitter Melon",
+    "assetName": "food-bitter-melon",
+    "svg": "IconSources/SVG/bitter-melon.svg",
+    "png512": "png-512/bitter-melon.png",
+    "iconFamily": "bitter-melon",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Long Bean",
+    "assetName": "food-long-bean",
+    "svg": "IconSources/SVG/long-bean.svg",
+    "png512": "png-512/long-bean.png",
+    "iconFamily": "long-bean",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Loofah Gourd",
+    "assetName": "food-loofah-gourd",
+    "svg": "IconSources/SVG/loofah-gourd.svg",
+    "png512": "png-512/loofah-gourd.png",
+    "iconFamily": "loofah",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Winter Melon",
+    "assetName": "food-winter-melon",
+    "svg": "IconSources/SVG/winter-melon.svg",
+    "png512": "png-512/winter-melon.png",
+    "iconFamily": "winter-melon",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Bottle Gourd",
+    "assetName": "food-bottle-gourd",
+    "svg": "IconSources/SVG/bottle-gourd.svg",
+    "png512": "png-512/bottle-gourd.png",
+    "iconFamily": "bottle-gourd",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Patty Pan Squash",
+    "assetName": "food-patty-pan-squash",
+    "svg": "IconSources/SVG/patty-pan-squash.svg",
+    "png512": "png-512/patty-pan-squash.png",
+    "iconFamily": "squash-patty pan squash",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Hubbard Squash",
+    "assetName": "food-hubbard-squash",
+    "svg": "IconSources/SVG/hubbard-squash.svg",
+    "png512": "png-512/hubbard-squash.png",
+    "iconFamily": "squash-hubbard squash",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Hearts of Palm",
+    "assetName": "food-hearts-of-palm",
+    "svg": "IconSources/SVG/hearts-of-palm.svg",
+    "png512": "png-512/hearts-of-palm.png",
+    "iconFamily": "hearts-of-palm",
+    "origin": "new",
+    "databaseItem": true,
+    "category": "Other"
+  },
+  {
+    "name": "Avocado",
+    "assetName": "food-avocado",
+    "svg": "IconSources/SVG/avocado.svg",
+    "png512": "png-512/avocado.png",
+    "iconFamily": "avocado",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Fruit"
+  },
+  {
+    "name": "Apple",
+    "assetName": "food-apple",
+    "svg": "IconSources/SVG/apple.svg",
+    "png512": "png-512/apple.png",
+    "iconFamily": "apple",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Fruit"
+  },
+  {
+    "name": "Milk",
+    "assetName": "food-milk",
+    "svg": "IconSources/SVG/milk.svg",
+    "png512": "png-512/milk.png",
+    "iconFamily": "milk",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Dairy"
+  },
+  {
+    "name": "Chicken",
+    "assetName": "food-chicken",
+    "svg": "IconSources/SVG/chicken.svg",
+    "png512": "png-512/chicken.png",
+    "iconFamily": "chicken",
+    "origin": "existing",
+    "databaseItem": true,
+    "category": "Meat"
+  },
+  {
+    "name": "Yogurt",
+    "assetName": "food-yogurt",
+    "svg": "IconSources/SVG/yogurt.svg",
+    "png512": "png-512/yogurt.png",
+    "iconFamily": "yogurt",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Dairy"
+  },
+  {
+    "name": "Bread",
+    "assetName": "food-bread",
+    "svg": "IconSources/SVG/bread.svg",
+    "png512": "png-512/bread.png",
+    "iconFamily": "bread",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Mushroom",
+    "assetName": "food-mushroom",
+    "svg": "IconSources/SVG/mushroom.svg",
+    "png512": "png-512/mushroom.png",
+    "iconFamily": "mushroom",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Fish",
+    "assetName": "food-fish",
+    "svg": "IconSources/SVG/fish.svg",
+    "png512": "png-512/fish.png",
+    "iconFamily": "fish",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Egg",
+    "assetName": "food-egg",
+    "svg": "IconSources/SVG/egg.svg",
+    "png512": "png-512/egg.png",
+    "iconFamily": "egg",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Strawberry",
+    "assetName": "food-strawberry",
+    "svg": "IconSources/SVG/strawberry.svg",
+    "png512": "png-512/strawberry.png",
+    "iconFamily": "strawberry",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Fruit"
+  },
+  {
+    "name": "Leftovers",
+    "assetName": "food-leftovers",
+    "svg": "IconSources/SVG/leftovers.svg",
+    "png512": "png-512/leftovers.png",
+    "iconFamily": "leftovers",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Banana",
+    "assetName": "food-banana",
+    "svg": "IconSources/SVG/banana.svg",
+    "png512": "png-512/banana.png",
+    "iconFamily": "banana",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Fruit"
+  },
+  {
+    "name": "Rice",
+    "assetName": "food-rice",
+    "svg": "IconSources/SVG/rice.svg",
+    "png512": "png-512/rice.png",
+    "iconFamily": "rice",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Cheese",
+    "assetName": "food-cheese",
+    "svg": "IconSources/SVG/cheese.svg",
+    "png512": "png-512/cheese.png",
+    "iconFamily": "cheese",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Beef",
+    "assetName": "food-beef",
+    "svg": "IconSources/SVG/beef.svg",
+    "png512": "png-512/beef.png",
+    "iconFamily": "beef",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Butter",
+    "assetName": "food-butter",
+    "svg": "IconSources/SVG/butter.svg",
+    "png512": "png-512/butter.png",
+    "iconFamily": "butter",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Dairy"
+  },
+  {
+    "name": "Onion",
+    "assetName": "food-onion",
+    "svg": "IconSources/SVG/onion.svg",
+    "png512": "png-512/onion.png",
+    "iconFamily": "onion",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Shrimp",
+    "assetName": "food-shrimp",
+    "svg": "IconSources/SVG/shrimp.svg",
+    "png512": "png-512/shrimp.png",
+    "iconFamily": "shrimp",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Tofu",
+    "assetName": "food-tofu",
+    "svg": "IconSources/SVG/tofu.svg",
+    "png512": "png-512/tofu.png",
+    "iconFamily": "tofu",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Cereal",
+    "assetName": "food-cereal",
+    "svg": "IconSources/SVG/cereal.svg",
+    "png512": "png-512/cereal.png",
+    "iconFamily": "cereal",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Corn",
+    "assetName": "food-corn",
+    "svg": "IconSources/SVG/corn.svg",
+    "png512": "png-512/corn.png",
+    "iconFamily": "corn",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Juice",
+    "assetName": "food-juice",
+    "svg": "IconSources/SVG/juice.svg",
+    "png512": "png-512/juice.png",
+    "iconFamily": "juice",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Noodles",
+    "assetName": "food-noodles",
+    "svg": "IconSources/SVG/noodles.svg",
+    "png512": "png-512/noodles.png",
+    "iconFamily": "noodles",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Pasta",
+    "assetName": "food-pasta",
+    "svg": "IconSources/SVG/pasta.svg",
+    "png512": "png-512/pasta.png",
+    "iconFamily": "pasta",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Bacon",
+    "assetName": "food-bacon",
+    "svg": "IconSources/SVG/bacon.svg",
+    "png512": "png-512/bacon.png",
+    "iconFamily": "bacon",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Meat"
+  },
+  {
+    "name": "Lemon",
+    "assetName": "food-lemon",
+    "svg": "IconSources/SVG/lemon.svg",
+    "png512": "png-512/lemon.png",
+    "iconFamily": "lemon",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Fruit"
+  },
+  {
+    "name": "Pear",
+    "assetName": "food-pear",
+    "svg": "IconSources/SVG/pear.svg",
+    "png512": "png-512/pear.png",
+    "iconFamily": "pear",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Fruit"
+  },
+  {
+    "name": "Grapes",
+    "assetName": "food-grapes",
+    "svg": "IconSources/SVG/grapes.svg",
+    "png512": "png-512/grapes.png",
+    "iconFamily": "grapes",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Other"
+  },
+  {
+    "name": "Orange",
+    "assetName": "food-orange",
+    "svg": "IconSources/SVG/orange.svg",
+    "png512": "png-512/orange.png",
+    "iconFamily": "orange",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Fruit"
+  },
+  {
+    "name": "Watermelon",
+    "assetName": "food-watermelon",
+    "svg": "IconSources/SVG/watermelon.svg",
+    "png512": "png-512/watermelon.png",
+    "iconFamily": "watermelon",
+    "origin": "existing",
+    "databaseItem": false,
+    "category": "Fruit"
+  },
+  {
+    "name": "Apricot",
+    "assetName": "food-apricot",
+    "svg": "IconSources/SVG/apricot.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Peach",
+    "assetName": "food-peach",
+    "svg": "IconSources/SVG/peach.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Nectarine",
+    "assetName": "food-nectarine",
+    "svg": "IconSources/SVG/nectarine.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Plum",
+    "assetName": "food-plum",
+    "svg": "IconSources/SVG/plum.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Blackberry",
+    "assetName": "food-blackberry",
+    "svg": "IconSources/SVG/blackberry.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Raspberry",
+    "assetName": "food-raspberry",
+    "svg": "IconSources/SVG/raspberry.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Blueberry",
+    "assetName": "food-blueberry",
+    "svg": "IconSources/SVG/blueberry.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Cherry",
+    "assetName": "food-cherry",
+    "svg": "IconSources/SVG/cherry.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Coconut",
+    "assetName": "food-coconut",
+    "svg": "IconSources/SVG/coconut.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Dragon Fruit",
+    "assetName": "food-dragon-fruit",
+    "svg": "IconSources/SVG/dragon-fruit.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Fig",
+    "assetName": "food-fig",
+    "svg": "IconSources/SVG/fig.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Pineapple",
+    "assetName": "food-pineapple",
+    "svg": "IconSources/SVG/pineapple.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Pomegranate",
+    "assetName": "food-pomegranate",
+    "svg": "IconSources/SVG/pomegranate.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Kiwi",
+    "assetName": "food-kiwi",
+    "svg": "IconSources/SVG/kiwi.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Cantaloupe",
+    "assetName": "food-cantaloupe",
+    "svg": "IconSources/SVG/cantaloupe.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Honeydew Melon",
+    "assetName": "food-honeydew-melon",
+    "svg": "IconSources/SVG/honeydew-melon.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Grapefruit",
+    "assetName": "food-grapefruit",
+    "svg": "IconSources/SVG/grapefruit.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Lime",
+    "assetName": "food-lime",
+    "svg": "IconSources/SVG/lime.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Mandarin",
+    "assetName": "food-mandarin",
+    "svg": "IconSources/SVG/mandarin.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Mango",
+    "assetName": "food-mango",
+    "svg": "IconSources/SVG/mango.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Papaya",
+    "assetName": "food-papaya",
+    "svg": "IconSources/SVG/papaya.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "Grape",
+    "assetName": "food-grape",
+    "svg": "IconSources/SVG/grape.svg",
+    "category": "Fruit"
+  },
+  {
+    "name": "2% Milk",
+    "assetName": "food-2-milk",
+    "svg": "IconSources/SVG/2-milk.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Buttermilk",
+    "assetName": "food-buttermilk",
+    "svg": "IconSources/SVG/buttermilk.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Half-and-Half",
+    "assetName": "food-half-and-half",
+    "svg": "IconSources/SVG/half-and-half.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Heavy Cream",
+    "assetName": "food-heavy-cream",
+    "svg": "IconSources/SVG/heavy-cream.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Lactose-Free Milk",
+    "assetName": "food-lactose-free-milk",
+    "svg": "IconSources/SVG/lactose-free-milk.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Skim Milk",
+    "assetName": "food-skim-milk",
+    "svg": "IconSources/SVG/skim-milk.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Whole Milk",
+    "assetName": "food-whole-milk",
+    "svg": "IconSources/SVG/whole-milk.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Greek Yogurt",
+    "assetName": "food-greek-yogurt",
+    "svg": "IconSources/SVG/greek-yogurt.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Sour Cream",
+    "assetName": "food-sour-cream",
+    "svg": "IconSources/SVG/sour-cream.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Cottage Cheese",
+    "assetName": "food-cottage-cheese",
+    "svg": "IconSources/SVG/cottage-cheese.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Cream Cheese",
+    "assetName": "food-cream-cheese",
+    "svg": "IconSources/SVG/cream-cheese.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Ricotta Cheese",
+    "assetName": "food-ricotta-cheese",
+    "svg": "IconSources/SVG/ricotta-cheese.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Cheddar Cheese",
+    "assetName": "food-cheddar-cheese",
+    "svg": "IconSources/SVG/cheddar-cheese.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Swiss Cheese",
+    "assetName": "food-swiss-cheese",
+    "svg": "IconSources/SVG/swiss-cheese.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Parmesan Cheese",
+    "assetName": "food-parmesan-cheese",
+    "svg": "IconSources/SVG/parmesan-cheese.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Mozzarella Cheese",
+    "assetName": "food-mozzarella-cheese",
+    "svg": "IconSources/SVG/mozzarella-cheese.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Eggs",
+    "assetName": "food-eggs",
+    "svg": "IconSources/SVG/eggs.svg",
+    "category": "Dairy"
+  },
+  {
+    "name": "Beef Roast",
+    "assetName": "food-beef-roast",
+    "svg": "IconSources/SVG/beef-roast.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Lamb Roast",
+    "assetName": "food-lamb-roast",
+    "svg": "IconSources/SVG/lamb-roast.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Pork Roast",
+    "assetName": "food-pork-roast",
+    "svg": "IconSources/SVG/pork-roast.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Beef Steak",
+    "assetName": "food-beef-steak",
+    "svg": "IconSources/SVG/beef-steak.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Pork Chops",
+    "assetName": "food-pork-chops",
+    "svg": "IconSources/SVG/pork-chops.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Lamb Chops",
+    "assetName": "food-lamb-chops",
+    "svg": "IconSources/SVG/lamb-chops.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Beef Stew Meat",
+    "assetName": "food-beef-stew-meat",
+    "svg": "IconSources/SVG/beef-stew-meat.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Ground Beef",
+    "assetName": "food-ground-beef",
+    "svg": "IconSources/SVG/ground-beef.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Ground Chicken",
+    "assetName": "food-ground-chicken",
+    "svg": "IconSources/SVG/ground-chicken.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Ground Lamb",
+    "assetName": "food-ground-lamb",
+    "svg": "IconSources/SVG/ground-lamb.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Ground Pork",
+    "assetName": "food-ground-pork",
+    "svg": "IconSources/SVG/ground-pork.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Ground Turkey",
+    "assetName": "food-ground-turkey",
+    "svg": "IconSources/SVG/ground-turkey.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Chicken Breast",
+    "assetName": "food-chicken-breast",
+    "svg": "IconSources/SVG/chicken-breast.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Turkey Breast",
+    "assetName": "food-turkey-breast",
+    "svg": "IconSources/SVG/turkey-breast.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Chicken Thighs",
+    "assetName": "food-chicken-thighs",
+    "svg": "IconSources/SVG/chicken-thighs.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Whole Chicken",
+    "assetName": "food-whole-chicken",
+    "svg": "IconSources/SVG/whole-chicken.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Turkey",
+    "assetName": "food-turkey",
+    "svg": "IconSources/SVG/turkey.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Pork Tenderloin",
+    "assetName": "food-pork-tenderloin",
+    "svg": "IconSources/SVG/pork-tenderloin.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Ham",
+    "assetName": "food-ham",
+    "svg": "IconSources/SVG/ham.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Deli Meat",
+    "assetName": "food-deli-meat",
+    "svg": "IconSources/SVG/deli-meat.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Cooked Sausage",
+    "assetName": "food-cooked-sausage",
+    "svg": "IconSources/SVG/cooked-sausage.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Raw Sausage",
+    "assetName": "food-raw-sausage",
+    "svg": "IconSources/SVG/raw-sausage.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Hot Dogs",
+    "assetName": "food-hot-dogs",
+    "svg": "IconSources/SVG/hot-dogs.svg",
+    "category": "Meat"
+  },
+  {
+    "name": "Flour",
+    "assetName": "food-flour",
+    "svg": "IconSources/SVG/flour.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Sugar",
+    "assetName": "food-sugar",
+    "svg": "IconSources/SVG/sugar.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Cornstarch",
+    "assetName": "food-cornstarch",
+    "svg": "IconSources/SVG/cornstarch.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Baking Powder",
+    "assetName": "food-baking-powder",
+    "svg": "IconSources/SVG/baking-powder.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Olive Oil",
+    "assetName": "food-olive-oil",
+    "svg": "IconSources/SVG/olive-oil.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Cooking Oil",
+    "assetName": "food-cooking-oil",
+    "svg": "IconSources/SVG/cooking-oil.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Soy Sauce",
+    "assetName": "food-soy-sauce",
+    "svg": "IconSources/SVG/soy-sauce.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Water",
+    "assetName": "food-water",
+    "svg": "IconSources/SVG/water.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Honey",
+    "assetName": "food-honey",
+    "svg": "IconSources/SVG/honey.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Salt",
+    "assetName": "food-salt",
+    "svg": "IconSources/SVG/salt.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Chili Powder",
+    "assetName": "food-chili-powder",
+    "svg": "IconSources/SVG/chili-powder.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Cinnamon",
+    "assetName": "food-cinnamon",
+    "svg": "IconSources/SVG/cinnamon.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Rolled Oats",
+    "assetName": "food-rolled-oats",
+    "svg": "IconSources/SVG/rolled-oats.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Granola",
+    "assetName": "food-granola",
+    "svg": "IconSources/SVG/granola.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Cooked Rice",
+    "assetName": "food-cooked-rice",
+    "svg": "IconSources/SVG/cooked-rice.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Tortilla",
+    "assetName": "food-tortilla",
+    "svg": "IconSources/SVG/tortilla.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Vegetable Scraps",
+    "assetName": "food-vegetable-scraps",
+    "svg": "IconSources/SVG/vegetable-scraps.svg",
+    "category": "Other"
+  },
+  {
+    "name": "Lettuce",
+    "assetName": "food-lettuce",
+    "svg": "IconSources/SVG/lettuce.svg",
+    "category": "Vegetable"
+  },
+  {
+    "name": "Cabbage",
+    "assetName": "food-cabbage",
+    "svg": "IconSources/SVG/cabbage.svg",
+    "category": "Vegetable"
+  }
+]

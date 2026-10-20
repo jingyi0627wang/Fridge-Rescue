@@ -8,6 +8,8 @@ struct FoodDraft {
     var estimatedValue: Double
     var preset: IngredientPreset?
     var fromScan: Bool
+    /// Optional photo picked on the Add page (saved when the food is added).
+    var photoData: Data? = nil
 
     var shelfLifeDays: Int {
         preset?.shelfLifeDays ?? category.fallbackShelfLifeDays

@@ -1,9 +1,7 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
+    "" : {},
     "%@  ·  ×%lld" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -162,12 +160,8 @@
         }
       }
     },
-    "%@, locked" : {
-
-    },
-    "%@, unlocked" : {
-
-    },
+    "%@, locked" : {},
+    "%@, unlocked" : {},
     "%@: %@." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2836,9 +2830,7 @@
         }
       }
     },
-    "Lv %lld" : {
-
-    },
+    "Lv %lld" : {},
     "Make your fridge work for you." : {
       "localizations" : {
         "zh-Hans" : {
@@ -3569,7 +3561,14 @@
       }
     },
     "Recent" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近添加"
+          }
+        }
+      }
     },
     "Recipe" : {
       "localizations" : {
@@ -3842,9 +3841,7 @@
         }
       }
     },
-    "Rescue one food today to start a streak." : {
-
-    },
+    "Rescue one food today to start a streak." : {},
     "Rescue one to complete it" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3877,9 +3874,7 @@
         }
       }
     },
-    "Rescue something today to keep it going!" : {
-
-    },
+    "Rescue something today to keep it going!" : {},
     "Rescue soon!" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -5060,9 +5055,7 @@
         }
       }
     },
-    "Usually" : {
-
-    },
+    "Usually" : {},
     "Usually lasts about %@." : {
       "localizations" : {
         "zh-Hans" : {
@@ -5376,6 +5369,276 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "简体中文"
+          }
+        }
+      }
+    },
+    "Add Photo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加照片"
+          }
+        }
+      }
+    },
+    "Add a photo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加照片"
+          }
+        }
+      }
+    },
+    "Add photo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加照片"
+          }
+        }
+      }
+    },
+    "Change Photo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更换照片"
+          }
+        }
+      }
+    },
+    "Change photo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更换照片"
+          }
+        }
+      }
+    },
+    "Remove Photo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除照片"
+          }
+        }
+      }
+    },
+    "Take Photo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拍照"
+          }
+        }
+      }
+    },
+    "Choose from Library" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从相册选择"
+          }
+        }
+      }
+    },
+    "Food Photo" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物照片"
+          }
+        }
+      }
+    },
+    "Amount (%@)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数量（%@）"
+          }
+        }
+      }
+    },
+    "Food List" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食物列表"
+          }
+        }
+      }
+    },
+    "Scan" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "扫描"
+          }
+        }
+      }
+    },
+    "Price each" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "单价"
+          }
+        }
+      }
+    },
+    "Fridge foods make this a rescue idea." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用到冰箱里的食物，就会成为救援食谱。"
+          }
+        }
+      }
+    },
+    "Our guess. Use the printed date if there is one." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这是估计日期。如果包装上有日期，请以包装为准。"
+          }
+        }
+      }
+    },
+    "Rescue food to earn XP. 2 days or less left = double XP!" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拯救食物赚取经验值。剩 2 天或更少 = 双倍经验！"
+          }
+        }
+      }
+    },
+    "Save your go-to dishes with a photo." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用照片保存你的拿手菜。"
+          }
+        }
+      }
+    },
+    "Show All %lld Steps" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示全部 %lld 个步骤"
+          }
+        }
+      }
+    },
+    "Uses %lld of %lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用 %lld / %lld"
+          }
+        }
+      }
+    },
+    "Works on any phone. There's no recovery email, so keep your password safe." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可在任何手机上登录。没有找回邮箱，请妥善保管密码。"
+          }
+        }
+      }
+    },
+    "e.g. Carrot, Milk, Leftover pasta" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "例如：胡萝卜、牛奶、剩意面"
+          }
+        }
+      }
+    },
+    "My Progress" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的进度"
+          }
+        }
+      }
+    },
+    "Opens your full progress" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "打开完整进度"
+          }
+        }
+      }
+    },
+    "%@ saved" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已省 %@"
+          }
+        }
+      }
+    },
+    "%lld XP to level %lld" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再得 %lld 经验升到 %lld 级"
+          }
+        }
+      }
+    },
+    "day streak" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "天连续"
+          }
+        }
+      }
+    },
+    "money saved" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已省金额"
           }
         }
       }

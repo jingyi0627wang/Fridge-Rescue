@@ -1,4 +1,6 @@
 import SwiftUI
+import PhotosUI
+import UIKit
 
 /// Edit a food item that is already in the fridge.
 /// Opened from the pencil button on Food Details.
@@ -14,6 +16,12 @@ struct EditFoodView: View {
     @State private var priceText: String
     @State private var addedDate: Date
     @State private var expirationDate: Date
+
+    // Photo: nil newPhoto + !removePhoto = keep the current one.
+    @State private var newPhoto: Data?
+    @State private var removePhoto = false
+    @State private var photoItem: PhotosPickerItem?
+    @State private var showCamera = false
 
     init(item: FoodItem) {
         original = item
@@ -32,6 +40,35 @@ struct EditFoodView: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section {
+                    HStack(spacing: 14) {
+                        FreshlingAvatar(category: category, name: trimmedName, size: 64, showsStatus: false,
+                                        photoFile: removePhoto ? nil : original.photoFile,
+                                        photo: newPhoto.flatMap { UIImage(data: $0) })
+                        VStack(alignment: .leading, spacing: 8) {
+                            PhotosPicker(selection: $photoItem, matching: .images) {
+                                Label(hasPhoto ? "Change Photo" : "Add Photo", systemImage: "photo")
+                            }
+                            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                Button {
+                                    showCamera = true
+                                } label: {
+                                    Label("Take Photo", systemImage: "camera")
+                                }
+                            }
+                            if hasPhoto {
+                                Button("Remove Photo", role: .destructive) {
+                                    newPhoto = nil
+                                    removePhoto = true
+                                }
+                            }
+                        }
+                        .buttonStyle(.borderless)
+                        .font(.game(15, .semibold))
+                    }
+                    .padding(.vertical, 4)
+                }
+
                 Section("Details") {
                     TextField("Food name", text: $name)
                         .textInputAutocapitalization(.words)
@@ -69,6 +106,22 @@ struct EditFoodView: View {
             .foregroundStyle(Game.brown)
             .gameBackground()
             .tint(Game.greenDark)
+            .onChange(of: photoItem) {
+                guard let photoItem else { return }
+                Task {
+                    if let data = try? await photoItem.loadTransferable(type: Data.self) {
+                        newPhoto = data
+                        removePhoto = false
+                    }
+                    self.photoItem = nil
+                }
+            }
+            .onChange(of: newPhoto) {
+                if newPhoto != nil { removePhoto = false }
+            }
+            .fullScreenCover(isPresented: $showCamera) {
+                CameraPicker(imageData: $newPhoto).ignoresSafeArea()
+            }
             .navigationTitle("Edit Food")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -83,6 +136,10 @@ struct EditFoodView: View {
         }
     }
 
+    private var hasPhoto: Bool {
+        newPhoto != nil || (!removePhoto && original.photoFile != nil)
+    }
+
     private func save() {
         var updated = original
         updated.name = trimmedName
@@ -90,6 +147,13 @@ struct EditFoodView: View {
         updated.quantity = quantity
         updated.estimatedValue = Double(priceText.replacingOccurrences(of: ",", with: ".")) ?? original.estimatedValue
         updated.addedDate = addedDate
+        if let newPhoto, let file = FoodPhotoStore.save(newPhoto) {
+            FoodPhotoStore.delete(original.photoFile)
+            updated.photoFile = file
+        } else if removePhoto {
+            FoodPhotoStore.delete(original.photoFile)
+            updated.photoFile = nil
+        }
         updated.expirationDate = Calendar.current.startOfDay(for: max(expirationDate, addedDate))
 
         // New name or category → look up the carbon value again

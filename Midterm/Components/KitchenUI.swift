@@ -18,39 +18,6 @@ extension Game {
 
 // MARK: - Idle animations
 
-private enum WigglePhase: CaseIterable {
-    case rest, left, right, left2, right2
-
-    var angle: Double {
-        switch self {
-        case .rest: return 0
-        case .left: return -4
-        case .right: return 4
-        case .left2: return -2
-        case .right2: return 2
-        }
-    }
-}
-
-/// Urgent food shakes a little every couple of seconds ("rescue me!").
-private struct WiggleModifier: ViewModifier {
-    let isOn: Bool
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if isOn && !reduceMotion {
-            content.phaseAnimator(WigglePhase.allCases) { view, phase in
-                view.rotationEffect(.degrees(phase.angle))
-            } animation: { phase in
-                phase == .rest ? .easeInOut(duration: 2.4) : .easeInOut(duration: 0.1)
-            }
-        } else {
-            content
-        }
-    }
-}
-
 /// The mascot gently bobs up and down.
 private struct BobModifier: ViewModifier {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -70,10 +37,6 @@ private struct BobModifier: ViewModifier {
 }
 
 extension View {
-    func wiggle(_ isOn: Bool) -> some View {
-        modifier(WiggleModifier(isOn: isOn))
-    }
-
     func bob() -> some View {
         modifier(BobModifier())
     }
@@ -158,7 +121,7 @@ struct FridgeTile: View {
                             .offset(x: 4, y: 2)
                     }
                 }
-                .wiggle(item.freshnessLevel == .urgent)
+                .fridgeArrivalShake(itemID: item.id)
 
             Text(item.name)
                 .font(.ui(12, .medium))
@@ -193,7 +156,7 @@ struct RecipeBookCard: View {
                 Text(recipe.name)
                     .font(.ui(16, .semibold))
                     .foregroundStyle(Game.brown)
-                    .lineLimit(2)
+                    .lineLimit(1)
                     .multilineTextAlignment(.leading)
 
                 if let rescueFood {
@@ -233,8 +196,7 @@ struct RecipeBookCard: View {
                 .foregroundStyle(Game.edgeDark)
         }
         .padding(.horizontal, 14)
-        .padding(.vertical, 12)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, minHeight: 90, alignment: .leading)  // every card the same height
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(.white)

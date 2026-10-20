@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Fridge tab ("My Freshlings")
 // Every food is a Freshling. Its HP bar goes down as it gets closer to expiring.
-// Top: level, streak and coins (money saved). Search, then filter by category.
+// Top: level and money saved. Search, then filter by category.
 // Tap a Freshling for details; press and hold for quick actions.
 
 struct HomeView: View {
@@ -88,14 +88,14 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - HUD (level, streak, coins, settings)
+    // MARK: - HUD (level, money saved, settings)
 
     private var hud: some View {
         let info = foodStore.levelInfo
 
         return HStack(spacing: 6) {
             Button {
-                router.selectedTab = .impact
+                router.selectedTab = .today
             } label: {
                 HStack(spacing: 5) {
                     ZStack {
@@ -117,10 +117,24 @@ struct HomeView: View {
             .buttonStyle(.plain)
             .accessibilityLabel("Level \(info.level)")
 
-            HUDPill(icon: "dollarsign", iconColor: Game.orange,
-                    text: foodStore.moneySaved.formatted(.number.precision(.fractionLength(0))))
-                .accessibilityLabel("Money saved")
-                .accessibilityValue(foodStore.moneySaved.formatted(.currency(code: "USD")))
+            // Money saved (price of food eaten instead of thrown away)
+            HStack(spacing: 4) {
+                Image("IconSavings")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                Text("\(foodStore.moneySaved.formatted(.currency(code: "USD").precision(.fractionLength(0)))) saved")
+                    .font(.ui(13, .semibold))
+                    .foregroundStyle(Game.brown)
+                    .monospacedDigit()
+            }
+            .padding(.leading, 5)
+            .padding(.trailing, 10)
+            .padding(.vertical, 4)
+            .background(Capsule().fill(.white).shadow(color: Game.brown.opacity(0.07), radius: 2, y: 1))
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Money saved")
+            .accessibilityValue(foodStore.moneySaved.formatted(.currency(code: "USD")))
 
             Button {
                 showSettings = true

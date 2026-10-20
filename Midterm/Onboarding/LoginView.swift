@@ -5,50 +5,23 @@
 //  Created by Rumik He on 10/13/26.
 //
 
-//
-//  LoginView.swift
-//  Midterm
-//
-//  Created by Rumik He on 10/13/26.
-//
-
-//
-//  LoginView.swift
-//  Midterm
-//
-//  Created by Rumik He on 10/13/26.
-//
-
-//
-//  LoginView.swift
-//  Midterm
-//
-//  Created by Rumik He on 10/13/26.
-//
-
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
-
 
     @AppStorage("username") private var savedUsername = ""
     @AppStorage("isLoggedIn") private var isLoggedIn = false
     @AppStorage("hasSeenGuide") private var hasSeenGuide = false
 
-
     @State private var isSignUp = false
     @State private var usernameInput = ""
     @State private var passwordInput = ""
     @State private var errorMessage: String?
+    @State private var isSubmitting = false
     @State private var showForgotAlert = false
     @State private var showComingSoon = false
     @FocusState private var typing: Bool
-
-
-    private var hasAccount: Bool {
-        !savedUsername.isEmpty && KeychainHelper.readPassword() != nil
-    }
-
 
     private enum Layout {
         static let characterWidth: CGFloat = 118
@@ -63,9 +36,8 @@ struct LoginView: View {
     }
 
     var body: some View {
-
         GeometryReader { geo in
-            let small = geo.size.height < 760          // SE / mini
+            let small = geo.size.height < 760         // SE / mini
             VStack(spacing: 0) {
                 logo(scale: small ? 0.72 : 1)
                     .padding(.top, small ? 0 : 4)
@@ -82,15 +54,17 @@ struct LoginView: View {
         .ignoresSafeArea(.keyboard)
         .background { PatternBackground() }
         .contentShape(Rectangle())
-        .onTapGesture { typing = false }               // tap outside → hide keyboard
-        .onAppear { isSignUp = !hasAccount }
+        .onTapGesture { typing = false }             // tap outside → hide keyboard
+        .onAppear {
+            // A fresh phone must offer Log in, even without a local saved password.
+            isSignUp = false
+        }
         .onChange(of: usernameInput) { errorMessage = nil }
         .onChange(of: passwordInput) { errorMessage = nil }
-        .alert("Forgot your password?", isPresented: $showForgotAlert) {
-            Button("Reset account", role: .destructive, action: resetAccount)
-            Button("Cancel", role: .cancel) {}
+        .alert("Password help", isPresented: $showForgotAlert) {
+            Button("OK", role: .cancel) {}
         } message: {
-            Text("Your password is saved only on this phone, so it can't be recovered. You can reset the account and create a new one. Your fridge won't be affected.")
+            Text("Works on any phone. There's no recovery email, so keep your password safe.")
         }
         .alert("Coming soon", isPresented: $showComingSoon) {
             Button("OK", role: .cancel) {}
@@ -140,7 +114,7 @@ struct LoginView: View {
             // 密码
             inputField(icon: "lock") {
                 SecureField("", text: $passwordInput,
-                            prompt: placeholder(isSignUp ? "Password (4+ characters)" : "Password"))
+                            prompt: placeholder(isSignUp ? "Password (6+ characters)" : "Password"))
                     .textContentType(isSignUp ? .newPassword : .password)
                     .submitLabel(.go)
                     .onSubmit(submit)
@@ -148,7 +122,7 @@ struct LoginView: View {
             }
             .padding(.top, 15)
 
-            // 错误提示 + Forgot Password（右对齐，在输入框下方）
+            // 错误提示 + Forgot Password
             HStack(alignment: .top) {
                 if let errorMessage {
                     Text(errorMessage)
@@ -171,7 +145,7 @@ struct LoginView: View {
 
             // 主按钮
             Button(action: submit) {
-                Text("Rescue the Freshlings!")
+                Text(isSubmitting ? "Please wait…" : (isSignUp ? "Create Account" : "Log In"))
                     .font(FreshlingsTheme.body(21, weight: .semibold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
@@ -179,8 +153,11 @@ struct LoginView: View {
                     .background(FreshlingsTheme.deepGreen, in: Capsule())
             }
 
+            .disabled(isSubmitting)
+
             // 切换 Log in / Sign up
             Button(isSignUp ? "Already have an account? Log in" : "Sign up", action: toggleMode)
+                .disabled(isSubmitting)
                 .font(FreshlingsTheme.body(15, weight: .medium))
                 .underline()
                 .foregroundStyle(FreshlingsTheme.linkGreen)
@@ -189,7 +166,7 @@ struct LoginView: View {
 
             Spacer(minLength: 8).frame(maxHeight: 44)
 
-            // 社交登录（目前只是外观）
+            // 社交登录
             HStack(spacing: 14) {
                 socialButton(Image.asset("IconGoogle", fallbackSystemName: "g.circle.fill"), name: "Google")
                 socialButton(Image(systemName: "apple.logo"), name: "Apple")
@@ -204,19 +181,17 @@ struct LoginView: View {
         .padding(.bottom, max(bottomInset, 16))
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background {
-            // The pattern is an overlay, so its big scaled-to-fill size can't
-            // make the card grow past its frame (that was covering the logo).
             FreshlingsTheme.green
                 .overlay {
                     Image("TitlePattern")
                         .resizable()
                         .scaledToFill()
-                        .blendMode(.multiply)   // white parts vanish, lines stay
+                        .blendMode(.multiply)
                         .opacity(0.5)
                 }
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: Layout.cardRadius,
-                                              topTrailingRadius: Layout.cardRadius,
-                                              style: .continuous))
+                                            topTrailingRadius: Layout.cardRadius,
+                                            style: .continuous))
         }
         .padding(.horizontal, Layout.cardMargin)
     }
@@ -226,7 +201,7 @@ struct LoginView: View {
     }
 
     private func inputField<Field: View>(icon: String,
-                                         @ViewBuilder field: () -> Field) -> some View {
+                                        @ViewBuilder field: () -> Field) -> some View {
         HStack(spacing: 14) {
             Image(systemName: icon)
                 .font(.system(size: 20, weight: .regular))
@@ -256,42 +231,64 @@ struct LoginView: View {
         .accessibilityLabel("Continue with \(name)")
     }
 
-
+    // MARK: - Firebase 真实鉴权逻辑
 
     private func submit() {
-        let name = usernameInput.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        guard !name.isEmpty else {
-            errorMessage = "Enter a username."
+        guard !isSubmitting else { return }
+        let name = AccountIdentity.normalizedUsername(usernameInput)
+        guard AccountIdentity.isValidUsername(name) else {
+            errorMessage = "Enter a username without spaces or @."
             return
         }
         guard !passwordInput.isEmpty else {
             errorMessage = "Enter a password."
             return
         }
+        let password = passwordInput
+        let creatingAccount = isSignUp
+        if creatingAccount && password.count < 6 {
+            errorMessage = "Password must be at least 6 characters."
+            return
+        }
+        let email = AccountIdentity.email(for: name)
+        isSubmitting = true
+        errorMessage = nil
 
-        if isSignUp {
-            guard passwordInput.count >= 4 else {
-                errorMessage = "Password must be at least 4 characters."
-                return
-            }
-            savedUsername = name
-            KeychainHelper.savePassword(passwordInput)
-            hasSeenGuide = false          // 新账号要看一次引导
-        } else {
-            guard hasAccount else {
-                errorMessage = "No account yet. Tap Sign up to create one."
-                return
-            }
-            guard name == savedUsername,
-                  passwordInput == KeychainHelper.readPassword() else {
-                errorMessage = "Username or password is incorrect."
-                return
+        // Both phones use the same Firebase project and deterministic account address.
+        let completion: (AuthDataResult?, Error?) -> Void = { result, error in
+            DispatchQueue.main.async {
+                isSubmitting = false
+                if let error {
+                    switch AuthErrorCode(rawValue: (error as NSError).code) {
+                    case .emailAlreadyInUse:
+                        errorMessage = "This username already exists. Choose Log in to use it on this phone."
+                    case .networkError:
+                        errorMessage = "Cannot connect. Check your internet connection and try again."
+                    case .operationNotAllowed:
+                        errorMessage = "Account sign-in is unavailable. Please contact support."
+                    case .wrongPassword, .invalidCredential, .userNotFound:
+                        errorMessage = "Username or password is incorrect."
+                    default:
+                        errorMessage = error.localizedDescription
+                    }
+                    return
+                }
+                guard result?.user != nil else {
+                    errorMessage = "Sign-in did not finish. Please try again."
+                    return
+                }
+                savedUsername = name
+                KeychainHelper.savePassword(password)
+                if creatingAccount { hasSeenGuide = false }
+                passwordInput = ""
+                isLoggedIn = true
             }
         }
-
-        passwordInput = ""
-        isLoggedIn = true
+        if creatingAccount {
+            Auth.auth().createUser(withEmail: email, password: password, completion: completion)
+        } else {
+            Auth.auth().signIn(withEmail: email, password: password, completion: completion)
+        }
     }
 
     private func toggleMode() {
@@ -300,14 +297,7 @@ struct LoginView: View {
         errorMessage = nil
     }
 
-    private func resetAccount() {
-        KeychainHelper.deletePassword()
-        savedUsername = ""
-        usernameInput = ""
-        passwordInput = ""
-        errorMessage = nil
-        isSignUp = true
-    }
+
 }
 
 #Preview {

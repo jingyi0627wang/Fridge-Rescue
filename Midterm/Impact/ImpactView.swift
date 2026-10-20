@@ -6,8 +6,8 @@
 import SwiftUI
 import Charts
 
-// MARK: - Impact tab (player profile)
-// Your level and XP, money ("coins") and CO₂ saved, streak, weekly goal,
+// MARK: - Progress page (opened from the Today tab)
+// Your level and XP, money and CO₂ saved, streak, weekly goal,
 // badges, charts over time, and the food history.
 
 struct ImpactView: View {
@@ -32,8 +32,8 @@ struct ImpactView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
-                header
                 profileCard
+                    .padding(.top, 8)
                 statGrid
                 streakCard
 
@@ -73,7 +73,19 @@ struct ImpactView: View {
             .padding(.bottom, 24)
         }
         .gameBackground()
-        .toolbar(.hidden, for: .navigationBar)
+        .navigationTitle("My Progress")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showInfo = true
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+                .accessibilityLabel("How we calculate")
+            }
+        }
         .sheet(isPresented: $showGoalSheet) {
             GoalSettingView(goalTypeRaw: $goalTypeRaw, goalTarget: $goalTarget)
         }
@@ -155,7 +167,7 @@ struct ImpactView: View {
                         .monospacedDigit()
                 }
                 GameProgressBar(progress: info.progress)
-                Text("Rescue food to earn XP. Food with 2 days or less left is worth double!")
+                Text("Rescue food to earn XP. 2 days or less left = double XP!")
                     .font(.game(12, .medium))
                     .foregroundStyle(Game.brownSoft)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -173,7 +185,7 @@ struct ImpactView: View {
             GridRow {
                 statCard(icon: "dollarsign", color: Game.orange,
                          value: foodStore.moneySaved.formatted(.currency(code: "USD")),
-                         label: "Coins saved")
+                         label: "Money saved")
                 statCard(icon: "leaf.fill", color: Game.greenDark,
                          value: String(format: "%.1f kg", foodStore.carbonSaved),
                          label: "CO₂ saved")
@@ -191,11 +203,19 @@ struct ImpactView: View {
 
     private func statCard(icon: String, color: Color, value: String, label: LocalizedStringKey) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Image(systemName: icon)
-                .font(.system(size: 11, weight: .heavy))
-                .foregroundStyle(.white)
-                .frame(width: 24, height: 24)
-                .background(Circle().fill(color))
+            if icon == "dollarsign" {
+                // Money saved: the Freshlings savings coin.
+                Image("IconSavings")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 26, height: 26)
+            } else {
+                Image(systemName: icon)
+                    .font(.system(size: 11, weight: .heavy))
+                    .foregroundStyle(.white)
+                    .frame(width: 24, height: 24)
+                    .background(Circle().fill(color))
+            }
             Text(value)
                 .font(.game(22, .bold))
                 .foregroundStyle(Game.brown)
@@ -206,6 +226,7 @@ struct ImpactView: View {
                 .foregroundStyle(Game.brownSoft)
                 .lineLimit(1)
         }
+        .frame(maxWidth: .infinity, minHeight: 92, alignment: .topLeading)
         .gameCard(padding: 14)
     }
 
@@ -357,7 +378,7 @@ struct ImpactView: View {
                             .foregroundStyle(badge.unlocked ? Game.brown : Game.brownSoft)
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
-                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(height: 30, alignment: .top)
                     }
                     .opacity(badge.unlocked ? 1 : 0.6)
                 }

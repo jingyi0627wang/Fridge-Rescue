@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct ExpirationConfirmView: View {
     let draft: FoodDraft
@@ -46,7 +47,7 @@ struct ExpirationConfirmView: View {
             } header: {
                 Text("Suggested Expiration")
             } footer: {
-                Text("This is an estimate. If the package has a printed date, use that instead.")
+                Text("Our guess. Use the printed date if there is one.")
             }
 
             Section("Confirm Date") {
@@ -89,7 +90,8 @@ struct ExpirationConfirmView: View {
 
     private var summaryRow: some View {
         HStack(spacing: 12) {
-            FreshlingAvatar(category: draft.category, name: draft.name, size: 56, showsStatus: false)
+            FreshlingAvatar(category: draft.category, name: draft.name, size: 56, showsStatus: false,
+                            photo: draft.photoData.flatMap { UIImage(data: $0) })
             VStack(alignment: .leading, spacing: 2) {
                 Text(draft.name).font(.game(20, .bold))
                 Text("Qty \(draft.quantity) · \(Text(draft.category.displayName))")
@@ -126,7 +128,7 @@ struct ExpirationConfirmView: View {
     }
 
     private func save() {
-        let item = FoodItem(
+        var item = FoodItem(
             name: draft.name,
             category: draft.category,
             addedDate: draft.addedDate,
@@ -135,6 +137,7 @@ struct ExpirationConfirmView: View {
             estimatedValue: draft.estimatedValue,
             carbonFactor: draft.carbonFactor
         )
+        item.photoFile = draft.photoData.flatMap { FoodPhotoStore.save($0) }
         // Bottom bar: "Carrot added to your fridge" with Undo.
         store.undoable("\(item.name) added to your fridge") {
             store.addItem(item)

@@ -319,7 +319,7 @@ struct RecipeListView: View {
                 Text("Your recipe book is empty")
                     .font(.game(19, .bold))
                     .foregroundStyle(Game.brown)
-                Text("Save your go-to dishes with a photo. Recipes that use your fridge food show up as rescue ideas.")
+                Text("Save your go-to dishes with a photo.")
                     .font(.game(14, .medium))
                     .foregroundStyle(Game.brownSoft)
                     .multilineTextAlignment(.center)

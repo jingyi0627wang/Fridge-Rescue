@@ -1,5 +1,5 @@
-
 import SwiftUI
+import FirebaseCore //
 
 @main
 struct MyApp: App {
@@ -10,12 +10,13 @@ struct MyApp: App {
     @AppStorage("appLanguage")
     private var appLanguage = "en"
 
-    /// Testing: every launch starts at Title → Login → Onboarding.
-    /// The account and the fridge are kept; only "logged in" and "seen the guide" reset.
-    /// Set to false before the final demo / release.
-    static let showLoginEveryLaunch = true
+    /// Normal launches restore the Firebase session. Enable only for a login-screen demo.
+    static let showLoginEveryLaunch = false
 
     init() {
+        // 
+        FirebaseApp.configure()
+
         // Design-system fonts (Bagel Fat One + Anek Latin) + title bar look.
         GameAppearance.configure()
 

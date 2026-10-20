@@ -19,7 +19,8 @@ struct AddRecipeView: View {
     }
 
     @State private var name = ""
-    @State private var emoji = "🍲"
+    @State private var emoji = RecipeIcon.defaultSymbol
+    @State private var showIconPicker = false
     @State private var minutes = 20
     @State private var difficulty = "Easy"
     @State private var ingredients: [UserRecipe.Ingredient] = [UserRecipe.Ingredient(name: "", amount: "")]
@@ -33,13 +34,6 @@ struct AddRecipeView: View {
     @State private var showCamera = false
 
     private let difficulties = ["Easy", "Medium", "Hard"]
-    private let emojiChoices = ["🍲", "🥗", "🍝", "🍜", "🍛", "🥘", "🍳", "🥞", "🍞", "🥪",
-                                "🌮", "🍕", "🍚", "🥣", "🍰", "🍪", "🥤", "🍱",
-                                // Our own drawings (stored by asset name)
-                                "FoodCarrot", "FoodTomato", "FoodBroccoli", "FoodLeafy", "FoodPotato",
-                                "FoodMushroom", "FoodChicken", "FoodFish", "FoodShrimp", "FoodAvocado",
-                                "FoodBanana", "FoodStrawberry"]
-
     private var trimmedName: String {
         name.trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -58,11 +52,23 @@ struct AddRecipeView: View {
                     TextField("Recipe name", text: $name)
                         .textInputAutocapitalization(.words)
 
-                    Picker("Icon", selection: $emoji) {
-                        ForEach(emojiChoices, id: \.self) { choice in
-                            FreshMenuLabel(title: "", symbol: FoodIcon.symbol(forEmoji: choice)).tag(choice)
+                    Button {
+                        showIconPicker = true
+                    } label: {
+                        HStack(spacing: 12) {
+                            Text("Icon")
+                            Spacer()
+                            FreshSymbol(symbol: RecipeIcon.symbol(for: emoji), size: 40)
+                            Text(RecipeIcon.title(for: emoji))
+                                .foregroundStyle(Game.brownSoft)
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(Game.brownSoft)
                         }
+                        .contentShape(Rectangle())
                     }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Choose recipe illustration")
 
                     Stepper("Time: \(minutes) min", value: $minutes, in: 5...240, step: 5)
 
@@ -99,6 +105,9 @@ struct AddRecipeView: View {
                         .disabled(!canSave)
                 }
             }
+            .sheet(isPresented: $showIconPicker) {
+                RecipeIconPicker(selection: $emoji)
+            }
             .onChange(of: photoItem) {
                 guard let item = photoItem else { return }
                 Task {
@@ -132,7 +141,7 @@ struct AddRecipeView: View {
                     ZStack {
                         Game.mint
                         VStack(spacing: 6) {
-                            FreshSymbol(symbol: FoodIcon.symbol(forEmoji: emoji), size: 64)
+                            FreshSymbol(symbol: RecipeIcon.symbol(for: emoji), size: 64)
                             Text("Add a photo of your dish")
                                 .font(.game(14, .medium))
                                 .foregroundStyle(Game.brownSoft)
@@ -182,8 +191,13 @@ struct AddRecipeView: View {
         Section {
             ForEach($ingredients) { $ingredient in
                 HStack(spacing: 10) {
-                    FoodIconView(name: ingredient.name, size: 24)
-                        .opacity(ingredient.name.isEmpty ? 0.35 : 1)
+                    if ingredient.name.trimmingCharacters(in: .whitespaces).isEmpty {
+                        FreshSymbol(symbol: "recipe-salad", size: 24)
+                            .opacity(0.35)
+                    } else {
+                        FoodIconView(name: ingredient.name, size: 24)
+                    }
+
                     TextField("Ingredient", text: $ingredient.name)
                         .textInputAutocapitalization(.words)
                     TextField("Amount", text: $ingredient.amount)
@@ -216,7 +230,7 @@ struct AddRecipeView: View {
         } header: {
             Text("Ingredients")
         } footer: {
-            Text("Ingredients that match your fridge food help this recipe show up as a rescue idea.")
+            Text("Fridge foods make this a rescue idea.")
         }
     }
 

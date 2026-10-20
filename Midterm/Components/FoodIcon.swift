@@ -1,50 +1,38 @@
 import SwiftUI
 import UIKit
 
-// MARK: - Freshlings food icons
-// A "symbol" is either the name of one of our drawings in Assets.xcassets/Food
-// (e.g. "FoodCarrot") or an emoji (e.g. "🍆").
-//
-// Rule: show our drawing whenever we drew that food; only foods we did NOT draw
-// keep their emoji. FoodEmoji.swift still decides which food a name is
-// ("Chicken Breast" → 🍗); this file swaps that emoji for our drawing of it.
-
+// Food names are resolved before any emoji fallback. Only unnamed recipe symbols
+// use the deliberately limited emoji-to-drawing bridge below.
 enum FoodIcon {
-
-    /// Emoji → our drawing of the same food. Emoji not listed here have no drawing.
     private static let drawings: [String: String] = [
-        "🍎": "FoodApple", "🥑": "FoodAvocado", "🍌": "FoodBanana", "🍞": "FoodBread",
-        "🥦": "FoodBroccoli", "🥕": "FoodCarrot", "🧀": "FoodCheese", "🍗": "FoodChicken",
-        "🥚": "FoodEgg", "🍳": "FoodEgg", "🐟": "FoodFish", "🥛": "FoodMilk",
-        "🍄": "FoodMushroom", "🍓": "FoodStrawberry", "🍅": "FoodTomato", "🍤": "FoodShrimp",
-        "🥬": "FoodLeafy", "🧊": "FoodTofu", "🥓": "FoodBacon", "🥩": "FoodMeat",
-        "🫑": "FoodPepper", "🧈": "FoodButter", "🥣": "FoodCereal", "🌽": "FoodCorn",
-        "🥒": "FoodCucumber", "🍇": "FoodGrape", "🧃": "FoodJuice", "🥤": "FoodJuice",
-        "🍋": "FoodLemon", "🧅": "FoodOnion", "🍊": "FoodOrange", "🍐": "FoodPear",
-        "🥔": "FoodPotato", "🍉": "FoodWatermelon",
+        "🫐": "food-blueberry", "🍍": "food-pineapple", "🥥": "food-coconut",
+        "🍒": "food-cherry", "🍑": "food-peach", "🥝": "food-kiwi",
+        "🥭": "food-mango", "🍈": "food-honeydew-melon", "🌶": "food-thai-chili",
+        "🫛": "food-green-peas", "🦃": "food-turkey", "🍖": "food-ham",
+        "🌭": "food-hot-dogs", "🍠": "food-sweet-potato",
+        "🍎": "food-apple", "🍏": "food-apple", "🥑": "food-avocado",
+        "🍌": "food-banana", "🍞": "food-bread", "🥦": "food-broccoli",
+        "🥕": "food-carrot", "🧀": "food-cheese", "🍗": "food-chicken",
+        "🥚": "food-egg", "🍳": "food-egg", "🐟": "food-fish",
+        "🥛": "food-milk", "🍄": "food-mushroom", "🍓": "food-strawberry",
+        "🍅": "food-tomato", "🍤": "food-shrimp", "🥬": "food-green-leaf-lettuce",
+        "🧊": "food-tofu", "🥓": "food-bacon", "🥩": "food-beef",
+        "🫑": "food-bell-pepper", "🧈": "food-butter", "🥣": "food-cereal",
+        "🌽": "food-corn", "🥒": "food-cucumber", "🍇": "food-grapes",
+        "🧃": "food-juice", "🍋": "food-lemon", "🧅": "food-onion",
+        "🍊": "food-orange", "🍐": "food-pear", "🥔": "food-potato",
+        "🍉": "food-watermelon", "🍚": "food-rice", "🍝": "food-pasta",
+        "🍆": "food-eggplant", "🧄": "food-garlic", "🫚": "food-ginger"
     ]
 
-    /// Names we drew that FoodEmoji can't tell apart (e.g. lemon and lime are both 🍋).
-    /// Checked before FoodEmoji, first match wins.
-    private static let nameDrawings: [(keywords: [String], drawing: String)] = [
-        (["lime"], "FoodLime"),
-        (["yogurt", "yoghurt", "sour cream", "kefir"], "FoodYogurt"),
-        (["cereal", "oat", "granola", "muesli"], "FoodCereal"),
-        (["muffin", "cupcake"], "FoodMuffin"),
-        (["jam", "jelly", "preserve"], "FoodJar"),
-    ]
-
-    /// Our drawing for a food, or its emoji if we didn't draw it.
+    /// Every covered food resolves to its own named asset (including every leafy variety).
+    /// Do not round-trip through FoodEmoji: different foods share the same emoji.
     static func symbol(for name: String, category: FoodCategory) -> String {
-        let key = name.lowercased()
-        if let match = nameDrawings.first(where: { rule in rule.keywords.contains { startsWord(key, $0) } }) {
-            return match.drawing
-        }
-        return symbol(forEmoji: FoodEmoji.emoji(for: name, category: category))
+        if let drawing = FoodIconNames.assetName(for: name) { return drawing }
+        return FoodEmoji.emoji(for: name, category: category)
     }
 
-    /// Our drawing for an emoji (recipes, challenges), or the emoji itself.
-    /// A value that is already a drawing name is returned as is.
+    /// Compatibility bridge for existing recipe emoji pickers and stored recipes.
     static func symbol(forEmoji emoji: String) -> String {
         let plain = emoji.replacingOccurrences(of: "\u{FE0F}", with: "")
         return drawings[plain] ?? drawings[emoji] ?? emoji
@@ -66,30 +54,19 @@ enum FoodIcon {
         return Image(uiImage: small.withRenderingMode(.alwaysOriginal))
     }
 
-    /// "pear" matches "Pear" and "Asian Pear" but not "spears".
-    private static func startsWord(_ text: String, _ keyword: String) -> Bool {
-        var range = text.startIndex..<text.endIndex
-        while let found = text.range(of: keyword, range: range) {
-            if found.lowerBound == text.startIndex || !text[text.index(before: found.lowerBound)].isLetter {
-                return true
-            }
-            range = found.upperBound..<text.endIndex
-        }
-        return false
-    }
 }
 
 // MARK: - Category icons
 
 extension FoodCategory {
-    /// Our drawing for the category, or nil for "Other" (keeps its SF Symbol).
+    /// Every category has a drawing; Other uses a gray mystery vegetable.
     var drawingName: String? {
         switch self {
-        case .vegetable: return "FoodCarrot"
-        case .fruit: return "FoodApple"
-        case .dairy: return "FoodMilk"
-        case .meat: return "FoodMeat"
-        case .other: return nil
+        case .vegetable: return "food-carrot"
+        case .fruit: return "food-apple"
+        case .dairy: return "food-milk"
+        case .meat: return "food-beef"
+        case .other: return "food-mystery-vegetable"
         }
     }
 }
@@ -159,7 +136,7 @@ struct CategoryLabel: View {
 #Preview {
     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 16) {
         ForEach(["Apple", "Eggs", "Whole Milk", "Bacon", "Cherry Tomato", "Eggplant",
-                 "Chicken Breast", "Lime", "Mango", "Greek Yogurt"], id: \.self) { name in
+                 "Chicken Breast", "Lime", "Mango", "Greek Yogurt", "Red Leaf Lettuce", "Ground Turkey"], id: \.self) { name in
             VStack {
                 FoodIconView(name: name, size: 44)
                 Text(name).font(.caption2)

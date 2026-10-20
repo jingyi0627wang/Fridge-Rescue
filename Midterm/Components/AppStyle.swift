@@ -368,7 +368,7 @@ extension FoodCategory {
         case .fruit: return Game.pink
         case .dairy: return Game.blue
         case .meat: return Game.hex(0xFF8A6B)
-        case .other: return Game.hex(0xFFB938)
+        case .other: return Game.gray
         }
     }
 
@@ -378,7 +378,7 @@ extension FoodCategory {
         case .fruit: return Game.hex(0xFFE8F1)
         case .dairy: return Game.hex(0xE5F3FF)
         case .meat: return Game.hex(0xFFE9E2)
-        case .other: return Game.orangeSoft
+        case .other: return Game.graySoft
         }
     }
 
@@ -389,7 +389,7 @@ extension FoodCategory {
         case .fruit: return "leaf.fill"
         case .dairy: return "drop.fill"
         case .meat: return "fork.knife"
-        case .other: return "bag.fill"
+        case .other: return "questionmark"
         }
     }
 
@@ -424,6 +424,10 @@ struct FreshlingAvatar: View {
     var level: FreshnessLevel = .fresh
     var size: CGFloat = 56
     var showsStatus = true
+    /// User photo (FoodPhotoStore file name). Shown instead of the drawing.
+    var photoFile: String? = nil
+    /// Already-loaded photo (e.g. a preview on the Add page before saving).
+    var photo: UIImage? = nil
 
     /// Shortcut for a fridge item.
     init(item: FoodItem, size: CGFloat = 56, showsStatus: Bool = true) {
@@ -432,15 +436,23 @@ struct FreshlingAvatar: View {
         self.level = item.freshnessLevel
         self.size = size
         self.showsStatus = showsStatus
+        self.photoFile = item.photoFile
     }
 
     init(category: FoodCategory, name: String? = nil, level: FreshnessLevel = .fresh,
-         size: CGFloat = 56, showsStatus: Bool = true) {
+         size: CGFloat = 56, showsStatus: Bool = true,
+         photoFile: String? = nil, photo: UIImage? = nil) {
         self.category = category
         self.name = name
         self.level = level
         self.size = size
         self.showsStatus = showsStatus
+        self.photoFile = photoFile
+        self.photo = photo
+    }
+
+    private var userPhoto: UIImage? {
+        photo ?? photoFile.flatMap { FoodPhotoStore.image(named: $0) }
     }
 
     var body: some View {
@@ -450,7 +462,15 @@ struct FreshlingAvatar: View {
             .fill(expired ? Game.graySoft : category.freshlingBackground)
             .frame(width: size, height: size)
             .overlay {
-                if let name {
+                if let userPhoto {
+                    Image(uiImage: userPhoto)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: size, height: size)
+                        .clipShape(Circle())
+                        .grayscale(expired ? 1 : 0)
+                        .opacity(expired ? 0.6 : 1)
+                } else if let name {
                     FreshSymbol(symbol: FoodIcon.symbol(for: name, category: category), size: size * 0.64)
                         .grayscale(expired ? 1 : 0)
                         .opacity(expired ? 0.55 : 1)
@@ -794,7 +814,7 @@ struct RecipeThumbnail: View {
                     .font(.system(size: size * 0.34, weight: .bold))
                     .foregroundStyle(Game.greenDark)
             } else {
-                FreshSymbol(symbol: FoodIcon.symbol(forEmoji: recipe.emoji), size: size * 0.62)
+                FreshSymbol(symbol: RecipeIcon.symbol(for: recipe.emoji), size: size * 0.62)
             }
         }
     }
@@ -838,7 +858,7 @@ struct RecipeRow: View {
                 Text(recipe.name)
                     .font(.game(16, .semibold))
                     .foregroundStyle(Game.brown)
-                    .lineLimit(2)
+                    .lineLimit(1)
                     .multilineTextAlignment(.leading)
 
                 if let rescueFood {
@@ -869,7 +889,7 @@ struct RecipeRow: View {
                 .foregroundStyle(Game.edgeDark)
         }
         .padding(.horizontal, 14)
-        .padding(.vertical, 11)
+        .frame(minHeight: 86)   // every row the same height
         .contentShape(Rectangle())
     }
 }

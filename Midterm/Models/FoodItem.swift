@@ -56,6 +56,9 @@ struct FoodItem: Identifiable, Codable {
     /// History records only: id of the fridge item this came from
     /// (so "Back to Fridge" can add the quantity back to it).
     var originalID: UUID? = nil
+    /// Optional photo taken by the user (file name in FoodPhotoStore).
+    /// Shown instead of the drawing. Optional so older saved food still loads.
+    var photoFile: String? = nil
 
     /// Date used for history and charts.
     var finishedOn: Date { finishedDate ?? addedDate }

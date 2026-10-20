@@ -40,6 +40,10 @@ struct RecipeDetailView: View {
     /// Starts from a guess based on the recipe amount; the user can change it.
     @State private var useCounts: [UUID: Int] = [:]
 
+    /// Long recipes show the first few steps until "Show all" is tapped.
+    @State private var showAllSteps = false
+    private let collapsedSteps = 3
+
     // MARK: - Fridge matching
 
     /// Which fridge item each ingredient uses.
@@ -75,16 +79,11 @@ struct RecipeDetailView: View {
             matches.contains { $0.ingredient == ingredient } || checked.contains(ingredient.name)
         }.count
         let uses = plannedUses(matches)
+        let shownSteps = showAllSteps ? recipe.steps : Array(recipe.steps.prefix(collapsedSteps))
 
         return ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 heroCard(inFridge: matches.count)
-
-                if let rescueIngredient {
-                    MascotSays(verbatim: rescueDescription(for: rescueIngredient),
-                               mascotColor: rescueIngredient.category.freshlingColor)
-                        .padding(.vertical, 4)
-                }
 
                 HStack {
                     GameSectionHeader(title: "Ingredients")
@@ -109,14 +108,10 @@ struct RecipeDetailView: View {
                 }
                 .gameCard(padding: 0)
 
-                Text("Tap a fridge item to see it. Tick the others once you have them.")
-                    .font(.game(12, .medium))
-                    .foregroundStyle(Game.brownSoft)
-                    .padding(.horizontal, 4)
-
-                GameSectionHeader(title: "Steps")
+                if !recipe.steps.isEmpty {
+                GameSectionHeader(title: "Steps", count: recipe.steps.count)
                 VStack(alignment: .leading, spacing: 14) {
-                    ForEach(Array(recipe.steps.enumerated()), id: \.offset) { index, step in
+                    ForEach(Array(shownSteps.enumerated()), id: \.offset) { index, step in
                         HStack(alignment: .top, spacing: 12) {
                             Text("\(index + 1)")
                                 .font(.game(15, .bold))
@@ -128,10 +123,25 @@ struct RecipeDetailView: View {
                                 .foregroundStyle(Game.brown)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.top, 4)
+                                .lineSpacing(2)
                         }
+                    }
+
+                    if recipe.steps.count > collapsedSteps {
+                        Button {
+                            withAnimation(.snappy) { showAllSteps.toggle() }
+                        } label: {
+                            if showAllSteps {
+                                Text("Show Less")
+                            } else {
+                                Text("Show All \(recipe.steps.count) Steps")
+                            }
+                        }
+                        .buttonStyle(.chunky(.white, small: true))
                     }
                 }
                 .gameCard(padding: 16)
+                }
             }
             .padding(.horizontal, 18)
             .padding(.bottom, 24)
@@ -191,7 +201,7 @@ struct RecipeDetailView: View {
         VStack(alignment: .leading, spacing: 10) {
             if let url = recipe.imageURL {
                 RecipePhoto(url: url) { Game.mint }
-                .frame(height: 190)
+                .frame(height: 160)
                 .frame(maxWidth: .infinity)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .accessibilityHidden(true)
@@ -208,6 +218,13 @@ struct RecipeDetailView: View {
                 infoPill(icon: recipe.time > 0 ? "clock.fill" : "globe", text: recipe.timeText)
                 infoPill(icon: "tag.fill", text: recipe.difficulty)
                 infoPill(icon: "refrigerator.fill", text: "\(inFridge) in fridge")
+            }
+
+            if let rescueIngredient {
+                Label(rescueDescription(for: rescueIngredient), systemImage: "heart.fill")
+                    .font(.game(14, .semibold))
+                    .foregroundStyle(rescueIngredient.freshnessLevel.tint)
+                    .lineLimit(1)
             }
 
             if let source = recipe.sourceURL {
@@ -237,57 +254,52 @@ struct RecipeDetailView: View {
 
     private func rescueDescription(for item: FoodItem) -> String {
         if item.daysUntilExpiration < 0 {
-            return "\(item.name) is past its date. Check that it's still good before cooking!"
+            return "Uses your \(item.name) (past its date)"
         }
-        if item.remainingDays == 0 {
-            return "\(item.name) is out of time today. This recipe rescues it!"
-        }
-        if item.remainingDays == 1 {
-            return "\(item.name) has 1 day of HP left. This recipe rescues it!"
-        }
-        return "\(item.name) has \(item.remainingDays) days of HP left. This recipe uses it up in time."
+        return "Rescues your \(item.name) · \(item.daysLeftText.lowercased())"
     }
 
     // MARK: - Ingredient rows
 
-    /// In the fridge: link to the food + "uses 2 of 5" stepper.
+    /// In the fridge: link to the food + an inline "− 2/5 +" for how many cooking uses.
     private func fridgeIngredientRow(_ match: (ingredient: RecipeIngredient, item: FoodItem)) -> some View {
         let fridgeItem = match.item
         let count = useCount(for: match)
+        let amount = match.ingredient.amount.isEmpty ? "" : match.ingredient.amount + " · "
 
-        return VStack(alignment: .leading, spacing: 8) {
+        return HStack(spacing: 10) {
             NavigationLink {
                 FoodDetailView(item: fridgeItem)
             } label: {
                 HStack(spacing: 12) {
                     FreshlingAvatar(item: fridgeItem, size: 40)
-                    ingredientText(match.ingredient,
-                                   detail: "Your \(fridgeItem.name) · \(fridgeItem.daysLeftText.lowercased())",
-                                   detailColor: fridgeItem.freshnessLevel.tint)
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(Game.edgeDark)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(match.ingredient.name)
+                            .font(.game(16, .semibold))
+                            .foregroundStyle(Game.brown)
+                            .lineLimit(1)
+                        Text(verbatim: amount + fridgeItem.daysLeftText.lowercased())
+                            .font(.game(12, .medium))
+                            .foregroundStyle(fridgeItem.freshnessLevel.tint)
+                            .lineLimit(1)
+                    }
+                    Spacer(minLength: 4)
                 }
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
-            HStack(spacing: 10) {
-                if count == 0 {
-                    Text("Won't be used up")
-                } else {
-                    Text("Cooking uses \(count) of \(fridgeItem.quantity)")
-                }
-                Spacer()
-                roundButton("minus", enabled: count > 0) { useCounts[fridgeItem.id] = count - 1 }
-                roundButton("plus", enabled: count < fridgeItem.quantity) { useCounts[fridgeItem.id] = count + 1 }
-            }
-            .font(.game(13, .semibold))
-            .foregroundStyle(Game.brownSoft)
-            .padding(.leading, 52)
+            roundButton("minus", enabled: count > 0) { useCounts[fridgeItem.id] = count - 1 }
+            Text(verbatim: "\(count)/\(fridgeItem.quantity)")
+                .font(.game(14, .bold))
+                .foregroundStyle(count == 0 ? Game.brownSoft : Game.greenInk)
+                .monospacedDigit()
+                .frame(minWidth: 34)
+                .accessibilityLabel("Uses \(count) of \(fridgeItem.quantity)")
+            roundButton("plus", enabled: count < fridgeItem.quantity) { useCounts[fridgeItem.id] = count + 1 }
         }
         .padding(.horizontal, 14)
-        .padding(.vertical, 11)
+        .frame(minHeight: 64)
     }
 
     /// Not in the fridge: tap to tick it off.
@@ -307,7 +319,7 @@ struct RecipeDetailView: View {
                                detailColor: Game.brownSoft)
             }
             .padding(.horizontal, 14)
-            .padding(.vertical, 11)
+            .frame(minHeight: 64)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -375,7 +387,7 @@ struct RecipeDetailView: View {
             Text(summary)
                 .font(.game(12, .medium))
                 .foregroundStyle(Game.brownSoft)
-                .lineLimit(2)
+                .lineLimit(1)
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal, 18)

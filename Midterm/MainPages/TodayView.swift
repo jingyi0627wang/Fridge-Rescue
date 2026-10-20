@@ -1,15 +1,21 @@
 import SwiftUI
 
-// MARK: - Today tab ("Daily Quests")
-// The mascot sums up the day, and each food that needs attention is a quest:
-//   • Rescue quests – food that expires within 6 days (eat it → earn XP)
-//   • Check quests  – food past its date (tossed it, or still good?)
-// A few rescue recipes are suggested at the bottom.
+// MARK: - Today tab (Today + Impact in one place)
+// Top: your progress (level, streak, money saved, CO₂, weekly goal).
+//      Tap it for full stats, badges, charts and history (ImpactView).
+// Then the food that needs attention:
+//   • Use soon      – expires within 6 days (eat it → earn XP)
+//   • Past its date – tossed it, or still good?
+// A few recipes that use that food are suggested at the bottom.
 
 struct TodayView: View {
     @EnvironmentObject var foodStore: FoodStore
     @EnvironmentObject var router: AppRouter
     @EnvironmentObject var myRecipes: MyRecipeStore
+
+    // Weekly goal (set on the full progress page).
+    @AppStorage("goalType") private var goalTypeRaw = ""
+    @AppStorage("goalTarget") private var goalTarget = 5
 
     @State private var onlineRecipes: [Recipe] = []
     @State private var showAllQuests = false
@@ -74,7 +80,7 @@ struct TodayView: View {
                 }
                 .padding(.top, 12)
 
-                MascotSays(text: mascotText(priority: priority, expired: expired))
+                progressCard
                     .padding(.top, 6)
 
                 if !priority.isEmpty {
@@ -167,26 +173,120 @@ struct TodayView: View {
         }
     }
 
-    // MARK: - Mascot
+    // MARK: - Progress (was the Impact tab)
+    // Level + XP, then three equal tiles: streak, money saved, CO₂ saved,
+    // and the weekly goal if one is set. Tap → full progress page.
 
-    private func mascotText(priority: [FoodItem], expired: [FoodItem]) -> Text {
-        let urgent = priority.filter { $0.freshnessLevel == .urgent }
-        let rescued = foodStore.rescuedToday
+    private var progressCard: some View {
+        let info = foodStore.levelInfo
+        let goal = GoalType(rawValue: goalTypeRaw)
 
-        if foodStore.activeItemsByUrgency.isEmpty {
-            return Text("Your fridge is empty. Add some food and I'll keep an eye on it!")
-        } else if urgent.count >= 2 {
-            return Text("\(urgent[0].name) and \(urgent[1].name) are almost out of HP. Can you save them today?")
-        } else if let first = urgent.first {
-            return Text("\(first.name) is almost out of HP. Can you save it today?")
-        } else if let first = priority.first {
-            return Text("\(first.name) should be eaten this week. Want a recipe idea?")
-        } else if !expired.isEmpty {
-            return Text("Some Freshlings are past their date. Are they still good?")
-        } else if rescued > 0 {
-            return Text("Nice! You rescued \(rescued) today. Every Freshling is happy.")
+        return NavigationLink {
+            ImpactView()
+        } label: {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(spacing: 12) {
+                    FreshlingMascot(size: 40)
+                        .overlay(alignment: .bottomTrailing) {
+                            Text("\(info.level)")
+                                .font(.ui(12, .bold))
+                                .foregroundStyle(.white)
+                                .frame(width: 22, height: 22)
+                                .background(Circle().fill(Game.orange))
+                                .overlay(Circle().stroke(.white, lineWidth: 2))
+                                .offset(x: 6, y: 4)
+                        }
+
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Level \(info.level) · \(Text(LocalizedStringKey(info.title)))")
+                            .font(.ui(16, .semibold))
+                            .foregroundStyle(Game.brown)
+                        GameProgressBar(progress: info.progress, height: 8)
+                        Text("\(info.xpForLevel - info.xpIntoLevel) XP to level \(info.level + 1)")
+                            .font(.ui(12))
+                            .foregroundStyle(Game.brownSoft)
+                    }
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(Game.edgeDark)
+                }
+
+                HStack(spacing: 8) {
+                    progressTile(value: "\(foodStore.rescueStreak)", label: "day streak") {
+                        Image(systemName: "flame.fill")
+                            .foregroundStyle(foodStore.rescueStreak > 0 ? Game.red : Game.gray)
+                    }
+                    progressTile(value: foodStore.moneySaved.formatted(.currency(code: "USD").precision(.fractionLength(0))),
+                                 label: "money saved") {
+                        Image("IconSavings").resizable().scaledToFit()
+                    }
+                    progressTile(value: String(format: "%.1f kg", foodStore.carbonSaved), label: "CO₂ saved") {
+                        Image(systemName: "leaf.fill").foregroundStyle(Game.greenDark)
+                    }
+                }
+
+                if let goal {
+                    goalLine(goal)
+                }
+            }
+            .gameCard(padding: 16)
         }
-        return Text("All quests done! Every Freshling is happy and fresh.")
+        .buttonStyle(.plain)
+        .accessibilityHint("Opens your full progress")
+    }
+
+    /// One of three same-size tiles (fixed height so they always line up).
+    private func progressTile<Icon: View>(value: String, label: LocalizedStringKey,
+                                          @ViewBuilder icon: () -> Icon) -> some View {
+        VStack(spacing: 3) {
+            icon()
+                .font(.system(size: 16))
+                .frame(width: 20, height: 20)
+            Text(value)
+                .font(.ui(16, .bold))
+                .foregroundStyle(Game.brown)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+            Text(label)
+                .font(.ui(11))
+                .foregroundStyle(Game.brownSoft)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+        }
+        .frame(maxWidth: .infinity, minHeight: 72, maxHeight: 72)
+        .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Game.mint))
+    }
+
+    /// "Use 5 items this week   3/5"
+    private func goalLine(_ goal: GoalType) -> some View {
+        let current: Int
+        let fraction: Double
+        switch goal {
+        case .useItems:
+            current = foodStore.usedThisWeek
+            fraction = Double(current) / Double(max(goalTarget, 1))
+        case .wasteLess:
+            current = foodStore.wastedThisWeek
+            fraction = goalTarget == 0 ? (current == 0 ? 0 : 1) : Double(current) / Double(goalTarget)
+        case .saveMoney:
+            current = Int(foodStore.moneySavedThisMonth.rounded())
+            fraction = Double(current) / Double(max(goalTarget, 1))
+        }
+
+        return VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(goal.headline(goalTarget))
+                    .font(.ui(13, .semibold))
+                    .foregroundStyle(Game.brown)
+                Spacer()
+                Text(goal == .saveMoney ? "$\(current) / $\(goalTarget)" : "\(current) / \(goalTarget)")
+                    .font(.ui(13, .semibold))
+                    .foregroundStyle(Game.brownSoft)
+                    .monospacedDigit()
+            }
+            GameProgressBar(progress: min(fraction, 1), color: goal == .wasteLess && current > goalTarget ? Game.red : Game.green, height: 6)
+        }
     }
 
     // MARK: - Rows
@@ -205,7 +305,6 @@ struct TodayView: View {
             } label: {
                 HStack(spacing: 12) {
                     FreshlingAvatar(item: item, size: 46)
-                        .wiggle(item.freshnessLevel == .urgent)
 
                     VStack(alignment: .leading, spacing: 1) {
                         Text(item.name)

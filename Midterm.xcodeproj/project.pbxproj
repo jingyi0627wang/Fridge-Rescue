@@ -6,8 +6,15 @@
 	objectVersion = 90;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AE05F7C530819A610081AA43 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE05F7C430819A610081AA43 /* GoogleService-Info.plist */; };
+		AE05F7C830819B760081AA43 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AE05F7C730819B760081AA43 /* FirebaseAuth */; };
+		AE05F7CA30819B760081AA43 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = AE05F7C930819B760081AA43 /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* Freshlings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Freshlings.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE05F7C430819A610081AA43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -22,6 +29,8 @@
 		000000000000000130000000 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				AE05F7C830819B760081AA43 /* FirebaseAuth in Frameworks */,
+				AE05F7CA30819B760081AA43 /* FirebaseFirestore in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -31,6 +40,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000010 /* Midterm */,
+				AE05F7C430819A610081AA43 /* GoogleService-Info.plist */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,6 +70,10 @@
 				000000000000000000000010 /* Midterm */,
 			);
 			name = Freshlings;
+			packageProductDependencies = (
+				AE05F7C730819B760081AA43 /* FirebaseAuth */,
+				AE05F7C930819B760081AA43 /* FirebaseFirestore */,
+			);
 			productName = MyApp;
 			productReference = 000000000000000000000120 /* Freshlings.app */;
 			productType = "com.apple.product-type.application";
@@ -89,6 +103,9 @@
 			);
 			mainGroup = 000000000000000000000001;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				AE05F7C630819B760081AA43 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 000000000000000000000020 /* Products */;
 			projectDirPath = "";
@@ -103,6 +120,7 @@
 		000000000000000140000000 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
+				AE05F7C530819A610081AA43 /* GoogleService-Info.plist in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */
@@ -256,7 +274,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UY3MQDQXAY;
+				DEVELOPMENT_TEAM = M4JKQ53P3N;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -280,7 +298,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rumikhe.freshlings;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jingyiwang.freshlingsapp2026;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
@@ -301,7 +319,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UY3MQDQXAY;
+				DEVELOPMENT_TEAM = M4JKQ53P3N;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -325,7 +343,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rumikhe.freshlings;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jingyiwang.freshlingsapp2026;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
@@ -360,6 +378,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AE05F7C630819B760081AA43 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AE05F7C730819B760081AA43 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE05F7C630819B760081AA43 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		AE05F7C930819B760081AA43 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE05F7C630819B760081AA43 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 000000000000000000000000 /* Project object */;
 }

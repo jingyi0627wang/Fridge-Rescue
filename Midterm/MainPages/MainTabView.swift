@@ -7,7 +7,7 @@ import Combine
 // from Home, Today or Food Details opens the Recipes tab with Milk selected.
 
 enum AppTab: Hashable {
-    case fridge, today, add, recipes, impact
+    case fridge, today, add, recipes
 }
 
 final class AppRouter: ObservableObject {
@@ -79,15 +79,7 @@ struct MainTabView: View {
             }
             .tag(AppTab.recipes)
 
-            // MARK: - Impact
-            NavigationStack {
-                ImpactView()
-            }
-            .tabItem {
-                tabIcon("TabImpact", for: .impact)
-                Text("Impact")
-            }
-            .tag(AppTab.impact)
+            // (Impact is now part of Today: tap the progress card there.)
         }
         .environmentObject(router)
         .tint(freshGreen)
