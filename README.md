@@ -30,9 +30,8 @@ The Recipes tab recommends dishes that use the most urgent ingredients. Pressing
 
 ### Jingyi
 - **MainPages Development:** Built the initial Fridge, Today, and Recipes pages from scratch using SwiftUI, including their UI layouts, navigation, and core interactions.
-- **Feature Enhancements:** Added a Settings section to the Fridge page, including language-switching functionality.
+- **Feature Enhancements:** Added a Settings section to the Fridge page, including language-switching functionality. Implemented haptic feedback for key user interactions, providing tactile confirmation and making the app feel more responsive.
 - **Navigation & Interaction Optimization:** Standardized page transitions and improved the smoothness and consistency of horizontal swipe gestures across the app.
-- **Haptic Feedback: Implemented haptic feedback for key user interactions, providing tactile confirmation and making the app feel more responsive.
 - **Firebase Authentication:** Implemented user authentication and login functionality using Firebase Authentication.
 
 ### Gladys
