@@ -45,12 +45,10 @@ enum MealDBService {
     /// Online recipes for these fridge items, best matches first.
     static func recommendations(for items: [FoodItem], maxRecipes: Int = 8) async -> OnlineResult {
         // Only look up the most urgent items to keep it fast.
-        let targets = items
-            .filter { $0.status == .active }
-            .map { (item: $0, days: $0.daysUntilExpiration) }
-            .sorted { $0.days < $1.days }
-            .prefix(4)
-            .map(\.item)
+        let active: [FoodItem] = items.filter { $0.status == .active }
+        let keyed: [(item: FoodItem, days: Int)] = active.map { (item: $0, days: $0.daysUntilExpiration) }
+        let ordered = keyed.sorted { a, b in a.days < b.days }
+        let targets: [FoodItem] = ordered.prefix(4).map { $0.item }
 
         guard !targets.isEmpty else { return OnlineResult(recipes: [], isOffline: false) }
 
@@ -85,10 +83,9 @@ enum MealDBService {
             }
         }
 
-        let sorted = recipes
-            .map { (recipe: $0, count: RecipeData.matchCount($0, items)) }
-            .sorted { $0.count > $1.count }
-            .map(\.recipe)
+        let counted: [(recipe: Recipe, count: Int)] = recipes.map { (recipe: $0, count: RecipeData.matchCount($0, items)) }
+        let byMatches = counted.sorted { a, b in a.count > b.count }
+        let sorted: [Recipe] = byMatches.map { $0.recipe }
         return OnlineResult(recipes: sorted, isOffline: false)
     }
 
@@ -267,10 +264,15 @@ extension RecipeData {
         var seen = Set(local.map { $0.name.lowercased() })
         let extra = online.filter { seen.insert($0.name.lowercased()).inserted }
         // Count once per recipe (not inside the sort comparator).
-        return (local + extra)
-            .enumerated()
-            .map { (recipe: $0.element, order: $0.offset, count: matchCount($0.element, items)) }
-            .sorted { $0.count != $1.count ? $0.count > $1.count : $0.order < $1.order }
-            .map(\.recipe)
+        let all: [Recipe] = local + extra
+        var counted: [(recipe: Recipe, order: Int, count: Int)] = []
+        for (index, recipe) in all.enumerated() {
+            counted.append((recipe: recipe, order: index, count: matchCount(recipe, items)))
+        }
+        let ordered = counted.sorted { a, b in
+            if a.count != b.count { return a.count > b.count }
+            return a.order < b.order
+        }
+        return ordered.map { $0.recipe }
     }
 }

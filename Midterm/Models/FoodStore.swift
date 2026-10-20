@@ -15,13 +15,14 @@ final class FoodStore: ObservableObject {
     var activeItemsByUrgency: [FoodItem] {
         let today = Calendar.current.startOfDay(for: Date())
         if let cache = sortedCache, cache.day == today { return cache.items }
+        // Split into small steps with explicit types (keeps the compiler fast).
         let active: [FoodItem] = foodItems.filter { $0.status == .active }
-                let keyed: [(item: FoodItem, days: Int)] = active.map { (item: $0, days: $0.daysUntilExpiration) }
-                let ordered = keyed.sorted { a, b in
-                    if a.days != b.days { return a.days < b.days }
-                    return a.item.name < b.item.name
-                }
-                let sorted: [FoodItem] = ordered.map { $0.item }
+        let keyed: [(item: FoodItem, days: Int)] = active.map { (item: $0, days: $0.daysUntilExpiration) }
+        let ordered = keyed.sorted { a, b in
+            if a.days != b.days { return a.days < b.days }
+            return a.item.name < b.item.name
+        }
+        let sorted: [FoodItem] = ordered.map { $0.item }
         sortedCache = (today, sorted)
         return sorted
     }
@@ -32,6 +33,12 @@ final class FoodStore: ObservableObject {
         didSet { saveHistory() }
     }
 
+    /// Every food the user added (for "Recent" and "Usually" on Add Food).
+    @Published var addLog: [AddRecord] = [] {
+        didSet { saveAddLog() }
+    }
+
+    private let addLogKey = "savedAddLog"
     private let foodItemsKey = "savedFoodItems"
     private let historyKey = "savedFoodHistory"
 
@@ -41,8 +48,11 @@ final class FoodStore: ObservableObject {
 
     // MARK: - Fridge
 
-    func addItem(_ item: FoodItem) {
+    /// `logPurchase`: remember this in "Recent / Usually" on the Add Food page.
+    /// (Off when an item is just moved back from History.)
+    func addItem(_ item: FoodItem, logPurchase: Bool = true) {
         foodItems.append(item)
+        if logPurchase { logAdd(item) }
         // Remind the user 3 days before the item expires.
         Task {
             await ExpirationNotificationService.shared
@@ -150,7 +160,7 @@ final class FoodStore: ObservableObject {
                 restored.originalID = nil
                 restored.status = .active
                 restored.finishedDate = nil
-                addItem(restored)
+                addItem(restored, logPurchase: false)
             }
         }
     }
@@ -240,6 +250,11 @@ final class FoodStore: ObservableObject {
         UserDefaults.standard.set(data, forKey: foodItemsKey)
     }
 
+    private func saveAddLog() {
+        guard let data = try? JSONEncoder().encode(addLog) else { return }
+        UserDefaults.standard.set(data, forKey: addLogKey)
+    }
+
     private func saveHistory() {
         guard let data = try? JSONEncoder().encode(history) else { return }
         UserDefaults.standard.set(data, forKey: historyKey)
@@ -254,6 +269,16 @@ final class FoodStore: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: historyKey),
            let savedHistory = try? JSONDecoder().decode([FoodItem].self, from: data) {
             history = savedHistory
+        }
+
+        if let data = UserDefaults.standard.data(forKey: addLogKey),
+           let savedLog = try? JSONDecoder().decode([AddRecord].self, from: data) {
+            addLog = savedLog
+        } else {
+            // First run of this version: start from food already in the app.
+            let past: [FoodItem] = foodItems + history
+            let records: [AddRecord] = past.map { AddRecord(item: $0) }
+            addLog = records.sorted { $0.date < $1.date }
         }
     }
 }
