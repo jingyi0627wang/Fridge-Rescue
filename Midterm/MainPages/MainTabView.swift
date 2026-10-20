@@ -95,6 +95,10 @@ struct MainTabView: View {
         }
         .environmentObject(router)
         .tint(freshGreen)
+        .sensoryFeedback(
+                   .selection,
+                   trigger: router.selectedTab
+               )
         // Undo bar for used / wasted / deleted / cooked actions.
         .overlay(alignment: .bottom) {
             if let toast = foodStore.toast {
@@ -104,6 +108,16 @@ struct MainTabView: View {
             }
         }
         .animation(.spring(duration: 0.35), value: foodStore.toast?.id)
+        // "Level up" celebration
+        .overlay {
+            if let level = foodStore.levelUp {
+                LevelUpView(level: level) {
+                    withAnimation { foodStore.levelUp = nil }
+                }
+                .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: foodStore.levelUp)
     }
 }
 
@@ -113,4 +127,5 @@ struct MainTabView: View {
 #Preview {
     MainTabView()
         .environmentObject(FoodStore())
+        .environmentObject(MyRecipeStore())
 }

@@ -1,500 +1,295 @@
-// ------------------------------------------------------------
-// Contributions by Gladys Yu: "Past Their Date" section for expired food
-// ------------------------------------------------------------
-
 import SwiftUI
 
-// Freshlings Today screen.
-// Visual styling is local to this file so other teammates' screens are unchanged.
+// MARK: - Today tab ("Daily Quests")
+// The mascot sums up the day, and each food that needs attention is a quest:
+//   • Rescue quests – food that expires within 6 days (eat it → earn XP)
+//   • Check quests  – food past its date (tossed it, or still good?)
+// A few rescue recipes are suggested at the bottom.
+
 struct TodayView: View {
     @EnvironmentObject var foodStore: FoodStore
     @EnvironmentObject var router: AppRouter
+    @EnvironmentObject var myRecipes: MyRecipeStore
 
-    // MARK: - Freshlings palette
-    private let background = Color(red: 0.985, green: 0.990, blue: 0.962)
-    private let cardWhite = Color.white
-    private let grass = Color(red: 0.52, green: 0.87, blue: 0.34)
-    private let deepGreen = Color(red: 0.19, green: 0.44, blue: 0.17)
-    private let mint = Color(red: 0.91, green: 0.97, blue: 0.85)
-    private let paleYellow = Color(red: 1.00, green: 0.96, blue: 0.80)
-    private let orange = Color(red: 0.91, green: 0.45, blue: 0.22)
-    private let textBrown = Color(red: 0.29, green: 0.25, blue: 0.19)
-    private let secondaryBrown = Color(red: 0.48, green: 0.44, blue: 0.37)
+    @State private var onlineRecipes: [Recipe] = []
+    @State private var showAllQuests = false
+    private let collapsedCount = 5
 
-    // MARK: - Existing data rules (unchanged)
-    private var priorityItems: [FoodItem] {
-        foodStore.activeItemsByUrgency.filter { RecipeData.needsAttention($0) }
-    }
+    /// Opens Food Details from the "Still good" button.
+    @State private var detailID: UUID?
 
-    /// Food past its date that is still in the fridge.
-    /// The user decides: thrown away (wasted) or still used.
+    // MARK: - Data
+
     private var expiredItems: [FoodItem] {
         foodStore.activeItemsByUrgency.filter { $0.freshnessLevel == .expired }
     }
 
-    @State private var showAllExpired = false
-
-    /// With lots of food, show the most urgent few first.
-    @State private var showAllPriority = false
-    private let collapsedCount = 5
-
-    @State private var onlineRecipes: [Recipe] = []
+    /// Expires in 0–6 days, most urgent first.
+    private var priorityItems: [FoodItem] {
+        foodStore.activeItemsByUrgency.filter { RecipeData.needsAttention($0) }
+    }
 
     private var recommendedRecipes: [Recipe] {
-        RecipeData.merged(
-            local: RecipeData.recommendations(for: priorityItems),
+        let mine = myRecipes.allRecipes.filter { RecipeData.matchCount($0, priorityItems) > 0 }
+        return RecipeData.merged(
+            local: mine + RecipeData.recommendations(for: priorityItems),
             online: onlineRecipes,
             items: foodStore.foodItems
         )
     }
 
+    /// Reload online recipes only when the urgent food changes.
     private var priorityKey: String {
         priorityItems.map(\.name).joined(separator: "|")
     }
 
+    // MARK: - Body
+
     var body: some View {
-        ZStack {
-            background.ignoresSafeArea()
+        // Computed once per render.
+        let expired = expiredItems
+        let priority = priorityItems
+        let visible = showAllQuests ? priority : Array(priority.prefix(collapsedCount))
+        let recipes = priority.isEmpty ? [] : Array(recommendedRecipes.prefix(3))
+        let allItems = foodStore.foodItems
+        let questsLeft = expired.count + priority.count
 
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 24) {
-                    header
-                    summaryCard
+        return ScrollView {
+            VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Today")
+                        .font(.game(32, .bold, relativeTo: .largeTitle))
+                        .foregroundStyle(Game.brown)
+                    Group {
+                        if questsLeft == 0 {
+                            Text("\(Date.now.formatted(.dateTime.weekday(.wide))), all caught up")
+                        } else if questsLeft == 1 {
+                            Text("\(Date.now.formatted(.dateTime.weekday(.wide))), 1 thing to use up")
+                        } else {
+                            Text("\(Date.now.formatted(.dateTime.weekday(.wide))), \(questsLeft) things to use up")
+                        }
+                    }
+                    .font(.system(size: 15))
+                    .foregroundStyle(Game.brownSoft)
+                }
+                .padding(.top, 12)
 
-                    if !expiredItems.isEmpty {
-                        expiredSection
+                MascotSays(text: mascotText(priority: priority, expired: expired))
+                    .padding(.top, 6)
+
+                if !priority.isEmpty {
+                    HStack(alignment: .firstTextBaseline) {
+                        GameSectionHeader(title: "Use Soon")
+                        Text("+\(availableXP(priority)) XP available")
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundStyle(Game.brownSoft)
+                            .fixedSize()
                     }
 
-                    if priorityItems.isEmpty {
-                        if expiredItems.isEmpty { allGoodCard }
-                    } else {
-                        prioritySection
-                        allRecipesButton
+                    VStack(spacing: 0) {
+                        ForEach(Array(visible.enumerated()), id: \.element.id) { index, item in
+                            if index > 0 { DashedDivider() }
+                            useSoonRow(item)
+                        }
+                    }
+                    .gameCard(padding: 0)
+
+                    if priority.count > collapsedCount {
+                        Button {
+                            withAnimation(.snappy) { showAllQuests.toggle() }
+                        } label: {
+                            if showAllQuests {
+                                Text("Show Less")
+                            } else {
+                                Text("Show \(priority.count - collapsedCount) More")
+                            }
+                        }
+                        .buttonStyle(.chunky(.white, small: true))
                     }
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
-                .padding(.bottom, 36)
+
+                if !expired.isEmpty {
+                    GameSectionHeader(title: "Past Its Date", count: expired.count)
+                    VStack(spacing: 0) {
+                        ForEach(Array(expired.enumerated()), id: \.element.id) { index, item in
+                            if index > 0 { DashedDivider() }
+                            expiredRow(item)
+                        }
+                    }
+                    .gameCard(padding: 0)
+                }
+
+                if questsLeft == 0 {
+                    Button("Add Food") {
+                        router.selectedTab = .add
+                    }
+                    .buttonStyle(.chunky(.green))
+                    .padding(.top, 4)
+                }
+
+                if !recipes.isEmpty {
+                    GameSectionHeader(title: "Cook Something")
+                    VStack(spacing: 10) {
+                        ForEach(recipes) { recipe in
+                            let rescue = RecipeData.rescueItem(for: recipe, in: allItems)
+                            NavigationLink {
+                                RecipeDetailView(recipe: recipe, focusIngredient: rescue)
+                            } label: {
+                                RecipeBookCard(
+                                    recipe: recipe,
+                                    fridgeCount: RecipeData.matchCount(recipe, allItems),
+                                    rescueFood: rescue,
+                                    uses: RecipeData.fridgeItems(for: recipe, in: allItems)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+
+                    Button("See All Recipes") {
+                        router.openRecipes()
+                    }
+                    .buttonStyle(.chunky(.white, small: true))
+                }
+            }
+            .padding(.horizontal, 18)
+            .padding(.bottom, 24)
+        }
+        .gameBackground()
+        .toolbar(.hidden, for: .navigationBar)
+        .navigationDestination(item: $detailID) { id in
+            if let item = foodStore.foodItems.first(where: { $0.id == id }) {
+                FoodDetailView(item: item)
             }
         }
-        // MainTabView already wraps TodayView in NavigationStack.
-        .toolbar(.hidden, for: .navigationBar)
         .task(id: priorityKey) {
             onlineRecipes = await MealDBService.recommendations(for: priorityItems).recipes
         }
     }
 
-    // MARK: - Header
-    private var header: some View {
-        HStack(alignment: .top, spacing: 12) {
-            VStack(alignment: .leading, spacing: 7) {
-                Text("TODAY'S FRESHLINGS")
-                    .font(.system(size: 11, weight: .bold, design: .rounded))
-                    .tracking(1.4)
-                    .foregroundStyle(deepGreen)
+    // MARK: - Mascot
 
-                Text("Let's save some food!")
-                    .font(.system(size: 29, weight: .heavy, design: .rounded))
-                    .foregroundStyle(textBrown)
-                    .fixedSize(horizontal: false, vertical: true)
+    private func mascotText(priority: [FoodItem], expired: [FoodItem]) -> Text {
+        let urgent = priority.filter { $0.freshnessLevel == .urgent }
+        let rescued = foodStore.rescuedToday
 
-                Text("A little care keeps your food happy.")
-                    .font(.system(size: 14, design: .rounded))
-                    .foregroundStyle(secondaryBrown)
-            }
-
-            Spacer(minLength: 0)
-
+        if foodStore.activeItemsByUrgency.isEmpty {
+            return Text("Your fridge is empty. Add some food and I'll keep an eye on it!")
+        } else if urgent.count >= 2 {
+            return Text("\(urgent[0].name) and \(urgent[1].name) are almost out of HP. Can you save them today?")
+        } else if let first = urgent.first {
+            return Text("\(first.name) is almost out of HP. Can you save it today?")
+        } else if let first = priority.first {
+            return Text("\(first.name) should be eaten this week. Want a recipe idea?")
+        } else if !expired.isEmpty {
+            return Text("Some Freshlings are past their date. Are they still good?")
+        } else if rescued > 0 {
+            return Text("Nice! You rescued \(rescued) today. Every Freshling is happy.")
         }
+        return Text("All quests done! Every Freshling is happy and fresh.")
     }
 
-    // MARK: - Dynamic summary
-    private var summaryCard: some View {
-        HStack(spacing: 14) {
-            Text(priorityItems.isEmpty && expiredItems.isEmpty ? "🌱" : "🥕")
-                .font(.system(size: 38))
-                .frame(width: 65, height: 65)
-                .background(.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 22))
+    // MARK: - Rows
 
-            VStack(alignment: .leading, spacing: 5) {
-                Text(summaryTitle)
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(textBrown)
-
-                Text(summarySubtitle)
-                    .font(.system(size: 13, design: .rounded))
-                    .foregroundStyle(secondaryBrown)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            Spacer(minLength: 0)
-        }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(priorityItems.isEmpty && expiredItems.isEmpty ? mint : paleYellow,
-                    in: RoundedRectangle(cornerRadius: 24))
+    private func availableXP(_ items: [FoodItem]) -> Int {
+        var total = 0
+        for item in items { total += FoodStore.questXP(for: item) }
+        return total
     }
 
-    // LocalizedStringKey (not String) so the Chinese translations still work.
-    private var summaryTitle: LocalizedStringKey {
-        if !priorityItems.isEmpty { return "\(priorityItems.count) need some love!" }
-        if expiredItems.count == 1 { return "1 item to check" }
-        if !expiredItems.isEmpty { return "\(expiredItems.count) items to check" }
-        return "All fresh and happy!"
-    }
-
-    private var summarySubtitle: LocalizedStringKey {
-        if !priorityItems.isEmpty { return "Use these ingredients first to reduce waste." }
-        if !expiredItems.isEmpty { return "Some food is past its date. Let us know what happened to it." }
-        return "Nothing needs your attention right now."
-    }
-
-    // MARK: - Expired food
-    // Food past its date stays in the fridge until the user says what happened.
-    // "Threw Away" counts it as wasted; "Still Good" opens Food Details
-    // (there the user can mark it used or change the date).
-
-    private var expiredSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionTitle("Past Their Date", label: "0 HP")
-
-            let items = expiredItems
-            let visible = showAllExpired ? items : Array(items.prefix(collapsedCount))
-
-            ForEach(visible) { item in
-                expiredCard(item)
-            }
-
-            if items.count > collapsedCount {
-                Button {
-                    withAnimation(.snappy) { showAllExpired.toggle() }
-                } label: {
-                    HStack {
-                        Text(showAllExpired ? "Show less" : "Show \(items.count - collapsedCount) more")
-                        Image(systemName: showAllExpired ? "chevron.up" : "chevron.down")
-                    }
-                    .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .foregroundStyle(deepGreen)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-                    .background(mint, in: Capsule())
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
-
-    private func expiredCard(_ item: FoodItem) -> some View {
-        let expiredRed = statusColor(for: item)
-
-        return VStack(spacing: 14) {
+    /// Food that expires soon: tap for details, "Ate it" to rescue one (earns XP).
+    private func useSoonRow(_ item: FoodItem) -> some View {
+        HStack(spacing: 12) {
             NavigationLink {
                 FoodDetailView(item: item)
             } label: {
                 HStack(spacing: 12) {
-                    Text(foodEmoji(for: item))
-                        .font(.system(size: 29))
-                        .frame(width: 59, height: 59)
-                        .background(Color.gray.opacity(0.12), in: RoundedRectangle(cornerRadius: 19))
-                        .saturation(0.3)
+                    FreshlingAvatar(item: item, size: 46)
+                        .wiggle(item.freshnessLevel == .urgent)
 
-                    VStack(alignment: .leading, spacing: 5) {
+                    VStack(alignment: .leading, spacing: 1) {
                         Text(item.name)
-                            .font(.system(size: 18, weight: .bold, design: .rounded))
-                            .foregroundStyle(textBrown)
-
-                        Text("Qty \(item.quantity) · \(item.daysLeftText)")
-                            .font(.system(size: 13, design: .rounded))
-                            .foregroundStyle(expiredRed)
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(Game.brown)
+                            .lineLimit(1)
+                        Group {
+                            if item.quantity > 1 {
+                                Text("\(item.daysLeftText), \(item.quantity) left")
+                            } else {
+                                Text(item.daysLeftText)
+                            }
+                        }
+                        .font(.system(size: 13))
+                        .foregroundStyle(item.freshnessLevel == .urgent ? Game.redDark : Game.brownSoft)
+                        XPTag(xp: FoodStore.questXP(for: item))
+                            .padding(.top, 1)
                     }
 
-                    Spacer(minLength: 6)
-
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 10, weight: .bold))
-                        .foregroundStyle(secondaryBrown)
+                    Spacer(minLength: 4)
                 }
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
-            HStack(spacing: 10) {
-                Button {
-                    foodStore.markAsWasted(item)
-                } label: {
-                    Label("Threw Away", systemImage: "trash")
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 10)
-                        .background(expiredRed.opacity(0.12), in: Capsule())
-                        .foregroundStyle(expiredRed)
-                }
-                .buttonStyle(.plain)
-
-                NavigationLink {
-                    FoodDetailView(item: item)
-                } label: {
-                    Label("Still Good", systemImage: "checkmark.circle")
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 10)
-                        .background(mint, in: Capsule())
-                        .foregroundStyle(deepGreen)
-                }
-                .buttonStyle(.plain)
-            }
-            .font(.system(size: 14, weight: .bold, design: .rounded))
-        }
-        .padding(18)
-        .background(cardWhite, in: RoundedRectangle(cornerRadius: 24))
-        .overlay {
-            RoundedRectangle(cornerRadius: 24)
-                .stroke(expiredRed.opacity(0.18), lineWidth: 1)
-        }
-    }
-
-    // MARK: - Priority food
-    private var prioritySection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionTitle("Use These First", label: "LOWEST HP")
-
-            // Computed once here instead of once per row (big speed-up with lots of food).
-            let allRecipes = recommendedRecipes
-            let items = priorityItems
-            let visible = showAllPriority ? items : Array(items.prefix(collapsedCount))
-
-            ForEach(visible) { item in
-                VStack(spacing: 0) {
-                    // Top: food → Food Details
-                    NavigationLink {
-                        FoodDetailView(item: item)
-                    } label: {
-                        priorityCard(item)
-                    }
-                    .buttonStyle(.plain)
-
-                    Divider().padding(.horizontal, 18)
-
-                    // Bottom: recipe idea → Recipes tab with this food selected
-                    recipeRow(for: item, options: recipesUsing(item, in: allRecipes))
-                }
-                .background(cardWhite, in: RoundedRectangle(cornerRadius: 24))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 24)
-                        .stroke(statusColor(for: item).opacity(0.14), lineWidth: 1)
-                }
-            }
-
-            if items.count > collapsedCount {
-                Button {
-                    withAnimation(.snappy) { showAllPriority.toggle() }
-                } label: {
-                    HStack {
-                        Text(showAllPriority ? "Show less" : "Show \(items.count - collapsedCount) more")
-                        Image(systemName: showAllPriority ? "chevron.up" : "chevron.down")
-                    }
-                    .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .foregroundStyle(deepGreen)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-                    .background(mint, in: Capsule())
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
-
-    private func priorityCard(_ item: FoodItem) -> some View {
-        VStack(spacing: 14) {
-            HStack(spacing: 12) {
-                Text(foodEmoji(for: item))
-                    .font(.system(size: 29))
-                    .frame(width: 59, height: 59)
-                    .background(mint, in: RoundedRectangle(cornerRadius: 19))
-
-                VStack(alignment: .leading, spacing: 5) {
-                    Text(item.name)
-                        .font(.system(size: 18, weight: .bold, design: .rounded))
-                        .foregroundStyle(textBrown)
-
-                    Text(priorityMessage(for: item))
-                        .font(.system(size: 13, design: .rounded))
-                        .foregroundStyle(secondaryBrown)
-                }
-
-                Spacer(minLength: 6)
-
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text(
-                        item.hpPercentage / 100,
-                        format: .percent.precision(.fractionLength(0))
-                    )
-                        .font(.system(size: 20, weight: .heavy, design: .rounded))
-                        .foregroundStyle(statusColor(for: item))
-                    Text("HP")
-                        .font(.system(size: 10, weight: .bold, design: .rounded))
-                        .foregroundStyle(secondaryBrown)
-                }
-            }
-
-            GeometryReader { geometry in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(mint)
-                    Capsule()
-                        .fill(statusColor(for: item))
-                        .frame(width: geometry.size.width * hpProgress(for: item))
-                }
-            }
-            .frame(height: 9)
-
-            HStack {
-                Text(item.freshnessLevel.title)
-                    .font(.system(size: 12, weight: .bold, design: .rounded))
-                    .foregroundStyle(statusColor(for: item))
-
-                Spacer()
-
-                Text(daysText(for: item))
-                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundStyle(secondaryBrown)
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 10, weight: .bold))
-                    .foregroundStyle(secondaryBrown)
-            }
-        }
-        .padding(18)
-        .contentShape(Rectangle())
-    }
-
-    // MARK: - Recipe idea for one food
-    // Today only suggests; the full list lives in the Recipes tab.
-
-    private func recipesUsing(_ item: FoodItem, in recipes: [Recipe]) -> [Recipe] {
-        recipes.filter { recipe in
-            recipe.ingredients.contains { FoodMatcher.matches(ingredient: $0, foodName: item.name) }
-        }
-    }
-
-    private func recipeRow(for item: FoodItem, options: [Recipe]) -> some View {
-        Button {
-            router.openRecipes(for: item)
-        } label: {
-            HStack(spacing: 10) {
-                Image(systemName: "fork.knife")
-                    .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(orange)
-                    .frame(width: 30, height: 30)
-                    .background(paleYellow, in: Circle())
-
-                if let best = options.first {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Try \(best.name)")
-                            .font(.system(size: 14, weight: .bold, design: .rounded))
-                            .foregroundStyle(textBrown)
-                            .lineLimit(1)
-                        Text(options.count > 1
-                             ? "\(options.count - 1) more \(options.count == 2 ? "recipe" : "recipes") with \(item.name)"
-                             : best.timeText)
-                            .font(.system(size: 11, weight: .medium, design: .rounded))
-                            .foregroundStyle(secondaryBrown)
-                    }
+            Button {
+                foodStore.markAsUsed(item, quantity: 1)
+                FreshlingsHaptics.success()
+            } label: {
+                if item.quantity > 1 {
+                    Text("Ate 1")
                 } else {
-                    Text("Find recipes with \(item.name)")
-                        .font(.system(size: 14, weight: .bold, design: .rounded))
-                        .foregroundStyle(textBrown)
+                    Text("Ate it")
                 }
-
-                Spacer(minLength: 4)
-
-                Image(systemName: "arrow.right")
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundStyle(deepGreen)
             }
-            .padding(.horizontal, 18)
-            .padding(.vertical, 12)
-            .contentShape(Rectangle())
+            .buttonStyle(.chunky(.green, small: true, fullWidth: false))
         }
-        .buttonStyle(.plain)
-    }
-
-    private var allRecipesButton: some View {
-        Button {
-            router.openRecipes()
-        } label: {
-            HStack {
-                Image(systemName: "fork.knife")
-                Text("See All Rescue Recipes")
-                Spacer()
-                Image(systemName: "arrow.right")
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .contextMenu {
+            Button {
+                router.openRecipes(for: item)
+            } label: {
+                Label("Find Recipes", systemImage: "fork.knife")
             }
-            .font(.system(size: 15, weight: .bold, design: .rounded))
-            .foregroundStyle(deepGreen)
-            .padding(17)
-            .background(grass, in: RoundedRectangle(cornerRadius: 18))
-        }
-        .buttonStyle(.plain)
-    }
-
-    // MARK: - Empty state
-    private var allGoodCard: some View {
-        VStack(spacing: 12) {
-            Text("🌼")
-                .font(.system(size: 43))
-            Text("Nothing urgent today!")
-                .font(.system(size: 21, weight: .heavy, design: .rounded))
-                .foregroundStyle(textBrown)
-            Text("Your food is in good shape. Check back later for more rescue ideas.")
-                .font(.system(size: 14, design: .rounded))
-                .foregroundStyle(secondaryBrown)
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 20)
-        .padding(.vertical, 35)
-        .background(.white, in: RoundedRectangle(cornerRadius: 24))
-    }
-
-    // MARK: - Shared local helpers
-    private func sectionTitle(_ title: String, label: String) -> some View {
-        HStack(alignment: .firstTextBaseline) {
-            Text(title)
-                .font(.system(size: 23, weight: .heavy, design: .rounded))
-                .foregroundStyle(textBrown)
-            Spacer()
-            Text(label)
-                .font(.system(size: 10, weight: .bold, design: .rounded))
-                .tracking(0.8)
-                .foregroundStyle(deepGreen)
         }
     }
 
-    private func hpProgress(for item: FoodItem) -> CGFloat {
-        CGFloat(max(0, min(item.hpPercentage / 100.0, 1)))
-    }
+    /// Food past its date: "Tossed" counts it as wasted; "Still good"
+    /// opens Food Details (mark it used there, or change the date).
+    private func expiredRow(_ item: FoodItem) -> some View {
+        HStack(spacing: 10) {
+            FreshlingAvatar(item: item, size: 46)
 
-    private func statusColor(for item: FoodItem) -> Color {
-        switch item.freshnessLevel {
-        case .fresh: return deepGreen
-        case .useSoon: return Color(red: 0.75, green: 0.56, blue: 0.10)
-        case .urgent: return orange
-        case .expired: return Color(red: 0.72, green: 0.25, blue: 0.23)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(item.name)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(Game.brown)
+                    .lineLimit(1)
+                Text(item.daysLeftText)
+                    .font(.system(size: 13))
+                    .foregroundStyle(Game.brownSoft)
+                    .lineLimit(2)
+            }
+
+            Spacer(minLength: 4)
+
+            // Stacked so the food name keeps room on small phones.
+            VStack(spacing: 6) {
+                Button("Still good") {
+                    detailID = item.id
+                }
+                .buttonStyle(.chunky(.white, small: true))
+
+                Button("Tossed") {
+                    foodStore.markAsWasted(item)
+                    FreshlingsHaptics.light()
+                }
+                .buttonStyle(.chunky(.red, small: true))
+            }
+            .fixedSize(horizontal: true, vertical: false)
         }
-    }
-
-    private func priorityMessage(for item: FoodItem) -> String {
-        if item.daysUntilExpiration == 1 { return "Only 1 day left" }
-        return item.daysLeftText
-    }
-
-    private func daysText(for item: FoodItem) -> String {
-        item.daysLeftText
-    }
-
-    private func foodEmoji(for item: FoodItem) -> String {
-        switch item.category {
-        case .vegetable: return "🥕"
-        case .fruit: return "🍎"
-        case .dairy: return "🥛"
-        case .meat: return "🥩"
-        case .other: return "🥣"
-        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
     }
 }
 
@@ -504,5 +299,5 @@ struct TodayView: View {
     }
     .environmentObject(FoodStore())
     .environmentObject(AppRouter())
+    .environmentObject(MyRecipeStore())
 }
-

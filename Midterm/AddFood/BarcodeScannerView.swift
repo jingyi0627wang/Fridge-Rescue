@@ -26,7 +26,7 @@ struct ScannerScreen: View {
 
             VStack(spacing: 12) {
                 Text("Point at a barcode, or the number sticker on fruit and vegetables")
-                    .font(.subheadline)
+                    .font(.game(14, .medium))
                     .multilineTextAlignment(.center)
                     .padding(12)
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))

@@ -42,7 +42,7 @@ struct EditFoodView: View {
 
                     Picker("Category", selection: $category) {
                         ForEach(FoodCategory.allCases, id: \.self) { category in
-                            Text("\(category.addFoodIcon) \(category.rawValue)").tag(category)
+                            Label(category.displayName, systemImage: category.symbolName).tag(category)
                         }
                     }
                 }
@@ -69,6 +69,10 @@ struct EditFoodView: View {
                                displayedComponents: .date)
                 }
             }
+            .font(.game(16, .medium))
+            .foregroundStyle(Game.brown)
+            .gameBackground()
+            .tint(Game.greenDark)
             .navigationTitle("Edit Food")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

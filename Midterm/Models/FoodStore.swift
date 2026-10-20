@@ -89,9 +89,16 @@ final class FoodStore: ObservableObject {
 
     func markAsUsed(_ item: FoodItem, quantity: Int? = nil) {
         let count = clampedCount(item, quantity)
-        undoable(message(item, count, verb: "Used", allText: "marked as used")) {
+        let current = foodItems.first { $0.id == item.id }?.quantity ?? item.quantity
+        let xp = FoodStore.questXP(for: item) * count
+        let text = count >= current
+            ? "Rescued \(item.name)! +\(xp) XP"
+            : "Rescued \(count) \(item.name) · \(current - count) left · +\(xp) XP"
+        let levelBefore = levelInfo.level
+        undoable(text) {
             take(item, count, as: .used)
         }
+        checkLevelUp(from: levelBefore)
     }
 
     func markAsWasted(_ item: FoodItem, quantity: Int? = nil) {
@@ -106,8 +113,19 @@ final class FoodStore: ObservableObject {
         let used = uses.filter { $0.quantity > 0 }
         guard !used.isEmpty else { return }
         let names = used.map { $0.quantity > 1 ? "\($0.quantity) \($0.item.name)" : $0.item.name }
-        undoable("Cooked! Used \(names.joined(separator: ", "))") {
+        var xp = 0
+        for use in used { xp += FoodStore.questXP(for: use.item) * use.quantity }
+        let levelBefore = levelInfo.level
+        undoable("Cooked! Rescued \(names.joined(separator: ", ")) · +\(xp) XP") {
             used.forEach { take($0.item, $0.quantity, as: .used) }
+        }
+        checkLevelUp(from: levelBefore)
+    }
+
+    private func checkLevelUp(from levelBefore: Int) {
+        let levelNow = levelInfo.level
+        if levelNow > levelBefore {
+            levelUp = levelNow
         }
     }
 
@@ -183,6 +201,10 @@ final class FoodStore: ObservableObject {
     }
 
     @Published var toast: UndoToast?
+
+    /// Set to the new level when a rescue levels the player up.
+    /// MainTabView shows the "Level Up!" celebration, then sets it back to nil.
+    @Published var levelUp: Int?
 
     func undoable(_ message: String, _ change: () -> Void) {
         let items = foodItems

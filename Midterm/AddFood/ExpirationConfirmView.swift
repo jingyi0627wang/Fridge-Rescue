@@ -39,12 +39,12 @@ struct ExpirationConfirmView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Label(suggestedDate.formatted(date: .abbreviated, time: .omitted),
                           systemImage: "sparkles")
-                        .font(.headline)
+                        .font(.game(18, .bold))
                     Text("Usually lasts about \(dayText(draft.shelfLifeDays)).")
                         .foregroundStyle(.secondary)
                     if let tip = draft.preset?.storageTip, !tip.isEmpty {
                         Label(tip, systemImage: "lightbulb")
-                            .font(.subheadline)
+                            .font(.game(14, .medium))
                             .padding(.top, 4)
                     }
                 }
@@ -73,34 +73,37 @@ struct ExpirationConfirmView: View {
                 statusRow
             }
         }
+        .font(.game(16, .medium))
+        .foregroundStyle(Game.brown)
+        .gameBackground()
+        .tint(Game.greenDark)
+        .toolbar(.hidden, for: .tabBar)
         .navigationTitle("Expiration Date")
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
             Button(action: save) {
-                Text("Add to Fridge").frame(maxWidth: .infinity)
+                Text("Add to Fridge!")
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-            .tint(Color(red: 0.22, green: 0.49, blue: 0.19))
-            .padding()
+            .buttonStyle(.chunky(.green))
+            .padding(.horizontal, 18)
+            .padding(.top, 10)
+            .padding(.bottom, 4)
+            .background(Game.cream.opacity(0.97).ignoresSafeArea(edges: .bottom))
         }
     }
 
     private var summaryRow: some View {
         HStack(spacing: 12) {
-            Text(draft.category.addFoodIcon)
-                .font(.largeTitle)
-                .frame(width: 60, height: 60)
-                .background(.quaternary, in: RoundedRectangle(cornerRadius: 10))
+            FreshlingAvatar(category: draft.category, name: draft.name, size: 56, showsStatus: false)
             VStack(alignment: .leading, spacing: 2) {
-                Text(draft.name).font(.headline)
-                Text("Qty \(draft.quantity) · \(draft.category.rawValue)")
-                    .font(.subheadline)
+                Text(draft.name).font(.game(20, .bold))
+                Text("Qty \(draft.quantity) · \(Text(draft.category.displayName))")
+                    .font(.game(14, .medium))
                     .foregroundStyle(.secondary)
                 if draft.fromScan {
                     Label("Added by scan", systemImage: "barcode.viewfinder")
-                        .font(.caption)
-                        .foregroundStyle(.purple)
+                        .font(.game(12, .medium))
+                        .foregroundStyle(.secondary)
                 }
             }
         }
@@ -115,11 +118,11 @@ struct ExpirationConfirmView: View {
             Label("Expires today", systemImage: "exclamationmark.circle.fill")
                 .foregroundStyle(.orange)
         } else if daysLeft <= 2 {
-            Label("Expires in \(dayText(daysLeft)) — eat it soon!", systemImage: "clock.fill")
+            Label("Expires in \(dayText(daysLeft)). Use it soon.", systemImage: "clock.fill")
                 .foregroundStyle(.orange)
         } else {
             Label("Expires in \(dayText(daysLeft))", systemImage: "checkmark.circle.fill")
-                .foregroundStyle(.green)
+                .foregroundStyle(Color.brand)
         }
     }
 
@@ -141,6 +144,7 @@ struct ExpirationConfirmView: View {
         store.undoable("\(item.name) added to your fridge") {
             store.addItem(item)
         }
+        FreshlingsHaptics.success()
         onSaved()
     }
 
@@ -159,3 +163,4 @@ struct ExpirationConfirmView: View {
         ) {}
     }
 }
+

@@ -28,9 +28,10 @@ enum FreshlingsTheme {
 
 
 
-    static let displayFontName: String? = nil
-    static let headingFontName: String? = nil
-    static let bodyFontName: String? = nil
+    // Fredoka (bundled in Resources/Fonts, loaded by GameAppearance.configure()).
+    static let displayFontName: String? = "Fredoka-Bold"
+    static let headingFontName: String? = "Fredoka-Bold"
+    static let bodyFontName: String? = "Fredoka-SemiBold"
 
     static func display(_ size: CGFloat) -> Font {
         font(displayFontName, size, .black)

@@ -1,11 +1,34 @@
 import SwiftUI
 
-// Freshlings recipe details. Keeps the existing Recipe, FoodItem,
-// FoodStore and RecipeData interfaces unchanged.
+// MARK: - Recipe Details
+// Photo, which Freshling this recipe rescues, ingredients (what's in your
+// fridge and how many of each cooking uses up), steps, and "I Cooked This!".
+
 struct RecipeDetailView: View {
     @EnvironmentObject var foodStore: FoodStore
+    @EnvironmentObject var myRecipes: MyRecipeStore
     @Environment(\.dismiss) private var dismiss
+    @State private var confirmDelete = false
 
+    /// Set when this is one of the user's own recipes.
+    private var userRecipe: UserRecipe? {
+        myRecipes.userRecipe(forRecipeID: recipe.id)
+    }
+
+    /// Plain-text version for the Share button.
+    private var shareText: String {
+        var lines = [recipe.name, ""]
+        lines.append("Ingredients:")
+        lines += recipe.items.map { "• \($0.amount) \($0.name)".replacingOccurrences(of: "•  ", with: "• ") }
+        if !recipe.steps.isEmpty {
+            lines.append("")
+            lines.append("Steps:")
+            lines += recipe.steps.enumerated().map { "\($0.offset + 1). \($0.element)" }
+        }
+        lines.append("")
+        lines.append("Shared from Freshlings 🌱")
+        return lines.joined(separator: "\n")
+    }
 
     let recipe: Recipe
     var focusIngredient: FoodItem?
@@ -17,74 +40,17 @@ struct RecipeDetailView: View {
     /// Starts from a guess based on the recipe amount; the user can change it.
     @State private var useCounts: [UUID: Int] = [:]
 
-    private enum Palette {
-        static let background = Color(red: 0.985, green: 0.992, blue: 0.965)
-        static let surface = Color.white
-        static let green = Color(red: 0.53, green: 0.89, blue: 0.36)
-        static let deepGreen = Color(red: 0.24, green: 0.48, blue: 0.22)
-        static let paleGreen = Color(red: 0.92, green: 0.98, blue: 0.86)
-        static let orange = Color(red: 0.96, green: 0.52, blue: 0.20)
-        static let paleOrange = Color(red: 1.00, green: 0.95, blue: 0.86)
-        static let brown = Color(red: 0.40, green: 0.29, blue: 0.24)
-        static let secondary = Color(red: 0.49, green: 0.44, blue: 0.40)
-        static let border = Color(red: 0.86, green: 0.91, blue: 0.82)
-    }
+    // MARK: - Fridge matching
 
-    // MARK: - Original fridge matching behavior
-
-    private func isInFridge(_ ingredient: String) -> Bool {
-        FoodMatcher.fridgeItem(for: ingredient, in: foodStore.foodItems) != nil
-    }
-
-    private var ingredientsInFridgeCount: Int {
-        recipe.ingredients.filter { isInFridge($0) }.count
-    }
-
-    /// In the fridge + ticked by hand.
-    private var readyCount: Int {
-        recipe.ingredients.filter { isInFridge($0) || checked.contains($0) }.count
+    /// Which fridge item each ingredient uses.
+    private var matches: [(ingredient: RecipeIngredient, item: FoodItem)] {
+        RecipeData.fridgeMatches(for: recipe, in: foodStore.foodItems)
     }
 
     private var rescueIngredient: FoodItem? {
         if let focusIngredient { return focusIngredient }
-
         return RecipeData.fridgeItems(for: recipe, in: foodStore.foodItems)
             .min { $0.hpPercentage < $1.hpPercentage }
-    }
-
-    var body: some View {
-        ZStack {
-            Palette.background.ignoresSafeArea()
-
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 25) {
-                    heroSection
-                    quickInfoSection
-
-                    if let rescueIngredient {
-                        recommendationSection(item: rescueIngredient)
-                    }
-
-                    ingredientsSection
-                    cookingStepsSection
-                    cookedButton
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 110)
-            }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Palette.background, for: .navigationBar)
-        .tint(Palette.deepGreen)
-    }
-
-    // MARK: - I Cooked This
-    // Marks every fridge item this recipe uses as "used",
-    // so it leaves the fridge and counts on the Impact page.
-
-    private var matches: [(ingredient: RecipeIngredient, item: FoodItem)] {
-        RecipeData.fridgeMatches(for: recipe, in: foodStore.foodItems)
     }
 
     private func useCount(for match: (ingredient: RecipeIngredient, item: FoodItem)) -> Int {
@@ -94,370 +60,340 @@ struct RecipeDetailView: View {
     }
 
     /// Fridge items that will actually be used (count > 0).
-    private var plannedUses: [(item: FoodItem, quantity: Int)] {
+    private func plannedUses(_ matches: [(ingredient: RecipeIngredient, item: FoodItem)]) -> [(item: FoodItem, quantity: Int)] {
         matches
             .map { (item: $0.item, quantity: useCount(for: $0)) }
             .filter { $0.quantity > 0 }
     }
 
-    private var cookedButton: some View {
-        let uses = plannedUses
+    // MARK: - Body
 
-        return Button {
-            cook()
-        } label: {
-            VStack(spacing: 4) {
-                Label("I Cooked This", systemImage: "frying.pan.fill")
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                Text(uses.isEmpty
-                     ? "No ingredients from your fridge"
-                     : "Uses " + uses.map { "\($0.quantity) \($0.item.name)" }.joined(separator: ", "))
-                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .multilineTextAlignment(.center)
+    var body: some View {
+        // Computed once per render.
+        let matches = self.matches
+        let readyCount = recipe.items.filter { ingredient in
+            matches.contains { $0.ingredient == ingredient } || checked.contains(ingredient.name)
+        }.count
+        let uses = plannedUses(matches)
+
+        return ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                heroCard(inFridge: matches.count)
+
+                if let rescueIngredient {
+                    MascotSays(verbatim: rescueDescription(for: rescueIngredient),
+                               mascotColor: rescueIngredient.category.freshlingColor)
+                        .padding(.vertical, 4)
+                }
+
+                HStack {
+                    GameSectionHeader(title: "Ingredients")
+                    Text("\(readyCount)/\(recipe.items.count) ready")
+                        .font(.game(13, .bold))
+                        .foregroundStyle(Game.greenInk)
+                        .padding(.horizontal, 9)
+                        .padding(.vertical, 2)
+                        .background(Capsule().fill(Game.mint))
+                        .padding(.top, 10)
+                }
+
+                VStack(spacing: 0) {
+                    ForEach(Array(recipe.items.enumerated()), id: \.offset) { index, ingredient in
+                        if index > 0 { DashedDivider() }
+                        if let match = matches.first(where: { $0.ingredient == ingredient }) {
+                            fridgeIngredientRow(match)
+                        } else {
+                            missingIngredientRow(ingredient)
+                        }
+                    }
+                }
+                .gameCard(padding: 0)
+
+                Text("Tap a fridge item to see it. Tick the others once you have them.")
+                    .font(.game(12, .medium))
+                    .foregroundStyle(Game.brownSoft)
+                    .padding(.horizontal, 4)
+
+                GameSectionHeader(title: "Steps")
+                VStack(alignment: .leading, spacing: 14) {
+                    ForEach(Array(recipe.steps.enumerated()), id: \.offset) { index, step in
+                        HStack(alignment: .top, spacing: 12) {
+                            Text("\(index + 1)")
+                                .font(.game(15, .bold))
+                                .foregroundStyle(Game.greenInk)
+                                .frame(width: 30, height: 30)
+                                .background(Circle().fill(Game.mint))
+                            Text(step)
+                                .font(.game(16, .medium))
+                                .foregroundStyle(Game.brown)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .padding(.top, 4)
+                        }
+                    }
+                }
+                .gameCard(padding: 16)
             }
-            .foregroundStyle(uses.isEmpty ? Palette.secondary : Palette.deepGreen)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .padding(.horizontal, 12)
-            .background(uses.isEmpty ? Palette.border : Palette.green,
-                        in: RoundedRectangle(cornerRadius: 22))
+            .padding(.horizontal, 18)
+            .padding(.bottom, 24)
         }
-        .buttonStyle(.plain)
-        .disabled(uses.isEmpty)
-    }
-
-    /// No pop-ups: takes the chosen amounts out of the fridge, goes back,
-    /// and the Undo bar at the bottom says what was used.
-    private func cook() {
-        foodStore.cook(plannedUses)
-        dismiss()
+        .gameBackground()
+        .navigationTitle(recipe.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
+        .tint(Game.greenDark)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                ShareLink(item: shareText) {
+                    Image(systemName: "square.and.arrow.up")
+                }
+                .accessibilityLabel("Share recipe")
+            }
+            if userRecipe != nil {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button {
+                            if let userRecipe {
+                                myRecipes.setShared(recipeID: recipe.id, !userRecipe.isShared)
+                            }
+                        } label: {
+                            if userRecipe?.isShared == true {
+                                Label("Remove from Community", systemImage: "person.2.slash")
+                            } else {
+                                Label("Share to Community", systemImage: "person.2.fill")
+                            }
+                        }
+                        Button(role: .destructive) {
+                            confirmDelete = true
+                        } label: {
+                            Label("Delete Recipe", systemImage: "trash")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                }
+            }
+        }
+        .confirmationDialog("Delete this recipe?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("Delete Recipe", role: .destructive) {
+                myRecipes.delete(recipeID: recipe.id)
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+        .safeAreaInset(edge: .bottom) {
+            cookedButton(uses: uses)
+        }
     }
 
     // MARK: - Hero
 
-    private var heroSection: some View {
-        VStack(spacing: 14) {
-            HStack {
-                Label("FRESHLINGS KITCHEN", systemImage: "leaf.fill")
-                    .font(.system(size: 11, weight: .heavy, design: .rounded))
-                    .tracking(1.2)
-                    .foregroundStyle(Palette.deepGreen)
-                Spacer()
-                Image(systemName: "sparkles")
-                    .foregroundStyle(Palette.orange)
-            }
-
+    private func heroCard(inFridge: Int) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
             if let url = recipe.imageURL {
-                AsyncImage(url: url) { image in
-                    image.resizable().scaledToFill()
-                } placeholder: {
-                    Text(recipe.emoji).font(.system(size: 76))
-                }
+                RecipePhoto(url: url) { Game.mint }
+                .frame(height: 190)
                 .frame(maxWidth: .infinity)
-                .frame(height: 200)
-                .clipShape(RoundedRectangle(cornerRadius: 22))
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .accessibilityHidden(true)
             } else {
-                Text(recipe.emoji)
-                    .font(.system(size: 76))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-                    .accessibilityHidden(true)
+                RecipeThumbnail(recipe: recipe, size: 72)
             }
 
             Text(recipe.name)
-                .font(.system(size: 30, weight: .heavy, design: .rounded))
-                .foregroundStyle(Palette.brown)
-                .multilineTextAlignment(.center)
+                .font(.game(26, .bold))
+                .foregroundStyle(Game.brown)
                 .fixedSize(horizontal: false, vertical: true)
+
+            HStack(spacing: 6) {
+                infoPill(icon: recipe.time > 0 ? "clock.fill" : "globe", text: recipe.timeText)
+                infoPill(icon: "tag.fill", text: recipe.difficulty)
+                infoPill(icon: "refrigerator.fill", text: "\(inFridge) in fridge")
+            }
 
             if let source = recipe.sourceURL {
                 Link(destination: source) {
-                    Label("Recipe from TheMealDB", systemImage: "arrow.up.right.square")
+                    Label("View on TheMealDB", systemImage: "arrow.up.right.square")
+                        .font(.game(14, .semibold))
+                        .foregroundStyle(Game.greenInk)
                 }
-                .font(.system(size: 13, weight: .semibold, design: .rounded))
-                .foregroundStyle(Palette.deepGreen)
-            } else {
-                Text("A little recipe to save something fresh!")
-                    .font(.system(size: 13, weight: .medium, design: .rounded))
-                    .foregroundStyle(Palette.secondary)
-                    .multilineTextAlignment(.center)
             }
         }
-        .frame(maxWidth: .infinity)
-        .padding(22)
-        .background(Palette.paleGreen, in: RoundedRectangle(cornerRadius: 30))
-    }
-
-    // MARK: - Recipe information
-
-    private var quickInfoSection: some View {
-        HStack(spacing: 8) {
-            infoPill(icon: recipe.time > 0 ? "clock" : "globe", text: recipe.timeText)
-            infoPill(icon: recipe.isOnline ? "tag.fill" : "chart.bar.fill", text: recipe.difficulty)
-            infoPill(icon: "refrigerator", text: "\(ingredientsInFridgeCount) in fridge")
-        }
+        .gameCard(padding: 14)
     }
 
     private func infoPill(icon: String, text: String) -> some View {
         HStack(spacing: 4) {
             Image(systemName: icon)
-            Text(text).lineLimit(1).minimumScaleFactor(0.75)
+            Text(text)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
         }
-        .font(.system(size: 11, weight: .bold, design: .rounded))
-        .foregroundStyle(Palette.deepGreen)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 11)
-        .frame(maxWidth: .infinity)
-        .background(Palette.surface, in: Capsule())
-        .overlay(Capsule().stroke(Palette.border, lineWidth: 1))
-    }
-
-    // MARK: - Rescue recommendation
-
-    private func recommendationSection(item: FoodItem) -> some View {
-        VStack(alignment: .leading, spacing: 13) {
-            sectionTitle("Why this recipe?", icon: "sparkles")
-
-            HStack(alignment: .top, spacing: 14) {
-                Image(systemName: "leaf.fill")
-                    .font(.system(size: 27, weight: .semibold))
-                    .foregroundStyle(Palette.deepGreen)
-                    .frame(width: 53, height: 53)
-                    .background(.white.opacity(0.85), in: RoundedRectangle(cornerRadius: 17))
-
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Help rescue \(item.name)!")
-                        .font(.system(size: 17, weight: .bold, design: .rounded))
-                        .foregroundStyle(Palette.brown)
-
-                    Text(rescueDescription(for: item))
-                        .font(.system(size: 13, weight: .medium, design: .rounded))
-                        .foregroundStyle(Palette.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                Spacer(minLength: 0)
-            }
-            .padding(18)
-            .background(Palette.paleOrange, in: RoundedRectangle(cornerRadius: 24))
-        }
+        .font(.game(12, .bold))
+        .foregroundStyle(Game.greenInk)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 4)
+        .background(Capsule().fill(Game.mint))
     }
 
     private func rescueDescription(for item: FoodItem) -> String {
         if item.daysUntilExpiration < 0 {
-            return "\(item.name) has expired. Check whether it is safe to use before cooking."
+            return "\(item.name) is past its date. Check that it's still good before cooking!"
         }
         if item.remainingDays == 0 {
-            return "\(item.name) expires today. This recipe helps you use it while it's still fresh."
+            return "\(item.name) is out of time today. This recipe rescues it!"
         }
         if item.remainingDays == 1 {
-            return "\(item.name) has only 1 day left. Use it while it's still fresh."
+            return "\(item.name) has 1 day of HP left. This recipe rescues it!"
         }
-        return "\(item.name) has \(item.remainingDays) days left. This recipe can help you use it in time."
+        return "\(item.name) has \(item.remainingDays) days of HP left. This recipe uses it up in time."
     }
 
-    // MARK: - Ingredients
+    // MARK: - Ingredient rows
 
-    private var ingredientsSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack {
-                sectionTitle("Ingredients", icon: "basket.fill")
-                Spacer(minLength: 8)
-                Text("\(readyCount)/\(recipe.items.count) READY")
-                    .font(.system(size: 10, weight: .heavy, design: .rounded))
-                    .foregroundStyle(Palette.deepGreen)
-            }
+    /// In the fridge: link to the food + "uses 2 of 5" stepper.
+    private func fridgeIngredientRow(_ match: (ingredient: RecipeIngredient, item: FoodItem)) -> some View {
+        let fridgeItem = match.item
+        let count = useCount(for: match)
 
-            Text("Tap a fridge item to see it. Tick the others once you have them.")
-                .font(.system(size: 12, weight: .medium, design: .rounded))
-                .foregroundStyle(Palette.secondary)
-
-            VStack(spacing: 0) {
-                ForEach(Array(recipe.items.enumerated()), id: \.offset) { index, ingredient in
-                    ingredientRow(ingredient)
-                    if index < recipe.items.count - 1 {
-                        Divider().overlay(Palette.border).padding(.leading, 54)
-                    }
-                }
-            }
-            .background(Palette.surface, in: RoundedRectangle(cornerRadius: 24))
-            .overlay(RoundedRectangle(cornerRadius: 24).stroke(Palette.border, lineWidth: 1))
-        }
-    }
-
-    @ViewBuilder
-    private func ingredientRow(_ ingredient: RecipeIngredient) -> some View {
-        if let match = matches.first(where: { $0.ingredient == ingredient }) {
-            let fridgeItem = match.item
-            VStack(spacing: 0) {
-                // In the fridge → open that food's details
-                NavigationLink {
-                    FoodDetailView(item: fridgeItem)
-                } label: {
-                    ingredientRowContent(
-                        ingredient,
-                        icon: "checkmark.circle.fill",
-                        iconColor: Palette.deepGreen,
-                        detail: "Your \(fridgeItem.name) · \(fridgeItem.daysLeftText)",
-                        detailColor: fridgeItem.freshnessLevel == .fresh ? Palette.deepGreen : Palette.orange,
-                        showsChevron: true
-                    )
-                }
-                .buttonStyle(.plain)
-
-                useCountRow(match)
-            }
-        } else {
-            // Not in the fridge → tap to tick it off
-            let isChecked = checked.contains(ingredient.name)
-            Button {
-                if isChecked { checked.remove(ingredient.name) } else { checked.insert(ingredient.name) }
+        return VStack(alignment: .leading, spacing: 8) {
+            NavigationLink {
+                FoodDetailView(item: fridgeItem)
             } label: {
-                ingredientRowContent(
-                    ingredient,
-                    icon: isChecked ? "checkmark.square.fill" : "square",
-                    iconColor: isChecked ? Palette.deepGreen : Palette.secondary.opacity(0.6),
-                    detail: isChecked ? "Got it" : "Not in fridge",
-                    detailColor: Palette.secondary,
-                    showsChevron: false
-                )
+                HStack(spacing: 12) {
+                    FreshlingAvatar(item: fridgeItem, size: 40)
+                    ingredientText(match.ingredient,
+                                   detail: "Your \(fridgeItem.name) · \(fridgeItem.daysLeftText.lowercased())",
+                                   detailColor: fridgeItem.freshnessLevel.tint)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(Game.edgeDark)
+                }
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .sensoryFeedback(.selection, trigger: isChecked)
+
+            HStack(spacing: 10) {
+                if count == 0 {
+                    Text("Won't be used up")
+                } else {
+                    Text("Cooking uses \(count) of \(fridgeItem.quantity)")
+                }
+                Spacer()
+                roundButton("minus", enabled: count > 0) { useCounts[fridgeItem.id] = count - 1 }
+                roundButton("plus", enabled: count < fridgeItem.quantity) { useCounts[fridgeItem.id] = count + 1 }
+            }
+            .font(.game(13, .semibold))
+            .foregroundStyle(Game.brownSoft)
+            .padding(.leading, 52)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 11)
+    }
+
+    /// Not in the fridge: tap to tick it off.
+    private func missingIngredientRow(_ ingredient: RecipeIngredient) -> some View {
+        let isChecked = checked.contains(ingredient.name)
+
+        return Button {
+            if isChecked { checked.remove(ingredient.name) } else { checked.insert(ingredient.name) }
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: isChecked ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 26, weight: .semibold))
+                    .foregroundStyle(isChecked ? Game.greenDark : Game.edgeDark)
+                    .frame(width: 40, height: 40)
+                ingredientText(ingredient,
+                               detail: isChecked ? "Got it" : "Not in your fridge",
+                               detailColor: Game.brownSoft)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 11)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .sensoryFeedback(.selection, trigger: isChecked)
+    }
+
+    private func ingredientText(_ ingredient: RecipeIngredient, detail: String, detailColor: Color) -> some View {
+        HStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(ingredient.name)
+                    .font(.game(16, .semibold))
+                    .foregroundStyle(Game.brown)
+                Text(detail)
+                    .font(.game(12, .medium))
+                    .foregroundStyle(detailColor)
+                    .lineLimit(1)
+            }
+            Spacer(minLength: 6)
+            if !ingredient.amount.isEmpty {
+                Text(ingredient.amount)
+                    .font(.game(14, .semibold))
+                    .foregroundStyle(Game.brownSoft)
+                    .multilineTextAlignment(.trailing)
+            }
         }
     }
 
-    /// "Cooking uses  −  2 of 5  +"  (0 = you still have some left, don't use it up)
-    private func useCountRow(_ match: (ingredient: RecipeIngredient, item: FoodItem)) -> some View {
-        let count = useCount(for: match)
-        let maxCount = match.item.quantity
-
-        return HStack(spacing: 10) {
-            Text(count == 0 ? "Won't be used up" : "Cooking uses")
-                .font(.system(size: 12, weight: .medium, design: .rounded))
-                .foregroundStyle(Palette.secondary)
-
-            Spacer(minLength: 4)
-
-            stepperButton("minus", enabled: count > 0) {
-                useCounts[match.item.id] = count - 1
-            }
-
-            Text("\(count) of \(maxCount)")
-                .font(.system(size: 13, weight: .heavy, design: .rounded))
-                .foregroundStyle(count == 0 ? Palette.secondary : Palette.deepGreen)
-                .monospacedDigit()
-                .frame(minWidth: 48)
-
-            stepperButton("plus", enabled: count < maxCount) {
-                useCounts[match.item.id] = count + 1
-            }
-        }
-        .padding(.leading, 55)
-        .padding(.trailing, 17)
-        .padding(.bottom, 12)
-    }
-
-    private func stepperButton(_ icon: String, enabled: Bool, action: @escaping () -> Void) -> some View {
+    private func roundButton(_ icon: String, enabled: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: icon)
-                .font(.system(size: 11, weight: .bold))
-                .foregroundStyle(enabled ? Palette.deepGreen : Palette.secondary.opacity(0.4))
+                .font(.system(size: 11, weight: .heavy))
+                .foregroundStyle(enabled ? Game.greenInk : Game.gray)
                 .frame(width: 28, height: 28)
-                .background(Palette.paleGreen, in: Circle())
+                .background(Circle().fill(enabled ? Game.mint : Game.graySoft))
         }
         .buttonStyle(.plain)
         .disabled(!enabled)
     }
 
-    private func ingredientRowContent(
-        _ ingredient: RecipeIngredient,
-        icon: String,
-        iconColor: Color,
-        detail: String,
-        detailColor: Color,
-        showsChevron: Bool
-    ) -> some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 22))
-                .foregroundStyle(iconColor)
-                .frame(width: 26)
+    // MARK: - I Cooked This
+    // Marks every fridge item this recipe uses as "used",
+    // so it leaves the fridge and counts on the Impact page.
 
-            VStack(alignment: .leading, spacing: 3) {
-                Text(ingredient.name)
-                    .font(.system(size: 15, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Palette.brown)
-                Text(detail)
-                    .font(.system(size: 11, weight: .medium, design: .rounded))
-                    .foregroundStyle(detailColor)
-                    .lineLimit(1)
-            }
+    private func cookedButton(uses: [(item: FoodItem, quantity: Int)]) -> some View {
+        let parts: [String] = uses.map { "\($0.quantity) \($0.item.name)" }
+        var xp = 0
+        for use in uses { xp += FoodStore.questXP(for: use.item) * use.quantity }
+        let summary: String = uses.isEmpty
+            ? "No ingredients from your fridge"
+            : "Uses " + parts.joined(separator: ", ")
 
-            Spacer(minLength: 5)
-
-            if !ingredient.amount.isEmpty {
-                Text(ingredient.amount)
-                    .font(.system(size: 13, weight: .bold, design: .rounded))
-                    .foregroundStyle(Palette.deepGreen)
-                    .multilineTextAlignment(.trailing)
-            }
-
-            if showsChevron {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .bold))
-                    .foregroundStyle(Palette.secondary)
-            }
-        }
-        .padding(.horizontal, 17)
-        .padding(.vertical, 14)
-        .contentShape(Rectangle())
-    }
-
-    // MARK: - Cooking steps
-
-    private var cookingStepsSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionTitle("Cooking Steps", icon: "fork.knife")
-
-            VStack(spacing: 0) {
-                ForEach(Array(recipe.steps.enumerated()), id: \.offset) { index, step in
-                    HStack(alignment: .top, spacing: 14) {
-                        Text("\(index + 1)")
-                            .font(.system(size: 15, weight: .heavy, design: .rounded))
-                            .foregroundStyle(Palette.deepGreen)
-                            .frame(width: 37, height: 37)
-                            .background(Palette.paleGreen, in: Circle())
-
-                        Text(step)
-                            .font(.system(size: 15, weight: .medium, design: .rounded))
-                            .foregroundStyle(Palette.brown)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, 8)
-
-                        Spacer(minLength: 0)
-                    }
-                    .padding(16)
-
-                    if index < recipe.steps.count - 1 {
-                        Divider().overlay(Palette.border).padding(.leading, 64)
-                    }
+        return VStack(spacing: 4) {
+            Button {
+                cook(uses)
+            } label: {
+                if uses.isEmpty {
+                    Text("I Cooked This!")
+                } else {
+                    Text("I Cooked This! +\(xp) XP")
                 }
             }
-            .background(Palette.surface, in: RoundedRectangle(cornerRadius: 24))
-            .overlay(RoundedRectangle(cornerRadius: 24).stroke(Palette.border, lineWidth: 1))
+            .buttonStyle(.chunky(.green))
+            .disabled(uses.isEmpty)
+
+            Text(summary)
+                .font(.game(12, .medium))
+                .foregroundStyle(Game.brownSoft)
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
+        }
+        .padding(.horizontal, 18)
+        .padding(.top, 10)
+        .padding(.bottom, 6)
+        .background(Game.cream.opacity(0.97).ignoresSafeArea(edges: .bottom))
+        .overlay(alignment: .top) {
+            Rectangle().fill(Game.edge).frame(height: 2)
         }
     }
 
-    private func sectionTitle(_ title: String, icon: String) -> some View {
-        HStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.system(size: 17, weight: .bold))
-                .foregroundStyle(Palette.deepGreen)
-            Text(title)
-                .font(.system(size: 23, weight: .heavy, design: .rounded))
-                .foregroundStyle(Palette.brown)
-        }
+    /// No pop-ups: takes the chosen amounts out of the fridge, goes back,
+    /// and the Undo bar at the bottom says what was used.
+    private func cook(_ uses: [(item: FoodItem, quantity: Int)]) {
+        guard !uses.isEmpty else { return }
+        foodStore.cook(uses)
+        FreshlingsHaptics.cookingComplete()
+        dismiss()
     }
 }
 
@@ -469,6 +405,6 @@ struct RecipeDetailView: View {
         )
         .environmentObject(FoodStore())
         .environmentObject(AppRouter())
+        .environmentObject(MyRecipeStore())
     }
 }
-
