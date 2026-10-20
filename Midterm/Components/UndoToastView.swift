@@ -12,7 +12,7 @@ struct UndoToastView: View {
             FreshlingMascot(size: 30)
 
             Text(toast.message)
-                .font(.system(size: 15, weight: .medium))
+                .font(.ui(15, .medium))
                 .foregroundStyle(Game.brown)
                 .lineLimit(2)
 
@@ -21,7 +21,7 @@ struct UndoToastView: View {
             Button("Undo") {
                 withAnimation { foodStore.undo() }
             }
-            .font(.system(size: 15, weight: .semibold))
+            .font(.ui(15, .semibold))
             .foregroundStyle(Game.greenInk)
             .padding(.horizontal, 12)
             .padding(.vertical, 6)

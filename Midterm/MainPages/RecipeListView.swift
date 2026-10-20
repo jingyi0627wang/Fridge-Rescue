@@ -167,7 +167,7 @@ struct RecipeListView: View {
                     withAnimation(.snappy) { page = item }
                 } label: {
                     Text(item.title)
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(.ui(14, .semibold))
                         .foregroundStyle(selected ? Game.brown : Game.brownSoft)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)

@@ -69,7 +69,7 @@ struct TodayView: View {
                             Text("\(Date.now.formatted(.dateTime.weekday(.wide))), \(questsLeft) things to use up")
                         }
                     }
-                    .font(.system(size: 15))
+                    .font(.ui(15))
                     .foregroundStyle(Game.brownSoft)
                 }
                 .padding(.top, 12)
@@ -81,7 +81,7 @@ struct TodayView: View {
                     HStack(alignment: .firstTextBaseline) {
                         GameSectionHeader(title: "Use Soon")
                         Text("+\(availableXP(priority)) XP available")
-                            .font(.system(size: 13, weight: .medium))
+                            .font(.ui(13, .medium))
                             .foregroundStyle(Game.brownSoft)
                             .fixedSize()
                     }
@@ -209,7 +209,7 @@ struct TodayView: View {
 
                     VStack(alignment: .leading, spacing: 1) {
                         Text(item.name)
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.ui(16, .semibold))
                             .foregroundStyle(Game.brown)
                             .lineLimit(1)
                         Group {
@@ -219,7 +219,7 @@ struct TodayView: View {
                                 Text(item.daysLeftText)
                             }
                         }
-                        .font(.system(size: 13))
+                        .font(.ui(13))
                         .foregroundStyle(item.freshnessLevel == .urgent ? Game.redDark : Game.brownSoft)
                         XPTag(xp: FoodStore.questXP(for: item))
                             .padding(.top, 1)
@@ -262,11 +262,11 @@ struct TodayView: View {
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(item.name)
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.ui(16, .semibold))
                     .foregroundStyle(Game.brown)
                     .lineLimit(1)
                 Text(item.daysLeftText)
-                    .font(.system(size: 13))
+                    .font(.ui(13))
                     .foregroundStyle(Game.brownSoft)
                     .lineLimit(2)
             }

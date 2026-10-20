@@ -32,11 +32,7 @@ struct MainTabView: View {
     @StateObject private var router = AppRouter()
 
     // MARK: - Freshlings Colors
-    private let freshGreen = Color(
-        red: 0.53,
-        green: 0.89,
-        blue: 0.36
-    )
+    private let freshGreen = FL.leafDeep   // selected tab (design: leaf-deep)
 
     var body: some View {
 

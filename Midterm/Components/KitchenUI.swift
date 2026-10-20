@@ -118,7 +118,7 @@ struct ShelfTag: View {
             Text("\(count)")
                 .foregroundStyle(Game.edgeDark)
         }
-        .font(.system(size: 13, weight: .semibold))
+        .font(.ui(13, .semibold))
         .foregroundStyle(Game.brownSoft)
         .padding(.top, 12)
     }
@@ -147,7 +147,7 @@ struct FridgeTile: View {
                 .overlay(alignment: .bottomTrailing) {
                     if item.quantity > 1 {
                         Text("\(item.quantity)")
-                            .font(.system(size: 10, weight: .semibold))
+                            .font(.ui(10, .semibold))
                             .foregroundStyle(Game.brown)
                             .padding(.horizontal, 5)
                             .padding(.vertical, 1)
@@ -161,7 +161,7 @@ struct FridgeTile: View {
                 .wiggle(item.freshnessLevel == .urgent)
 
             Text(item.name)
-                .font(.system(size: 12, weight: .medium))
+                .font(.ui(12, .medium))
                 .foregroundStyle(Game.brown)
                 .lineLimit(1)
 
@@ -191,7 +191,7 @@ struct RecipeBookCard: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(recipe.name)
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.ui(16, .semibold))
                     .foregroundStyle(Game.brown)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)

@@ -5,46 +5,84 @@
 //  Created by Rumik He on 10/13/26.
 //
 
+//
+//  LoginView.swift
+//  Midterm
+//
+//  Created by Rumik He on 10/13/26.
+//
+
+//
+//  LoginView.swift
+//  Midterm
+//
+//  Created by Rumik He on 10/13/26.
+//
+
+//
+//  LoginView.swift
+//  Midterm
+//
+//  Created by Rumik He on 10/13/26.
+//
+
 import SwiftUI
 
 struct LoginView: View {
 
-    // 存在手机里的值
+
     @AppStorage("username") private var savedUsername = ""
     @AppStorage("isLoggedIn") private var isLoggedIn = false
     @AppStorage("hasSeenGuide") private var hasSeenGuide = false
 
-    // 只在这一页用的暂时状态
+
     @State private var isSignUp = false
     @State private var usernameInput = ""
     @State private var passwordInput = ""
     @State private var errorMessage: String?
     @State private var showForgotAlert = false
     @State private var showComingSoon = false
+    @FocusState private var typing: Bool
 
-    /// 手机里有没有已经建好的账号
+
     private var hasAccount: Bool {
         !savedUsername.isEmpty && KeychainHelper.readPassword() != nil
     }
 
-    var body: some View {
-        GeometryReader { geo in
-            ScrollView {
-                VStack(spacing: 0) {
-                    logo
-                        .padding(.top, 24)
-                        .padding(.bottom, 32)
 
-                    card
-                        .frame(maxHeight: .infinity, alignment: .top)
-                }
-                .frame(minHeight: geo.size.height)
+    private enum Layout {
+        static let characterWidth: CGFloat = 118
+        static let wordmarkWidth: CGFloat = 210
+        static let logoGap: CGFloat = 22
+        static let cardMargin: CGFloat = 21
+        static let cardRadius: CGFloat = 44
+        static let cardInset: CGFloat = 30      // card edge → fields / button
+        static let rowHeight: CGFloat = 68      // fields and main button
+        static let fieldRadius: CGFloat = 26
+        static let socialSize: CGFloat = 54
+    }
+
+    var body: some View {
+
+        GeometryReader { geo in
+            let small = geo.size.height < 760          // SE / mini
+            VStack(spacing: 0) {
+                logo(scale: small ? 0.72 : 1)
+                    .padding(.top, small ? 0 : 4)
+                    .padding(.bottom, small ? 14 : 28)
+
+                card(bottomInset: geo.safeAreaInsets.bottom, small: small)
             }
-            .scrollDismissesKeyboard(.interactively)
-            .scrollBounceBehavior(.basedOnSize)
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
+            // Keyboard: slide the whole page up instead of squashing it.
+            .offset(y: typing ? -(small ? 150 : 175) : 0)
+            .animation(.easeOut(duration: 0.25), value: typing)
         }
         .ignoresSafeArea(.container, edges: .bottom)
+        .ignoresSafeArea(.keyboard)
         .background { PatternBackground() }
+        .contentShape(Rectangle())
+        .onTapGesture { typing = false }               // tap outside → hide keyboard
         .onAppear { isSignUp = !hasAccount }
         .onChange(of: usernameInput) { errorMessage = nil }
         .onChange(of: passwordInput) { errorMessage = nil }
@@ -63,30 +101,31 @@ struct LoginView: View {
 
     // MARK: - Logo（角色 + 字）
 
-    private var logo: some View {
-        VStack(spacing: 18) {
+    private func logo(scale: CGFloat) -> some View {
+        VStack(spacing: Layout.logoGap * scale) {
             Image("FreshlingsCharacter")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 130)
+                .frame(width: Layout.characterWidth * scale)
             Image("FreshlingsWordmark")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 210)
+                .frame(width: Layout.wordmarkWidth * scale)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Freshlings")
     }
 
-    // MARK: - 绿色卡片
+    // MARK: - 绿色卡片（一直延伸到屏幕底部）
 
-    private var card: some View {
-        VStack(spacing: 16) {
+    private func card(bottomInset: CGFloat, small: Bool) -> some View {
+        VStack(spacing: 0) {
 
             Text(isSignUp ? "Sign up" : "Log in")
-                .font(FreshlingsTheme.display(44))
+                .font(FreshlingsTheme.display(small ? 38 : 44))
                 .foregroundStyle(.white)
-                .padding(.bottom, 12)
+
+            Spacer(minLength: 12).frame(maxHeight: 26)
 
             // 用户名
             inputField(icon: "person") {
@@ -95,6 +134,7 @@ struct LoginView: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .textContentType(.username)
+                    .focused($typing)
             }
 
             // 密码
@@ -104,42 +144,50 @@ struct LoginView: View {
                     .textContentType(isSignUp ? .newPassword : .password)
                     .submitLabel(.go)
                     .onSubmit(submit)
+                    .focused($typing)
             }
+            .padding(.top, 15)
 
-            // 错误提示 + Forgot Password
+            // 错误提示 + Forgot Password（右对齐，在输入框下方）
             HStack(alignment: .top) {
                 if let errorMessage {
                     Text(errorMessage)
-                        .font(FreshlingsTheme.body(14, weight: .semibold))
+                        .font(FreshlingsTheme.body(13, weight: .semibold))
                         .foregroundStyle(FreshlingsTheme.errorRed)
                 }
-                Spacer()
+                Spacer(minLength: 8)
                 if !isSignUp {
                     Button("Forgot Password?") { showForgotAlert = true }
-                        .font(FreshlingsTheme.body(14, weight: .medium))
+                        .font(FreshlingsTheme.body(12, weight: .medium))
                         .underline()
                         .foregroundStyle(FreshlingsTheme.linkGreen)
                 }
             }
-            .frame(minHeight: 20)
+            .frame(minHeight: 18)
+            .padding(.top, 12)
+            .padding(.trailing, -3)
+
+            Spacer(minLength: 12).frame(maxHeight: 30)
 
             // 主按钮
             Button(action: submit) {
                 Text("Rescue the Freshlings!")
-                    .font(FreshlingsTheme.body(22, weight: .bold))
+                    .font(FreshlingsTheme.body(21, weight: .semibold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 20)
+                    .frame(height: Layout.rowHeight)
                     .background(FreshlingsTheme.deepGreen, in: Capsule())
             }
-            .padding(.top, 12)
 
             // 切换 Log in / Sign up
             Button(isSignUp ? "Already have an account? Log in" : "Sign up", action: toggleMode)
-                .font(FreshlingsTheme.body(17, weight: .medium))
+                .font(FreshlingsTheme.body(15, weight: .medium))
                 .underline()
                 .foregroundStyle(FreshlingsTheme.linkGreen)
-                .padding(.top, 4)
+                .frame(minHeight: 44)
+                .padding(.top, small ? 6 : 12)
+
+            Spacer(minLength: 8).frame(maxHeight: 44)
 
             // 社交登录（目前只是外观）
             HStack(spacing: 14) {
@@ -148,25 +196,30 @@ struct LoginView: View {
                 socialButton(Image.asset("IconFacebook", fallbackSystemName: "f.circle.fill"), name: "Facebook")
                 socialButton(Image.asset("IconDiscord", fallbackSystemName: "gamecontroller.fill"), name: "Discord")
             }
-            .padding(.top, 28)
-        }
-        .padding(.horizontal, 28)
-        .padding(.top, 40)
-        .padding(.bottom, 56)
-        .background {
-            ZStack {
-                FreshlingsTheme.green
-                Image("TitlePattern")
-                    .resizable()
-                    .scaledToFill()
-                    .opacity(0.35)
-            }
-            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 48, topTrailingRadius: 48))
-        }
-        .padding(.horizontal, 20)
-    }
 
- 
+            Spacer(minLength: 16)
+        }
+        .padding(.horizontal, Layout.cardInset)
+        .padding(.top, small ? 26 : 40)
+        .padding(.bottom, max(bottomInset, 16))
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .background {
+            // The pattern is an overlay, so its big scaled-to-fill size can't
+            // make the card grow past its frame (that was covering the logo).
+            FreshlingsTheme.green
+                .overlay {
+                    Image("TitlePattern")
+                        .resizable()
+                        .scaledToFill()
+                        .blendMode(.multiply)   // white parts vanish, lines stay
+                        .opacity(0.5)
+                }
+                .clipShape(UnevenRoundedRectangle(topLeadingRadius: Layout.cardRadius,
+                                              topTrailingRadius: Layout.cardRadius,
+                                              style: .continuous))
+        }
+        .padding(.horizontal, Layout.cardMargin)
+    }
 
     private func placeholder(_ text: String) -> Text {
         Text(text).foregroundStyle(FreshlingsTheme.placeholder)
@@ -176,16 +229,17 @@ struct LoginView: View {
                                          @ViewBuilder field: () -> Field) -> some View {
         HStack(spacing: 14) {
             Image(systemName: icon)
-                .font(.system(size: 20))
+                .font(.system(size: 20, weight: .regular))
                 .foregroundStyle(FreshlingsTheme.placeholder)
                 .frame(width: 24)
             field()
-                .font(FreshlingsTheme.body(18, weight: .medium))
+                .font(FreshlingsTheme.body(16, weight: .medium))
                 .foregroundStyle(FreshlingsTheme.linkGreen)
         }
-        .padding(.horizontal, 22)
-        .frame(height: 64)
-        .background(FreshlingsTheme.field, in: RoundedRectangle(cornerRadius: 28))
+        .padding(.horizontal, 26)
+        .frame(height: Layout.rowHeight)
+        .background(FreshlingsTheme.field,
+                    in: RoundedRectangle(cornerRadius: Layout.fieldRadius, style: .continuous))
     }
 
     private func socialButton(_ image: Image, name: String) -> some View {
@@ -196,7 +250,7 @@ struct LoginView: View {
                 .scaledToFit()
                 .frame(width: 26, height: 26)
                 .foregroundStyle(FreshlingsTheme.deepGreen)
-                .frame(width: 58, height: 58)
+                .frame(width: Layout.socialSize, height: Layout.socialSize)
                 .background(FreshlingsTheme.field, in: Circle())
         }
         .accessibilityLabel("Continue with \(name)")

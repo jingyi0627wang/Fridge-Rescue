@@ -3,43 +3,44 @@ import UIKit
 import CoreText
 
 // MARK: - Freshlings style
-// The whole app's look lives here:
-//   • fresh sage-white background, deep green-black text
-//   • the Freshlings light green as the accent; orange only for XP and coins
-//   • Fredoka (rounded, like the wordmark) for titles and big numbers only;
-//     everything else uses the iPhone's own font so it reads like a real app
+// The whole app's look lives here, now fed by the Freshlings design system
+// (DesignSystem/Theme.swift, `FL`):
+//   • canvas background, bark-brown text, Freshlings greens as accents
+//   • citrus orange for XP and coins, tomato red only for urgent things
+//   • Bagel Fat One for page titles, Anek Latin for everything else
 //   • soft white surfaces with a gentle shadow, pill buttons, round food badges
-// (The enum is still called `Game` and some names like `brown` are kept so
-// every screen picks up the new look without renaming everything.)
+// (Names like `Game.brown` are kept so every screen picks up the new look
+// without renaming anything.)
 
 // MARK: - Colors
 
 enum Game {
-    static let cream = hex(0xF5F7F0)         // app background (sage white)
-    static let card = Color.white            // surfaces
-    static let edge = hex(0xE6EBDD)          // hairlines
-    static let edgeDark = hex(0xC3CABB)      // chevrons, placeholders
-    static let track = hex(0xEEF1E8)         // empty bars, quiet buttons
-    static let field = hex(0xE9ECE3)         // search field
+    // Each value comes from the design system (FL = DesignSystem/Theme.swift).
+    static let cream = FL.canvas             // app background
+    static let card = FL.surface             // surfaces
+    static let edge = FL.cardOutline         // hairlines
+    static let edgeDark = hex(0xB9C98A)      // chevrons, placeholders (design: placeholder)
+    static let track = FL.mint               // empty bars, quiet buttons
+    static let field = hex(0xEEF9DC)         // search field (design: field)
 
-    static let green = hex(0x8DE969)         // Freshling green (accent)
-    static let greenDark = hex(0x5BBF3A)     // icons, toggles, selected tab
-    static let greenInk = hex(0x1F4A10)      // text on green
-    static let mint = hex(0xEAF8DF)          // light green tint
+    static let green = hex(0x8DE969)         // Freshling green (design: character-green) — fills only
+    static let greenDark = FL.leafDeep       // icons, toggles, links, selected tab
+    static let greenInk = FL.leafDeep        // green text on light tints
+    static let mint = FL.cardTint            // light green tint
 
-    static let brown = hex(0x1E2A1B)         // main text (deep green-black)
-    static let brownSoft = hex(0x6A7464)     // secondary text
+    static let brown = FL.bark               // main text
+    static let brownSoft = FL.barkSoft       // secondary text
 
-    static let orange = hex(0xFFAA01)        // XP and coins
-    static let orangeDark = hex(0xC98300)
+    static let orange = FL.citrus            // XP and coins
+    static let orangeDark = FL.citrusInk     // orange text
     static let orangeSoft = hex(0xFFF3D6)
 
-    static let red = hex(0xF26B4F)
-    static let redDark = hex(0xC2452C)
+    static let red = FL.tomato               // urgent marks
+    static let redDark = FL.tomatoInk        // red text
     static let redSoft = hex(0xFDE5DF)
     static let redEdge = hex(0xF6C9BD)
 
-    static let yellow = hex(0xF5C451)
+    static let yellow = FL.highlight
     static let blue = hex(0x7CC4FF)
     static let pink = hex(0xFF8FB8)
     static let gray = hex(0xB9C0B3)
@@ -59,7 +60,7 @@ extension Color {
     static let brand = Game.greenDark
 }
 
-// MARK: - Font (Fredoka)
+// MARK: - Font weights (Anek Latin via FL.Face.body; Fredoka files are no longer used)
 
 enum GameWeight {
     case medium, semibold, bold
@@ -82,41 +83,52 @@ enum GameWeight {
 }
 
 enum GameFont {
-    /// Loads the bundled Fredoka files (no Info.plist entry needed).
+    /// Loads the design-system fonts: Bagel Fat One + Anek Latin (no Info.plist entry needed).
     static func register() {
-        for weight in [GameWeight.medium, .semibold, .bold] {
-            if let url = Bundle.main.url(forResource: weight.fontName, withExtension: "ttf") {
-                CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
-            }
-        }
+        FL.registerFonts()
     }
 
-    /// True once the font is loaded. If it's ever missing, SF Rounded is used instead.
-    /// (Registers the font on first use, so Xcode Previews show it too.)
+    /// True once the fonts are loaded. If they're ever missing, the system font is used instead.
+    /// (Registers on first use, so Xcode Previews show them too.)
     static let isAvailable: Bool = {
-        if UIFont(name: GameWeight.bold.fontName, size: 12) == nil { register() }
-        return UIFont(name: GameWeight.bold.fontName, size: 12) != nil
+        if UIFont(name: FL.Face.display, size: 12) == nil { register() }
+        return UIFont(name: FL.Face.display, size: 12) != nil
     }()
 
+    /// Anek Latin at this weight.
     static func uiFont(_ weight: GameWeight, _ size: CGFloat) -> UIFont {
-        UIFont(name: weight.fontName, size: size)
+        _ = isAvailable
+        return UIFont(name: FL.Face.body(weight.systemWeight), size: size)
             ?? .systemFont(ofSize: size, weight: weight == .medium ? .medium : .bold)
+    }
+
+    /// Bagel Fat One (page titles).
+    static func displayUIFont(_ size: CGFloat) -> UIFont {
+        _ = isAvailable
+        return UIFont(name: FL.Face.display, size: size) ?? .systemFont(ofSize: size, weight: .heavy)
     }
 }
 
 extension Font {
-    /// The app font.
-    ///   • .bold at 17 pt or bigger → Fredoka SemiBold (titles, big numbers)
-    ///   • everything else          → the iPhone's own font (SF Pro)
+    /// The app font (design system type scale).
+    ///   • .bold at 28 pt or bigger → Bagel Fat One (page titles: "My Fridge", "My Impact")
+    ///   • everything else          → Anek Latin at that weight (Title 3, buttons, body)
     static func game(_ size: CGFloat, _ weight: GameWeight = .semibold,
                      relativeTo style: Font.TextStyle = .body) -> Font {
-        if weight == .bold && size >= 17 {
-            if GameFont.isAvailable {
-                return .custom(GameWeight.semibold.fontName, size: size, relativeTo: style)
-            }
-            return .system(size: size, weight: .bold, design: .rounded)
+        guard GameFont.isAvailable else {
+            return .system(size: size, weight: weight.systemWeight, design: .rounded)
         }
-        return .system(size: size, weight: weight.systemWeight)
+        if weight == .bold && size >= 28 {
+            return .custom(FL.Face.display, size: size, relativeTo: style)
+        }
+        return .custom(FL.Face.body(weight.systemWeight), size: size, relativeTo: style)
+    }
+
+    /// Anek Latin for text that used `.system(size:weight:)` (any Font.Weight).
+    static func ui(_ size: CGFloat, _ weight: Font.Weight = .regular,
+                   relativeTo style: Font.TextStyle = .body) -> Font {
+        guard GameFont.isAvailable else { return .system(size: size, weight: weight) }
+        return .custom(FL.Face.body(weight), size: size, relativeTo: style)
     }
 }
 
@@ -129,7 +141,7 @@ enum GameAppearance {
 
         let brown = UIColor(Game.brown)
 
-        // Navigation bar: Fredoka titles. Backgrounds stay the iOS default, and the
+        // Navigation bar: Bagel Fat One large titles, Anek Latin inline titles. Backgrounds stay the iOS default, and the
         // tab bar isn't restyled at all, so both keep the native look.
         let buttons = UIBarButtonItemAppearance()
 
@@ -139,8 +151,8 @@ enum GameAppearance {
         navEdge.configureWithTransparentBackground()
 
         for nav in [navStandard, navEdge] {
-            nav.largeTitleTextAttributes = [.font: GameFont.uiFont(.semibold, 32), .foregroundColor: brown]
-            nav.titleTextAttributes = [.font: GameFont.uiFont(.semibold, 18), .foregroundColor: brown]
+            nav.largeTitleTextAttributes = [.font: GameFont.displayUIFont(32), .foregroundColor: brown]
+            nav.titleTextAttributes = [.font: GameFont.uiFont(.bold, 18), .foregroundColor: brown]
             nav.buttonAppearance = buttons
             nav.doneButtonAppearance = buttons
             nav.backButtonAppearance = buttons
@@ -194,7 +206,7 @@ enum ChunkyKind {
 
     var fill: Color {
         switch self {
-        case .green: return Game.green
+        case .green: return FL.leafDeep     // primary: white label 5.9:1
         case .orange: return Game.orangeSoft
         case .red: return Game.redSoft
         case .white: return Game.track
@@ -203,7 +215,7 @@ enum ChunkyKind {
 
     var text: Color {
         switch self {
-        case .green: return Game.greenInk
+        case .green: return .white
         case .orange: return Game.orangeDark
         case .red: return Game.redDark
         case .white: return Game.brown
@@ -234,7 +246,7 @@ private struct ChunkyButtonBody: View {
         let pressed = configuration.isPressed && isEnabled
 
         configuration.label
-            .font(.system(size: small ? 15 : 17, weight: .semibold))
+            .font(.ui(small ? 15 : 17, .semibold))
             .foregroundStyle(isEnabled ? kind.text : Game.brownSoft)
             .lineLimit(1)
             .minimumScaleFactor(0.8)
@@ -271,11 +283,11 @@ struct GameChip: View {
                 }
                 Text(title)
             }
-            .font(.system(size: 14, weight: .medium))
-            .foregroundStyle(isSelected ? Color.white : Game.brownSoft)
+            .font(.ui(14, .medium))
+            .foregroundStyle(isSelected ? Game.brown : Game.brownSoft)
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
-            .background(Capsule().fill(isSelected ? Game.brown : Color.clear))
+            .background(Capsule().fill(isSelected ? FL.lime : Color.clear))
             .contentShape(Capsule())
         }
         .buttonStyle(.plain)
@@ -298,7 +310,7 @@ struct HUDPill: View {
                 .frame(width: 18, height: 18)
                 .background(Circle().fill(iconColor))
             Text(text)
-                .font(.system(size: 13, weight: .semibold))
+                .font(.ui(13, .semibold))
                 .foregroundStyle(Game.brown)
                 .monospacedDigit()
         }
@@ -318,7 +330,7 @@ struct XPTag: View {
 
     var body: some View {
         Text("+\(xp) XP")
-            .font(.system(size: 12, weight: .semibold))
+            .font(.ui(12, .semibold))
             .foregroundStyle(Game.orangeDark)
     }
 }
@@ -337,7 +349,7 @@ struct GameSectionHeader: View {
             Spacer()
             if let count {
                 Text("\(count)")
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.ui(14, .medium))
                     .foregroundStyle(Game.brownSoft)
             }
         }
@@ -520,7 +532,7 @@ struct HPBar: View {
         HStack(spacing: 6) {
             if showsLabel {
                 Text("HP")
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.ui(10, .semibold))
                     .foregroundStyle(Game.brownSoft)
             }
             HStack(spacing: 3) {
@@ -615,7 +627,7 @@ struct MascotSays: View {
             FreshlingMascot(size: 44, color: mascotColor)
 
             text
-                .font(.system(size: 16, weight: .medium))
+                .font(.ui(16, .medium))
                 .foregroundStyle(Game.brown)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -649,7 +661,7 @@ struct GameSearchField: View {
                 .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(Game.brownSoft)
             TextField(prompt, text: $text)
-                .font(.system(size: 16))
+                .font(.ui(16))
                 .foregroundStyle(Game.brown)
                 .autocorrectionDisabled()
             if !text.isEmpty {

@@ -10,9 +10,19 @@ struct MyApp: App {
     @AppStorage("appLanguage")
     private var appLanguage = "en"
 
+    /// Testing: every launch starts at Title → Login → Onboarding.
+    /// The account and the fridge are kept; only "logged in" and "seen the guide" reset.
+    /// Set to false before the final demo / release.
+    static let showLoginEveryLaunch = true
+
     init() {
-        // Fredoka font + game-style title bar and tab bar.
+        // Design-system fonts (Bagel Fat One + Anek Latin) + title bar look.
         GameAppearance.configure()
+
+        if Self.showLoginEveryLaunch {
+            UserDefaults.standard.set(false, forKey: "isLoggedIn")
+            UserDefaults.standard.set(false, forKey: "hasSeenGuide")
+        }
     }
 
     var body: some Scene {
@@ -34,4 +44,3 @@ struct MyApp: App {
         }
     }
 }
-

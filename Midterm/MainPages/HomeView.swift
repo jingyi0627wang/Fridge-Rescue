@@ -43,7 +43,7 @@ struct HomeView: View {
                         hud
                     }
                     subtitle(total: activeItems.count, needRescue: needRescue)
-                        .font(.system(size: 15))
+                        .font(.ui(15))
                         .foregroundStyle(Game.brownSoft)
                 }
                 .padding(.top, 12)
@@ -107,7 +107,7 @@ struct HomeView: View {
                     }
                     .frame(width: 16, height: 16)
                     Text("Lv \(info.level)")
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(.ui(13, .semibold))
                         .foregroundStyle(Game.brown)
                 }
                 .padding(.horizontal, 9)

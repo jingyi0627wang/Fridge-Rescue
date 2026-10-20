@@ -11,7 +11,7 @@ import UIKit
 /// Freshlings 的颜色和字体。Title、Login、Onboarding 都从这里取。
 enum FreshlingsTheme {
 
-    // MARK: - 颜色（从 Figma 设计稿取样）
+
 
     static let green       = hex(0x8DE969)   // 角色、Login 卡片
     static let orange      = hex(0xFFAA01)   // Freshlings 字
@@ -28,10 +28,10 @@ enum FreshlingsTheme {
 
 
 
-    // Fredoka (bundled in Resources/Fonts, loaded by GameAppearance.configure()).
-    static let displayFontName: String? = "Fredoka-Bold"
-    static let headingFontName: String? = "Fredoka-Bold"
-    static let bodyFontName: String? = "Fredoka-SemiBold"
+    // Design-system fonts (Resources/Fonts, loaded by GameAppearance.configure()):
+    // Bagel Fat One for titles, Anek Latin for buttons, fields and text.
+    static let displayFontName: String? = FL.Face.display
+    static let headingFontName: String? = FL.Face.body(.bold)
 
     static func display(_ size: CGFloat) -> Font {
         font(displayFontName, size, .black)
@@ -42,7 +42,7 @@ enum FreshlingsTheme {
     }
 
     static func body(_ size: CGFloat, weight: Font.Weight = .semibold) -> Font {
-        font(bodyFontName, size, weight)
+        font(FL.Face.body(weight), size, weight)
     }
 
     private static func font(_ name: String?, _ size: CGFloat, _ weight: Font.Weight) -> Font {

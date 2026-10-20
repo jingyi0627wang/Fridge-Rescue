@@ -84,11 +84,11 @@ struct CommunityFeed: View {
                     .font(.game(18, .bold))
                     .foregroundStyle(Game.brown)
                 Text(LocalizedStringKey(challenge.detail))
-                    .font(.system(size: 13))
+                    .font(.ui(13))
                     .foregroundStyle(Game.brownSoft)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(progress >= 1 ? "Done this week" : "This week's challenge")
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.ui(12, .semibold))
                     .foregroundStyle(progress >= 1 ? Game.greenInk : Game.orangeDark)
                     .padding(.top, 2)
             }
@@ -107,7 +107,7 @@ struct CommunityFeed: View {
                         .foregroundStyle(Game.orangeDark)
                 } else {
                     Text("0/1")
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(.ui(12, .semibold))
                         .foregroundStyle(Game.brown)
                 }
             }
@@ -138,7 +138,7 @@ private struct PostCard: View {
                     .background(Circle().fill(post.authorColor.opacity(0.18)))
                 VStack(alignment: .leading, spacing: 0) {
                     Text(verbatim: post.author)
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(.ui(14, .semibold))
                         .foregroundStyle(Game.brown)
                     Text(post.date, format: .relative(presentation: .named))
                         .font(.game(12, .medium))
@@ -250,7 +250,7 @@ private struct PostCard: View {
                 }
                 .accessibilityLabel("Share")
             }
-            .font(.system(size: 14, weight: .semibold))
+            .font(.ui(14, .semibold))
             .buttonStyle(.plain)
         }
         .gameCard(padding: 14)
