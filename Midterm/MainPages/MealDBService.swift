@@ -47,8 +47,8 @@ enum MealDBService {
         // Only look up the most urgent items to keep it fast.
         let active: [FoodItem] = items.filter { $0.status == .active }
         let keyed: [(item: FoodItem, days: Int)] = active.map { (item: $0, days: $0.daysUntilExpiration) }
-        let ordered = keyed.sorted { a, b in a.days < b.days }
-        let targets: [FoodItem] = ordered.prefix(4).map { $0.item }
+        let byUrgency = keyed.sorted { a, b in a.days < b.days }
+        let targets: [FoodItem] = byUrgency.prefix(4).map { $0.item }
 
         guard !targets.isEmpty else { return OnlineResult(recipes: [], isOffline: false) }
 
