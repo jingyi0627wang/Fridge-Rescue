@@ -1,3 +1,8 @@
+// ------------------------------------------------------------
+// Written by Gladys Yu
+// Expiration date step: suggested date, storage tip, save to fridge
+// ------------------------------------------------------------
+
 import SwiftUI
 
 struct ExpirationConfirmView: View {

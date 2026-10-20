@@ -1,3 +1,8 @@
+// ------------------------------------------------------------
+// Add Food page: first version by Gladys Yu (manual entry, autofill, scanner)
+// Later team edits included
+// ------------------------------------------------------------
+
 import SwiftUI
 
 // Add Food is a normal tab page (like Fridge and Today), not a pop-up.

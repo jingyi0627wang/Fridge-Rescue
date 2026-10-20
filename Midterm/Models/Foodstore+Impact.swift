@@ -1,3 +1,7 @@
+// ------------------------------------------------------------
+// Contributions by Gladys Yu: Impact counts units consistently
+// ------------------------------------------------------------
+
 //
 //  Foodstore+Impact.swift
 //  Midterm
@@ -25,6 +29,22 @@ extension FoodStore {
     }
 
 
+    // Counts below add up QUANTITIES (units), not history records:
+    // using 3 carrots one at a time = 3, the same as using all 3 at once.
+
+    /// Adds up the quantity of every record (kept simple so the compiler stays fast).
+    static func units(in records: [FoodItem]) -> Int {
+        var total = 0
+        for record in records { total += record.quantity }
+        return total
+    }
+
+    /// Total units used (eaten / cooked).
+    var usedCount: Int { FoodStore.units(in: usedItems) }
+
+    /// Total units thrown away.
+    var wastedCount: Int { FoodStore.units(in: wastedItems) }
+
     var moneySaved: Double {
         usedItems.reduce(0) { total, item in
             total + item.estimatedValue * Double(item.quantity)
@@ -38,9 +58,9 @@ extension FoodStore {
     }
 
     var useRate: Double {
-        let total = usedItems.count + wastedItems.count
+        let total = usedCount + wastedCount
         guard total > 0 else { return 0 }
-        return Double(usedItems.count) / Double(total)
+        return Double(usedCount) / Double(total)
     }
 
     //charts
@@ -50,7 +70,7 @@ extension FoodStore {
             .map { category in
                 CategoryStat(
                     category: category,
-                    count: usedItems.filter { $0.category == category }.count
+                    count: FoodStore.units(in: usedItems.filter { $0.category == category })
                 )
             }
             .filter { $0.count > 0 }
@@ -81,9 +101,9 @@ extension FoodStore {
             let inWeek = history.filter { $0.finishedOn >= start && $0.finishedOn < end }
             return [
                 WeeklyStat(weekStart: start, status: "Used",
-                           count: inWeek.filter { $0.status == .used }.count),
+                           count: FoodStore.units(in: inWeek.filter { $0.status == .used })),
                 WeeklyStat(weekStart: start, status: "Wasted",
-                           count: inWeek.filter { $0.status == .wasted }.count)
+                           count: FoodStore.units(in: inWeek.filter { $0.status == .wasted }))
             ]
         }
     }
@@ -91,7 +111,7 @@ extension FoodStore {
     /// Items used since the start of this week (for the weekly goal).
     var usedThisWeek: Int {
         guard let start = Calendar.current.dateInterval(of: .weekOfYear, for: Date())?.start else { return 0 }
-        return usedItems.filter { $0.finishedOn >= start }.count
+        return FoodStore.units(in: usedItems.filter { $0.finishedOn >= start })
     }
 
     /// Days in a row (up to today) where at least one item was used.
@@ -129,7 +149,7 @@ extension FoodStore {
     }
 
     var wastedThisWeek: Int {
-        wastedItems.filter { $0.finishedOn >= startOfWeek }.count
+        FoodStore.units(in: wastedItems.filter { $0.finishedOn >= startOfWeek })
     }
 
     var moneySavedThisMonth: Double {

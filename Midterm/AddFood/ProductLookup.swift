@@ -1,3 +1,8 @@
+// ------------------------------------------------------------
+// Written by Gladys Yu
+// Barcode lookup (Open Food Facts API) and produce sticker codes
+// ------------------------------------------------------------
+
 import Foundation
 
 struct ScannedFood {
@@ -31,7 +36,43 @@ enum ProductLookup {
         "4060": ("Broccoli", .vegetable),
         "4087": ("Roma Tomato", .vegetable),
         "4664": ("Tomato on the Vine", .vegetable),
-        "4072": ("Russet Potato", .vegetable)
+        "4072": ("Russet Potato", .vegetable),
+
+        // More common produce
+        "4129": ("Fuji Apple", .fruit),
+        "4025": ("Anjou Pear", .fruit),
+        "4409": ("Bartlett Pear", .fruit),
+        "4413": ("Bosc Pear", .fruit),
+        "4044": ("Peach", .fruit),
+        "4045": ("Cherries", .fruit),
+        "4051": ("Mango", .fruit),
+        "4430": ("Pineapple", .fruit),
+        "4029": ("Pineapple", .fruit),
+        "4032": ("Watermelon", .fruit),
+        "4050": ("Cantaloupe", .fruit),
+        "4056": ("Black Grapes", .fruit),
+        "4562": ("Carrot", .vegetable),
+        "4094": ("Carrot", .vegetable),
+        "4064": ("Tomato", .vegetable),
+        "4088": ("Red Bell Pepper", .vegetable),
+        "4067": ("Zucchini", .vegetable),
+        "4081": ("Eggplant", .vegetable),
+        "4078": ("Corn", .vegetable),
+        "4079": ("Cauliflower", .vegetable),
+        "4069": ("Green Cabbage", .vegetable),
+        "4070": ("Celery", .vegetable),
+        "4061": ("Iceberg Lettuce", .vegetable),
+        "4640": ("Romaine Lettuce", .vegetable),
+        "4090": ("Spinach", .vegetable),
+        "4080": ("Asparagus", .vegetable),
+        "4068": ("Green Onion", .vegetable),
+        "4082": ("Red Onion", .vegetable),
+        "4093": ("Yellow Onion", .vegetable),
+        "4073": ("Red Potato", .vegetable),
+        "4074": ("Sweet Potato", .vegetable),
+        "4608": ("Garlic", .vegetable),
+        "4612": ("Ginger", .vegetable),
+        "4889": ("Cilantro", .vegetable)
     ]
 
     static func pluCode(in text: String) -> String? {

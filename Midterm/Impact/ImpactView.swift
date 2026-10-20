@@ -116,12 +116,12 @@ struct ImpactView: View {
             )
             statCard(
                 title: "Items used",
-                value: "\(foodStore.usedItems.count)",
+                value: "\(foodStore.usedCount)",
                 icon: "checkmark.circle"
             )
             statCard(
                 title: "Items wasted",
-                value: "\(foodStore.wastedItems.count)",
+                value: "\(foodStore.wastedCount)",
                 icon: "trash"
             )
         }

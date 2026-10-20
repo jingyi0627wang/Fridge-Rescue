@@ -1,3 +1,7 @@
+// ------------------------------------------------------------
+// Contributions by Gladys Yu: "Past Their Date" section for expired food
+// ------------------------------------------------------------
+
 import SwiftUI
 
 // Freshlings Today screen.
@@ -21,6 +25,14 @@ struct TodayView: View {
     private var priorityItems: [FoodItem] {
         foodStore.activeItemsByUrgency.filter { RecipeData.needsAttention($0) }
     }
+
+    /// Food past its date that is still in the fridge.
+    /// The user decides: thrown away (wasted) or still used.
+    private var expiredItems: [FoodItem] {
+        foodStore.activeItemsByUrgency.filter { $0.freshnessLevel == .expired }
+    }
+
+    @State private var showAllExpired = false
 
     /// With lots of food, show the most urgent few first.
     @State private var showAllPriority = false
@@ -49,8 +61,12 @@ struct TodayView: View {
                     header
                     summaryCard
 
+                    if !expiredItems.isEmpty {
+                        expiredSection
+                    }
+
                     if priorityItems.isEmpty {
-                        allGoodCard
+                        if expiredItems.isEmpty { allGoodCard }
                     } else {
                         prioritySection
                         allRecipesButton
@@ -89,30 +105,23 @@ struct TodayView: View {
 
             Spacer(minLength: 0)
 
-            Image(systemName: "leaf.fill")
-                .font(.system(size: 22, weight: .semibold))
-                .foregroundStyle(deepGreen)
-                .frame(width: 54, height: 54)
-                .background(mint, in: Circle())
         }
     }
 
     // MARK: - Dynamic summary
     private var summaryCard: some View {
         HStack(spacing: 14) {
-            Text(priorityItems.isEmpty ? "🌱" : "🥕")
+            Text(priorityItems.isEmpty && expiredItems.isEmpty ? "🌱" : "🥕")
                 .font(.system(size: 38))
                 .frame(width: 65, height: 65)
                 .background(.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 22))
 
             VStack(alignment: .leading, spacing: 5) {
-                Text(priorityItems.isEmpty ? "All fresh and happy!" : "\(priorityItems.count) need some love!")
+                Text(summaryTitle)
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundStyle(textBrown)
 
-                Text(priorityItems.isEmpty
-                     ? "Nothing needs your attention right now."
-                     : "Use these ingredients first to reduce waste.")
+                Text(summarySubtitle)
                     .font(.system(size: 13, design: .rounded))
                     .foregroundStyle(secondaryBrown)
                     .fixedSize(horizontal: false, vertical: true)
@@ -121,8 +130,124 @@ struct TodayView: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(priorityItems.isEmpty ? mint : paleYellow,
+        .background(priorityItems.isEmpty && expiredItems.isEmpty ? mint : paleYellow,
                     in: RoundedRectangle(cornerRadius: 24))
+    }
+
+    // LocalizedStringKey (not String) so the Chinese translations still work.
+    private var summaryTitle: LocalizedStringKey {
+        if !priorityItems.isEmpty { return "\(priorityItems.count) need some love!" }
+        if expiredItems.count == 1 { return "1 item to check" }
+        if !expiredItems.isEmpty { return "\(expiredItems.count) items to check" }
+        return "All fresh and happy!"
+    }
+
+    private var summarySubtitle: LocalizedStringKey {
+        if !priorityItems.isEmpty { return "Use these ingredients first to reduce waste." }
+        if !expiredItems.isEmpty { return "Some food is past its date. Let us know what happened to it." }
+        return "Nothing needs your attention right now."
+    }
+
+    // MARK: - Expired food
+    // Food past its date stays in the fridge until the user says what happened.
+    // "Threw Away" counts it as wasted; "Still Good" opens Food Details
+    // (there the user can mark it used or change the date).
+
+    private var expiredSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionTitle("Past Their Date", label: "0 HP")
+
+            let items = expiredItems
+            let visible = showAllExpired ? items : Array(items.prefix(collapsedCount))
+
+            ForEach(visible) { item in
+                expiredCard(item)
+            }
+
+            if items.count > collapsedCount {
+                Button {
+                    withAnimation(.snappy) { showAllExpired.toggle() }
+                } label: {
+                    HStack {
+                        Text(showAllExpired ? "Show less" : "Show \(items.count - collapsedCount) more")
+                        Image(systemName: showAllExpired ? "chevron.up" : "chevron.down")
+                    }
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(deepGreen)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(mint, in: Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+
+    private func expiredCard(_ item: FoodItem) -> some View {
+        let expiredRed = statusColor(for: item)
+
+        return VStack(spacing: 14) {
+            NavigationLink {
+                FoodDetailView(item: item)
+            } label: {
+                HStack(spacing: 12) {
+                    Text(foodEmoji(for: item))
+                        .font(.system(size: 29))
+                        .frame(width: 59, height: 59)
+                        .background(Color.gray.opacity(0.12), in: RoundedRectangle(cornerRadius: 19))
+                        .saturation(0.3)
+
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(item.name)
+                            .font(.system(size: 18, weight: .bold, design: .rounded))
+                            .foregroundStyle(textBrown)
+
+                        Text("Qty \(item.quantity) · \(item.daysLeftText)")
+                            .font(.system(size: 13, design: .rounded))
+                            .foregroundStyle(expiredRed)
+                    }
+
+                    Spacer(minLength: 6)
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(secondaryBrown)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            HStack(spacing: 10) {
+                Button {
+                    foodStore.markAsWasted(item)
+                } label: {
+                    Label("Threw Away", systemImage: "trash")
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(expiredRed.opacity(0.12), in: Capsule())
+                        .foregroundStyle(expiredRed)
+                }
+                .buttonStyle(.plain)
+
+                NavigationLink {
+                    FoodDetailView(item: item)
+                } label: {
+                    Label("Still Good", systemImage: "checkmark.circle")
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(mint, in: Capsule())
+                        .foregroundStyle(deepGreen)
+                }
+                .buttonStyle(.plain)
+            }
+            .font(.system(size: 14, weight: .bold, design: .rounded))
+        }
+        .padding(18)
+        .background(cardWhite, in: RoundedRectangle(cornerRadius: 24))
+        .overlay {
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(expiredRed.opacity(0.18), lineWidth: 1)
+        }
     }
 
     // MARK: - Priority food
@@ -197,7 +322,10 @@ struct TodayView: View {
                 Spacer(minLength: 6)
 
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text("\(Int(item.hpPercentage))%")
+                    Text(
+                        item.hpPercentage / 100,
+                        format: .percent.precision(.fractionLength(0))
+                    )
                         .font(.system(size: 20, weight: .heavy, design: .rounded))
                         .foregroundStyle(statusColor(for: item))
                     Text("HP")

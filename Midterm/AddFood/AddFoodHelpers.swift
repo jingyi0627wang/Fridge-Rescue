@@ -1,3 +1,8 @@
+// ------------------------------------------------------------
+// Written by Gladys Yu
+// Food draft, ingredient-name matching, fallback shelf life and CO2
+// ------------------------------------------------------------
+
 import Foundation
 
 struct FoodDraft {
