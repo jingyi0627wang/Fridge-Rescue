@@ -108,10 +108,20 @@ struct MainTabView: View {
             }
         }
         .animation(.spring(duration: 0.35), value: foodStore.toast?.id)
+        // "Level up" celebration
+        .overlay {
+            if let level = foodStore.levelUp {
+                LevelUpView(level: level) {
+                    withAnimation { foodStore.levelUp = nil }
+                }
+                .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: foodStore.levelUp)
     }
 
     // MARK: - Tab icons
-    // Freshlings illustrations from Assets.xcassets/Tabs (28pt, 1x/2x/3x).
+    // Freshlings drawings from Assets.xcassets/Tabs (28pt, 1x/2x/3x).
     // Selected tab = full color, other tabs = the gray "Inactive" version.
     private func tabIcon(_ name: String, for tab: AppTab) -> Image {
         let asset = router.selectedTab == tab ? name : name + "Inactive"
@@ -125,4 +135,5 @@ struct MainTabView: View {
 #Preview {
     MainTabView()
         .environmentObject(FoodStore())
+        .environmentObject(MyRecipeStore())
 }

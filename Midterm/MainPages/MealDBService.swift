@@ -89,6 +89,23 @@ enum MealDBService {
         return OnlineResult(recipes: sorted, isOffline: false)
     }
 
+    // MARK: Search by name (Recipes tab search bar)
+
+    /// Online recipes whose name matches, e.g. "pancake". Empty if offline.
+    ///   GET /search.php?s=pancake
+    static func search(_ query: String) async -> [Recipe] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.count >= 2,
+              let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: baseURL + "search.php?s=" + encoded),
+              let data = try? await download(url),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let meals = json["meals"] as? [[String: Any]] else {
+            return []
+        }
+        return meals.prefix(12).compactMap { makeRecipe(from: $0) }
+    }
+
     // MARK: Step 1 — meals that use an ingredient
 
     private static func meals(using foodName: String) async throws -> [MealSummary] {
@@ -188,7 +205,7 @@ enum MealDBService {
         return Recipe(
             id: "mealdb-\(id)",
             name: name,
-            icon: icon(for: category),
+            emoji: emoji(for: category),
             time: 0,
             difficulty: category.isEmpty ? "Recipe" : category,
             items: items,
@@ -223,19 +240,20 @@ enum MealDBService {
         return lines
     }
 
-    private static func icon(for category: String) -> String {
+    private static func emoji(for category: String) -> String {
         switch category.lowercased() {
-        case "chicken": return "FoodChicken"
-        case "beef": return "FoodMeat"
-        case "pork": return "FoodBacon"
-        case "lamb", "goat": return "FoodMeat"
-        case "seafood": return "FoodFish"
-        case "pasta": return "FoodCereal"
-        case "vegetarian", "vegan": return "FoodLeafy"
-        case "breakfast": return "FoodEgg"
-        case "dessert": return "FoodMuffin"
-        case "side": return "FoodPotato"
-        default: return "FoodJar"
+        case "chicken": return "🍗"
+        case "beef": return "🥩"
+        case "pork": return "🥓"
+        case "lamb", "goat": return "🍖"
+        case "seafood": return "🐟"
+        case "pasta": return "🍝"
+        case "vegetarian", "vegan": return "🥗"
+        case "breakfast": return "🍳"
+        case "dessert": return "🍰"
+        case "side": return "🥔"
+        case "starter": return "🥟"
+        default: return ""   // no emoji → the recipe tile shows a fork & knife icon
         }
     }
 

@@ -1,166 +1,167 @@
 import SwiftUI
 import UIKit
 
-// MARK: - Food icons
-// Picks one of the Freshlings food illustrations (Assets.xcassets/Food) for a food name.
-// Rules are checked top to bottom, so put more specific words first
-// (e.g. "eggplant" before "egg", "buttermilk" before "butter").
-// If nothing matches, the category's default icon is used.
+// MARK: - Freshlings food icons
+// A "symbol" is either the name of one of our drawings in Assets.xcassets/Food
+// (e.g. "FoodCarrot") or an emoji (e.g. "🍆").
+//
+// Rule: show our drawing whenever we drew that food; only foods we did NOT draw
+// keep their emoji. FoodEmoji.swift still decides which food a name is
+// ("Chicken Breast" → 🍗); this file swaps that emoji for our drawing of it.
 
 enum FoodIcon {
 
-    /// `nil` asset = "known word, but no matching drawing" → use the category default.
-    private static let rules: [(words: [String], asset: String?)] = [
-        // Exceptions that would otherwise match a shorter word
-        (["eggplant", "pineapple", "squash", "pumpkin", "butternut", "coconut", "dragon fruit"], nil),
-        (["butter lettuce", "greens"], "FoodLeafy"),
-        (["buttermilk"], "FoodMilk"),
-        (["grapefruit"], "FoodOrange"),
-        (["cherry tomato"], "FoodTomato"),
-
-        // Meat & seafood
-        (["bacon"], "FoodBacon"),
-        (["shrimp", "prawn"], "FoodShrimp"),
-        (["fish", "salmon", "tuna", "cod", "tilapia", "seafood"], "FoodFish"),
-        (["chicken", "turkey", "drumstick", "wing"], "FoodChicken"),
-        (["beef", "steak", "pork", "lamb", "ham", "sausage", "hot dog", "deli", "meat"], "FoodMeat"),
-
-        // Dairy & eggs
-        (["egg"], "FoodEgg"),
-        (["cheese"], "FoodCheese"),
-        (["yogurt", "sour cream"], "FoodYogurt"),
-        (["butter"], "FoodButter"),
-        (["milk", "cream", "half-and-half"], "FoodMilk"),
-
-        // Pantry & other
-        (["tofu"], "FoodTofu"),
-        (["bread", "toast", "bagel", "bun", "tortilla"], "FoodBread"),
-        (["juice", "smoothie"], "FoodJuice"),
-        (["cereal", "oat", "granola", "rice", "nut"], "FoodCereal"),
-        (["muffin", "cupcake", "pastry"], "FoodMuffin"),
-
-        // Vegetables
-        (["carrot", "parsnip"], "FoodCarrot"),
-        (["broccoli", "cauliflower", "brussels"], "FoodBroccoli"),
-        (["mushroom", "shiitake", "enoki"], "FoodMushroom"),
-        (["tomato", "tomatillo"], "FoodTomato"),
-        (["pepper"], "FoodPepper"),
-        (["corn"], "FoodCorn"),
-        (["cucumber", "zucchini", "okra", "green beans", "wax beans", "peas"], "FoodCucumber"),
-        (["onion", "garlic", "shallot", "leek", "scallion"], "FoodOnion"),
-        (["potato", "yam", "taro", "ginger", "jicama", "turnip", "rutabaga", "celeriac", "beet", "radish"], "FoodPotato"),
-        (["spinach", "lettuce", "kale", "cabbage", "chard", "greens", "arugula", "bok choy",
-          "cilantro", "watercress", "endive", "escarole", "radicchio", "celery", "romaine"], "FoodLeafy"),
-
-        // Fruit
-        (["avocado"], "FoodAvocado"),
-        (["banana"], "FoodBanana"),
-        (["strawberr", "berry", "berries"], "FoodStrawberry"),
-        (["grape"], "FoodGrape"),
-        (["lemon"], "FoodLemon"),
-        (["lime", "kiwi"], "FoodLime"),
-        (["orange", "mandarin", "tangerine", "clementine", "apricot", "peach", "nectarine", "mango", "papaya"], "FoodOrange"),
-        (["pear"], "FoodPear"),
-        (["watermelon", "melon", "cantaloupe", "honeydew"], "FoodWatermelon"),
-        (["apple", "plum", "pomegranate", "fig", "cherr"], "FoodApple"),
+    /// Emoji → our drawing of the same food. Emoji not listed here have no drawing.
+    private static let drawings: [String: String] = [
+        "🍎": "FoodApple", "🥑": "FoodAvocado", "🍌": "FoodBanana", "🍞": "FoodBread",
+        "🥦": "FoodBroccoli", "🥕": "FoodCarrot", "🧀": "FoodCheese", "🍗": "FoodChicken",
+        "🥚": "FoodEgg", "🍳": "FoodEgg", "🐟": "FoodFish", "🥛": "FoodMilk",
+        "🍄": "FoodMushroom", "🍓": "FoodStrawberry", "🍅": "FoodTomato", "🍤": "FoodShrimp",
+        "🥬": "FoodLeafy", "🧊": "FoodTofu", "🥓": "FoodBacon", "🥩": "FoodMeat",
+        "🫑": "FoodPepper", "🧈": "FoodButter", "🥣": "FoodCereal", "🌽": "FoodCorn",
+        "🥒": "FoodCucumber", "🍇": "FoodGrape", "🧃": "FoodJuice", "🥤": "FoodJuice",
+        "🍋": "FoodLemon", "🧅": "FoodOnion", "🍊": "FoodOrange", "🍐": "FoodPear",
+        "🥔": "FoodPotato", "🍉": "FoodWatermelon",
     ]
 
-    static func assetName(for name: String, category: FoodCategory) -> String {
-        let text = name.lowercased()
-        for rule in rules where rule.words.contains(where: { text.contains($0) }) {
-            return rule.asset ?? defaultAsset(for: category)
+    /// Names we drew that FoodEmoji can't tell apart (e.g. lemon and lime are both 🍋).
+    /// Checked before FoodEmoji, first match wins.
+    private static let nameDrawings: [(keywords: [String], drawing: String)] = [
+        (["lime"], "FoodLime"),
+        (["yogurt", "yoghurt", "sour cream", "kefir"], "FoodYogurt"),
+        (["cereal", "oat", "granola", "muesli"], "FoodCereal"),
+        (["muffin", "cupcake"], "FoodMuffin"),
+        (["jam", "jelly", "preserve"], "FoodJar"),
+    ]
+
+    /// Our drawing for a food, or its emoji if we didn't draw it.
+    static func symbol(for name: String, category: FoodCategory) -> String {
+        let key = name.lowercased()
+        if let match = nameDrawings.first(where: { rule in rule.keywords.contains { startsWord(key, $0) } }) {
+            return match.drawing
         }
-        return defaultAsset(for: category)
+        return symbol(forEmoji: FoodEmoji.emoji(for: name, category: category))
     }
 
-    static func defaultAsset(for category: FoodCategory) -> String {
-        switch category {
-        case .vegetable: return "FoodLeafy"
-        case .fruit: return "FoodApple"
-        case .dairy: return "FoodMilk"
-        case .meat: return "FoodMeat"
-        case .other: return "FoodJar"
-        }
-    }
-}
-
-/// Freshlings food illustration, sized as a square.
-struct FoodIconView: View {
-    let name: String
-    let category: FoodCategory
-    var size: CGFloat
-
-    init(name: String, category: FoodCategory, size: CGFloat) {
-        self.name = name
-        self.category = category
-        self.size = size
+    /// Our drawing for an emoji (recipes, challenges), or the emoji itself.
+    /// A value that is already a drawing name is returned as is.
+    static func symbol(forEmoji emoji: String) -> String {
+        let plain = emoji.replacingOccurrences(of: "\u{FE0F}", with: "")
+        return drawings[plain] ?? drawings[emoji] ?? emoji
     }
 
-    init(item: FoodItem, size: CGFloat) {
-        self.init(name: item.name, category: item.category, size: size)
+    /// True if `symbol` is one of our drawings (not an emoji).
+    static func isDrawing(_ symbol: String) -> Bool {
+        UIImage(named: symbol) != nil
     }
 
-    var body: some View {
-        Image(FoodIcon.assetName(for: name, category: category))
-            .resizable()
-            .interpolation(.high)
-            .scaledToFit()
-            .frame(width: size, height: size)
-            .accessibilityHidden(true)
-    }
-}
-
-// MARK: - Category icons
-
-extension FoodCategory {
-    /// Icon for the category itself (chips, pickers).
-    var iconAsset: String {
-        switch self {
-        case .vegetable: return "FoodBroccoli"
-        case .fruit: return "FoodApple"
-        case .dairy: return "FoodMilk"
-        case .meat: return "FoodMeat"
-        case .other: return "FoodJar"
-        }
-    }
-}
-
-extension FoodIcon {
-    /// Small pre-sized copy for Menu / Picker rows.
-    /// iOS menus draw images at their real size, so the big asset is shrunk first.
-    static func menuImage(_ asset: String, size: CGFloat = 22) -> Image {
-        guard let image = UIImage(named: asset) else { return Image(systemName: "circle") }
+    /// Small pre-sized copy of a drawing for Menu / Picker rows
+    /// (iOS menus draw images at their real size, so the big asset is shrunk first).
+    static func menuImage(_ symbol: String, size: CGFloat = 22) -> Image? {
+        guard let image = UIImage(named: symbol) else { return nil }
         let box = CGSize(width: size, height: size)
         let small = UIGraphicsImageRenderer(size: box).image { _ in
             image.draw(in: CGRect(origin: .zero, size: box))
         }
         return Image(uiImage: small.withRenderingMode(.alwaysOriginal))
     }
+
+    /// "pear" matches "Pear" and "Asian Pear" but not "spears".
+    private static func startsWord(_ text: String, _ keyword: String) -> Bool {
+        var range = text.startIndex..<text.endIndex
+        while let found = text.range(of: keyword, range: range) {
+            if found.lowerBound == text.startIndex || !text[text.index(before: found.lowerBound)].isLetter {
+                return true
+            }
+            range = found.upperBound..<text.endIndex
+        }
+        return false
+    }
 }
 
-// MARK: - Recipe icons
+// MARK: - Category icons
 
-/// Freshlings drawing for a recipe (used when there is no photo).
-struct RecipeIconView: View {
-    let recipe: Recipe
+extension FoodCategory {
+    /// Our drawing for the category, or nil for "Other" (keeps its SF Symbol).
+    var drawingName: String? {
+        switch self {
+        case .vegetable: return "FoodCarrot"
+        case .fruit: return "FoodApple"
+        case .dairy: return "FoodMilk"
+        case .meat: return "FoodMeat"
+        case .other: return nil
+        }
+    }
+}
+
+// MARK: - Views
+
+/// Shows one of our drawings, or the emoji when there is no drawing.
+struct FreshSymbol: View {
+    let symbol: String
     var size: CGFloat
 
     var body: some View {
-        Image(recipe.icon)
-            .resizable()
-            .interpolation(.high)
-            .scaledToFit()
-            .frame(width: size, height: size)
-            .accessibilityHidden(true)
+        if FoodIcon.isDrawing(symbol) {
+            Image(symbol)
+                .resizable()
+                .interpolation(.high)
+                .scaledToFit()
+                .frame(width: size, height: size)
+                .accessibilityHidden(true)
+        } else {
+            Text(verbatim: symbol)
+                .font(.system(size: size * 0.8))
+                .frame(width: size, height: size)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+/// Icon for a food name (drawing when we have one, emoji otherwise).
+struct FoodIconView: View {
+    let name: String
+    var category: FoodCategory = .other
+    var size: CGFloat
+
+    var body: some View {
+        FreshSymbol(symbol: FoodIcon.symbol(for: name, category: category), size: size)
+    }
+}
+
+/// Menu / Picker row: small drawing + title, or "emoji title" when there is no drawing.
+struct FreshMenuLabel: View {
+    let title: String
+    let symbol: String
+
+    var body: some View {
+        if let image = FoodIcon.menuImage(symbol) {
+            Label { Text(verbatim: title) } icon: { image }
+        } else {
+            Text(verbatim: "\(symbol) \(title)")
+        }
+    }
+}
+
+/// Category row for pickers: our drawing, or the SF Symbol for "Other".
+struct CategoryLabel: View {
+    let category: FoodCategory
+
+    var body: some View {
+        if let drawing = category.drawingName, let image = FoodIcon.menuImage(drawing) {
+            Label { Text(category.displayName) } icon: { image }
+        } else {
+            Label(category.displayName, systemImage: category.symbolName)
+        }
     }
 }
 
 #Preview {
     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 16) {
         ForEach(["Apple", "Eggs", "Whole Milk", "Bacon", "Cherry Tomato", "Eggplant",
-                 "Chicken Breast", "Red Bell Pepper", "Butter", "Kale"], id: \.self) { name in
+                 "Chicken Breast", "Lime", "Mango", "Greek Yogurt"], id: \.self) { name in
             VStack {
-                FoodIconView(name: name, category: .other, size: 44)
+                FoodIconView(name: name, size: 44)
                 Text(name).font(.caption2)
             }
         }

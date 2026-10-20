@@ -19,33 +19,14 @@ struct SettingsView: View {
     @AppStorage("appLanguage")
     private var appLanguage = "en"
 
+    @AppStorage("username")
+    private var username = ""
+
+    @AppStorage("isLoggedIn")
+    private var isLoggedIn = false
+
     @State private var showClearConfirmation = false
-
-    // MARK: - Freshlings Colors
-
-    private let background = Color(
-        red: 0.985,
-        green: 0.992,
-        blue: 0.970
-    )
-
-    private let darkGreen = Color(
-        red: 0.22,
-        green: 0.49,
-        blue: 0.19
-    )
-
-    private let brown = Color(
-        red: 0.34,
-        green: 0.27,
-        blue: 0.22
-    )
-
-    private let softGreen = Color(
-        red: 0.931,
-        green: 0.976,
-        blue: 0.869
-    )
+    @State private var showLogOutConfirmation = false
 
     // MARK: - Main View
 
@@ -62,9 +43,10 @@ struct SettingsView: View {
                     Image("FreshlingsCharacter")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 38, height: 38)
+                        .frame(width: 34, height: 34)
                         .frame(width: 48, height: 48)
-                        .background(softGreen, in: Circle())
+                        .background(Game.mint,
+                                    in: RoundedRectangle(cornerRadius: 11, style: .continuous))
 
                     VStack(
                         alignment: .leading,
@@ -72,20 +54,12 @@ struct SettingsView: View {
                     ) {
 
                         Text("Freshlings")
-                            .font(
-                                .system(
-                                    size: 21,
-                                    weight: .bold,
-                                    design: .rounded
-                                )
-                            )
-                            .foregroundStyle(brown)
+                            .font(.game(20, .bold))
+                            .foregroundStyle(Game.orange)
 
                         Text("Make your fridge work for you.")
-                            .font(.subheadline)
-                            .foregroundStyle(
-                                brown.opacity(0.8)
-                            )
+                            .font(.game(14, .medium))
+                            .foregroundStyle(.secondary)
                     }
                 }
                 .padding(.vertical, 5)
@@ -146,9 +120,13 @@ struct SettingsView: View {
 
             } footer: {
 
-                Text(
-                    "Preferences are saved on this device. Notification scheduling is not yet connected to these settings."
-                )
+                if !remindersEnabled {
+                    Text("Reminders are off. You can still check the Today tab.")
+                } else if reminderDays == 1 {
+                    Text("You'll get a reminder at 9 AM, 1 day before food expires.")
+                } else {
+                    Text("You'll get a reminder at 9 AM, \(reminderDays) days before food expires.")
+                }
             }
 
             // MARK: My Data
@@ -163,10 +141,8 @@ struct SettingsView: View {
                 Text(
                     "Food records are stored locally and do not automatically sync across devices. Removing this app may remove its local records."
                 )
-                .font(.footnote)
-                .foregroundStyle(
-                    brown.opacity(0.8)
-                )
+                .font(.game(13, .medium))
+                .foregroundStyle(.secondary)
             }
 
             // MARK: Demo & Testing
@@ -210,6 +186,35 @@ struct SettingsView: View {
                 }
             }
 
+            // MARK: Account
+
+            Section("Account") {
+
+                if !username.isEmpty {
+
+                    Label {
+                        Text(username)
+                    } icon: {
+                        Image("IconProfile")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 26, height: 26)
+                    }
+                }
+
+                Button(role: .destructive) {
+
+                    showLogOutConfirmation = true
+
+                } label: {
+
+                    Label(
+                        "Log Out",
+                        systemImage: "rectangle.portrait.and.arrow.right"
+                    )
+                }
+            }
+
             // MARK: About
 
             Section("About") {
@@ -222,23 +227,18 @@ struct SettingsView: View {
                 Text(
                     "A friendly food-management app to help reduce food waste."
                 )
-                .font(.footnote)
-                .foregroundStyle(
-                    brown.opacity(0.8)
-                )
+                .font(.game(13, .medium))
+                .foregroundStyle(.secondary)
             }
         }
 
         // MARK: Appearance
 
-        .scrollContentBackground(.hidden)
 
-        .background(
-            background.ignoresSafeArea()
-        )
-
-        .tint(darkGreen)
-
+        .font(.game(16, .medium))
+        .foregroundStyle(Game.brown)
+        .gameBackground()
+        .tint(Game.greenDark)
         .navigationTitle("Settings")
 
         .navigationBarTitleDisplayMode(.inline)
@@ -257,6 +257,45 @@ struct SettingsView: View {
                 }
                 .fontWeight(.semibold)
             }
+        }
+
+        // MARK: Reminder changes → reschedule notifications
+
+        .onChange(of: remindersEnabled) {
+            rescheduleReminders()
+        }
+
+        .onChange(of: reminderDays) {
+            rescheduleReminders()
+        }
+
+        // MARK: Log Out Confirmation
+
+        .confirmationDialog(
+            "Log out of Freshlings?",
+            isPresented: $showLogOutConfirmation,
+            titleVisibility: .visible
+        ) {
+
+            Button(
+                "Log Out",
+                role: .destructive
+            ) {
+
+                dismiss()
+                isLoggedIn = false
+            }
+
+            Button(
+                "Cancel",
+                role: .cancel
+            ) { }
+
+        } message: {
+
+            Text(
+                "Your food stays saved on this phone. Log in again with the same username and password."
+            )
         }
 
         // MARK: Clear Confirmation
@@ -283,8 +322,18 @@ struct SettingsView: View {
         } message: {
 
             Text(
-                "This removes your stored food and history. This action cannot be undone."
+                "This removes your stored food and history. You can undo it for a few seconds."
             )
+        }
+    }
+
+    private func rescheduleReminders() {
+
+        let items = foodStore.foodItems
+
+        Task {
+            await ExpirationNotificationService.shared
+                .rescheduleAll(items: items)
         }
     }
 }

@@ -11,14 +11,6 @@ struct HistoryView: View {
 
     @State private var filter: Filter = .all
 
-    private enum Style {
-        static let background = Color(red: 0.985, green: 0.992, blue: 0.970)
-        static let darkGreen = Color(red: 0.22, green: 0.49, blue: 0.19)
-        static let softGreen = Color(red: 0.931, green: 0.976, blue: 0.869)
-        static let brown = Color(red: 0.34, green: 0.27, blue: 0.22)
-        static let secondary = Color(red: 0.50, green: 0.48, blue: 0.41)
-        static let orange = Color(red: 0.86, green: 0.36, blue: 0.19)
-    }
 
     private var records: [FoodItem] {
         foodStore.history
@@ -44,12 +36,12 @@ struct HistoryView: View {
             }
 
             if records.isEmpty {
-                Text("Nothing here yet.")
-                    .font(.system(size: 14, design: .rounded))
-                    .foregroundStyle(Style.secondary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 24)
-                    .listRowBackground(Color.clear)
+                ContentUnavailableView(
+                    "Nothing Here Yet",
+                    systemImage: "clock.arrow.circlepath",
+                    description: Text("Food you mark as used or thrown away shows up here.")
+                )
+                .listRowBackground(Color.clear)
             } else {
                 Section {
                     ForEach(records) { item in
@@ -67,7 +59,7 @@ struct HistoryView: View {
                                 } label: {
                                     Label("Back to Fridge", systemImage: "arrow.uturn.backward")
                                 }
-                                .tint(Style.darkGreen)
+                                .tint(.brand)
                             }
                     }
                 } footer: {
@@ -75,9 +67,13 @@ struct HistoryView: View {
                 }
             }
         }
-        .scrollContentBackground(.hidden)
-        .background(Style.background.ignoresSafeArea())
-        .navigationTitle("History")
+        .listStyle(.insetGrouped)
+        .font(.game(16, .medium))
+        .foregroundStyle(Game.brown)
+        .gameBackground()
+        .tint(Game.greenDark)
+        .navigationTitle("Food History")
+        .toolbar(.hidden, for: .tabBar)
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -85,34 +81,33 @@ struct HistoryView: View {
         let used = item.status == .used
 
         return HStack(spacing: 12) {
-            FoodIconView(item: item, size: 30)
-                .frame(width: 44, height: 44)
-                .background(Style.softGreen, in: RoundedRectangle(cornerRadius: 13))
+            FreshlingAvatar(category: item.category, name: item.name, size: 40, showsStatus: false)
 
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(item.name)
-                    .font(.system(size: 16, weight: .bold, design: .rounded))
-                    .foregroundStyle(Style.brown)
                 Text("Qty \(item.quantity) · \(item.finishedOn.formatted(date: .abbreviated, time: .omitted))")
-                    .font(.system(size: 12, design: .rounded))
-                    .foregroundStyle(Style.secondary)
+                    .font(.game(14, .medium))
+                    .foregroundStyle(.secondary)
             }
 
             Spacer(minLength: 4)
 
-            VStack(alignment: .trailing, spacing: 3) {
-                Text(used ? "Used" : "Wasted")
-                    .font(.system(size: 11, weight: .bold, design: .rounded))
-                    .foregroundStyle(used ? Style.darkGreen : Style.orange)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background((used ? Style.darkGreen : Style.orange).opacity(0.12), in: Capsule())
+            VStack(alignment: .trailing, spacing: 2) {
+                if used {
+                    Text("Rescued")
+                        .font(.game(14, .semibold))
+                        .foregroundStyle(Color.brand)
+                } else {
+                    Text("Lost")
+                        .font(.game(14, .semibold))
+                        .foregroundStyle(Game.redDark)
+                }
                 Text((item.estimatedValue * Double(item.quantity)).formatted(.currency(code: "USD")))
-                    .font(.system(size: 11, weight: .medium, design: .rounded))
-                    .foregroundStyle(Style.secondary)
+                    .font(.game(13, .medium))
+                    .foregroundStyle(.secondary)
             }
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 2)
     }
 }
 
