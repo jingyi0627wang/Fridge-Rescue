@@ -4,6 +4,7 @@ import SwiftUI
 // Visual styling is local to this file so other teammates' screens are unchanged.
 struct TodayView: View {
     @EnvironmentObject var foodStore: FoodStore
+    @EnvironmentObject var router: AppRouter
 
     // MARK: - Freshlings palette
     private let background = Color(red: 0.985, green: 0.990, blue: 0.962)
@@ -18,16 +19,25 @@ struct TodayView: View {
 
     // MARK: - Existing data rules (unchanged)
     private var priorityItems: [FoodItem] {
-        foodStore.foodItems
-            .filter {
-                $0.status == .active &&
-                ($0.freshnessLevel == .urgent || $0.freshnessLevel == .useSoon)
-            }
-            .sorted { $0.hpPercentage < $1.hpPercentage }
+        foodStore.activeItemsByUrgency.filter { RecipeData.needsAttention($0) }
     }
 
+    /// With lots of food, show the most urgent few first.
+    @State private var showAllPriority = false
+    private let collapsedCount = 5
+
+    @State private var onlineRecipes: [Recipe] = []
+
     private var recommendedRecipes: [Recipe] {
-        RecipeData.recommendations(for: priorityItems)
+        RecipeData.merged(
+            local: RecipeData.recommendations(for: priorityItems),
+            online: onlineRecipes,
+            items: foodStore.foodItems
+        )
+    }
+
+    private var priorityKey: String {
+        priorityItems.map(\.name).joined(separator: "|")
     }
 
     var body: some View {
@@ -43,7 +53,7 @@ struct TodayView: View {
                         allGoodCard
                     } else {
                         prioritySection
-                        recipeSection
+                        allRecipesButton
                     }
                 }
                 .padding(.horizontal, 20)
@@ -53,6 +63,9 @@ struct TodayView: View {
         }
         // MainTabView already wraps TodayView in NavigationStack.
         .toolbar(.hidden, for: .navigationBar)
+        .task(id: priorityKey) {
+            onlineRecipes = await MealDBService.recommendations(for: priorityItems).recipes
+        }
     }
 
     // MARK: - Header
@@ -117,11 +130,46 @@ struct TodayView: View {
         VStack(alignment: .leading, spacing: 14) {
             sectionTitle("Use These First", label: "LOWEST HP")
 
-            ForEach(priorityItems) { item in
-                NavigationLink {
-                    FoodDetailView(item: item)
+            // Computed once here instead of once per row (big speed-up with lots of food).
+            let allRecipes = recommendedRecipes
+            let items = priorityItems
+            let visible = showAllPriority ? items : Array(items.prefix(collapsedCount))
+
+            ForEach(visible) { item in
+                VStack(spacing: 0) {
+                    // Top: food → Food Details
+                    NavigationLink {
+                        FoodDetailView(item: item)
+                    } label: {
+                        priorityCard(item)
+                    }
+                    .buttonStyle(.plain)
+
+                    Divider().padding(.horizontal, 18)
+
+                    // Bottom: recipe idea → Recipes tab with this food selected
+                    recipeRow(for: item, options: recipesUsing(item, in: allRecipes))
+                }
+                .background(cardWhite, in: RoundedRectangle(cornerRadius: 24))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(statusColor(for: item).opacity(0.14), lineWidth: 1)
+                }
+            }
+
+            if items.count > collapsedCount {
+                Button {
+                    withAnimation(.snappy) { showAllPriority.toggle() }
                 } label: {
-                    priorityCard(item)
+                    HStack {
+                        Text(showAllPriority ? "Show less" : "Show \(items.count - collapsedCount) more")
+                        Image(systemName: showAllPriority ? "chevron.up" : "chevron.down")
+                    }
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(deepGreen)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(mint, in: Capsule())
                 }
                 .buttonStyle(.plain)
             }
@@ -184,100 +232,76 @@ struct TodayView: View {
             }
         }
         .padding(18)
-        .background(cardWhite, in: RoundedRectangle(cornerRadius: 24))
-        .overlay {
-            RoundedRectangle(cornerRadius: 24)
-                .stroke(statusColor(for: item).opacity(0.14), lineWidth: 1)
+        .contentShape(Rectangle())
+    }
+
+    // MARK: - Recipe idea for one food
+    // Today only suggests; the full list lives in the Recipes tab.
+
+    private func recipesUsing(_ item: FoodItem, in recipes: [Recipe]) -> [Recipe] {
+        recipes.filter { recipe in
+            recipe.ingredients.contains { FoodMatcher.matches(ingredient: $0, foodName: item.name) }
         }
     }
 
-    // MARK: - Recipe recommendations
-    private var recipeSection: some View {
-        VStack(alignment: .leading, spacing: 13) {
-            sectionTitle("Rescue Recipes", label: "COOK & SAVE")
+    private func recipeRow(for item: FoodItem, options: [Recipe]) -> some View {
+        Button {
+            router.openRecipes(for: item)
+        } label: {
+            HStack(spacing: 10) {
+                Image(systemName: "fork.knife")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(orange)
+                    .frame(width: 30, height: 30)
+                    .background(paleYellow, in: Circle())
 
-            Text("Tasty ideas to use your priority ingredients.")
-                .font(.system(size: 13, design: .rounded))
-                .foregroundStyle(secondaryBrown)
-
-            if recommendedRecipes.isEmpty {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("No matching recipes yet")
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
-                        .foregroundStyle(textBrown)
-                    Text("Add more ingredients to discover rescue recipes.")
-                        .font(.system(size: 13, design: .rounded))
-                        .foregroundStyle(secondaryBrown)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(18)
-                .background(.white, in: RoundedRectangle(cornerRadius: 22))
-            } else {
-                ForEach(Array(recommendedRecipes.prefix(3))) { recipe in
-                    NavigationLink {
-                        RecipeDetailView(
-                            recipe: recipe,
-                            focusIngredient: matchingPriorityItem(for: recipe)
-                        )
-                    } label: {
-                        recipeCard(recipe)
+                if let best = options.first {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Try \(best.name)")
+                            .font(.system(size: 14, weight: .bold, design: .rounded))
+                            .foregroundStyle(textBrown)
+                            .lineLimit(1)
+                        Text(options.count > 1
+                             ? "\(options.count - 1) more \(options.count == 2 ? "recipe" : "recipes") with \(item.name)"
+                             : best.timeText)
+                            .font(.system(size: 11, weight: .medium, design: .rounded))
+                            .foregroundStyle(secondaryBrown)
                     }
-                    .buttonStyle(.plain)
-                }
-
-                NavigationLink {
-                    RecipeListView()
-                } label: {
-                    HStack {
-                        Text("View All Recipes")
-                        Spacer()
-                        Image(systemName: "arrow.right")
-                    }
-                    .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .foregroundStyle(deepGreen)
-                    .padding(17)
-                    .background(mint, in: RoundedRectangle(cornerRadius: 18))
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
-
-    private func recipeCard(_ recipe: Recipe) -> some View {
-        HStack(spacing: 13) {
-            Text(recipe.emoji)
-                .font(.system(size: 30))
-                .frame(width: 62, height: 62)
-                .background(paleYellow, in: RoundedRectangle(cornerRadius: 19))
-
-            VStack(alignment: .leading, spacing: 5) {
-                Text(recipe.name)
-                    .font(.system(size: 16, weight: .bold, design: .rounded))
-                    .foregroundStyle(textBrown)
-                    .lineLimit(2)
-
-                if let item = matchingPriorityItem(for: recipe) {
-                    Text("Helps rescue \(item.name)")
-                        .font(.system(size: 12, weight: .semibold, design: .rounded))
-                        .foregroundStyle(orange)
                 } else {
-                    Text("Uses food from your fridge")
-                        .font(.system(size: 12, design: .rounded))
-                        .foregroundStyle(secondaryBrown)
+                    Text("Find recipes with \(item.name)")
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                        .foregroundStyle(textBrown)
                 }
 
-                Text("\(recipe.time) min  •  \(recipe.difficulty)")
-                    .font(.system(size: 11, design: .rounded))
-                    .foregroundStyle(secondaryBrown)
-            }
+                Spacer(minLength: 4)
 
-            Spacer(minLength: 0)
-            Image(systemName: "chevron.right")
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundStyle(secondaryBrown)
+                Image(systemName: "arrow.right")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundStyle(deepGreen)
+            }
+            .padding(.horizontal, 18)
+            .padding(.vertical, 12)
+            .contentShape(Rectangle())
         }
-        .padding(14)
-        .background(.white, in: RoundedRectangle(cornerRadius: 22))
+        .buttonStyle(.plain)
+    }
+
+    private var allRecipesButton: some View {
+        Button {
+            router.openRecipes()
+        } label: {
+            HStack {
+                Image(systemName: "fork.knife")
+                Text("See All Rescue Recipes")
+                Spacer()
+                Image(systemName: "arrow.right")
+            }
+            .font(.system(size: 15, weight: .bold, design: .rounded))
+            .foregroundStyle(deepGreen)
+            .padding(17)
+            .background(grass, in: RoundedRectangle(cornerRadius: 18))
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Empty state
@@ -313,17 +337,6 @@ struct TodayView: View {
         }
     }
 
-    private func matchingPriorityItem(for recipe: Recipe) -> FoodItem? {
-        priorityItems.first { item in
-            recipe.ingredients.contains { ingredient in
-                let normalizedIngredient = ingredient.lowercased()
-                let normalizedName = item.name.lowercased()
-                return normalizedIngredient.contains(normalizedName) ||
-                    normalizedName.contains(normalizedIngredient)
-            }
-        }
-    }
-
     private func hpProgress(for item: FoodItem) -> CGFloat {
         CGFloat(max(0, min(item.hpPercentage / 100.0, 1)))
     }
@@ -338,15 +351,12 @@ struct TodayView: View {
     }
 
     private func priorityMessage(for item: FoodItem) -> String {
-        if item.remainingDays == 0 { return "Expires today" }
-        if item.remainingDays == 1 { return "Only 1 day left" }
-        return "\(item.remainingDays) days left"
+        if item.daysUntilExpiration == 1 { return "Only 1 day left" }
+        return item.daysLeftText
     }
 
     private func daysText(for item: FoodItem) -> String {
-        if item.remainingDays == 0 { return "Today" }
-        if item.remainingDays == 1 { return "1 day left" }
-        return "\(item.remainingDays) days left"
+        item.daysLeftText
     }
 
     private func foodEmoji(for item: FoodItem) -> String {
@@ -365,5 +375,6 @@ struct TodayView: View {
         TodayView()
     }
     .environmentObject(FoodStore())
+    .environmentObject(AppRouter())
 }
 

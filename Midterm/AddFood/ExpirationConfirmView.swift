@@ -1,13 +1,4 @@
-//
-//  ExpirationConfirmView.swift
-//  Member 2 – Add Food
-//
-//  Shows the suggested expiration date (from ingredients_preset.json),
-//  lets the user adjust it, then saves with store.addItem(...).
-//
-
 import SwiftUI
-import UIKit
 
 struct ExpirationConfirmView: View {
     let draft: FoodDraft
@@ -28,7 +19,6 @@ struct ExpirationConfirmView: View {
         _expirationDate = State(initialValue: date)
     }
 
-    /// Days from today until the chosen date (negative = already expired)
     private var daysLeft: Int {
         let calendar = Calendar.current
         return calendar.dateComponents([.day],
@@ -86,33 +76,24 @@ struct ExpirationConfirmView: View {
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
+            .tint(Color(red: 0.22, green: 0.49, blue: 0.19))
             .padding()
         }
     }
 
-    // MARK: - Pieces
-
     private var summaryRow: some View {
         HStack(spacing: 12) {
-            if let photo = draft.photo {
-                Image(uiImage: photo)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 60, height: 60)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-            } else {
-                Text(draft.category.addFoodIcon)
-                    .font(.largeTitle)
-                    .frame(width: 60, height: 60)
-                    .background(.quaternary, in: RoundedRectangle(cornerRadius: 10))
-            }
+            Text(draft.category.addFoodIcon)
+                .font(.largeTitle)
+                .frame(width: 60, height: 60)
+                .background(.quaternary, in: RoundedRectangle(cornerRadius: 10))
             VStack(alignment: .leading, spacing: 2) {
                 Text(draft.name).font(.headline)
                 Text("Qty \(draft.quantity) · \(draft.category.rawValue)")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                if draft.recognizedFromPhoto {
-                    Label("Recognized from photo", systemImage: "sparkles")
+                if draft.fromScan {
+                    Label("Added by scan", systemImage: "barcode.viewfinder")
                         .font(.caption)
                         .foregroundStyle(.purple)
                 }
@@ -137,8 +118,6 @@ struct ExpirationConfirmView: View {
         }
     }
 
-    // MARK: - Actions
-
     private func addDays(_ days: Int) {
         expirationDate = Calendar.current.date(byAdding: .day, value: days, to: expirationDate) ?? expirationDate
     }
@@ -153,7 +132,10 @@ struct ExpirationConfirmView: View {
             estimatedValue: draft.estimatedValue,
             carbonFactor: draft.carbonFactor
         )
-        store.addItem(item)   // FoodStore saves it automatically
+        // Bottom bar: "Carrot added to your fridge" with Undo.
+        store.undoable("\(item.name) added to your fridge") {
+            store.addItem(item)
+        }
         onSaved()
     }
 
@@ -167,7 +149,7 @@ struct ExpirationConfirmView: View {
         ExpirationConfirmView(
             draft: FoodDraft(name: "Carrot", category: .vegetable, quantity: 3,
                              addedDate: .now, estimatedValue: 1.50, preset: nil,
-                             photo: nil, recognizedFromPhoto: true),
+                             fromScan: true),
             store: FoodStore()
         ) {}
     }

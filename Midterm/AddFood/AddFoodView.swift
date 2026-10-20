@@ -1,10 +1,20 @@
 import SwiftUI
-import PhotosUI
-import UIKit
 
+// Add Food is a normal tab page (like Fridge and Today), not a pop-up.
+// MainTabView puts it in its own NavigationStack. After "Add to Fridge"
+// the page resets for the next item and the bottom bar confirms (with Undo).
 struct AddFoodView: View {
     @ObservedObject var store: FoodStore
-    @Environment(\.dismiss) private var dismiss
+
+    // Freshlings page style (same palette as Home / Today)
+    private enum Style {
+        static let background = Color(red: 0.985, green: 0.992, blue: 0.970)
+        static let green = Color(red: 0.53, green: 0.89, blue: 0.36)
+        static let darkGreen = Color(red: 0.22, green: 0.49, blue: 0.19)
+        static let brown = Color(red: 0.34, green: 0.27, blue: 0.22)
+        static let secondary = Color(red: 0.50, green: 0.48, blue: 0.41)
+        static let softGreen = Color(red: 0.931, green: 0.976, blue: 0.869)
+    }
 
     @State private var presets: [IngredientPreset] = []
     @State private var lastAutoFilledName = ""
@@ -15,125 +25,237 @@ struct AddFoodView: View {
     @State private var priceText = ""
     @State private var addedDate = Date()
 
-    @State private var photo: UIImage?
-    @State private var pickerItem: PhotosPickerItem?
-    @State private var showCamera = false
-
-    @State private var suggestions: [FoodSuggestion] = []
-    @State private var isRecognizing = false
-    @State private var recognitionNote: String?
+    @State private var showScanner = false
+    @State private var isLookingUp = false
+    @State private var scanned: ScannedFood?
+    @State private var scanMessage: String?
 
     @State private var showConfirm = false
 
     private var trimmedName: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     var body: some View {
-        NavigationStack {
-            Form {
-                photoSection
-                if photo != nil { aiSection }
-                detailsSection
-                amountSection
+        Form {
+            headerSection
+            scanSection
+            quickAddSection
+            detailsSection
+            amountSection
+        }
+        .scrollContentBackground(.hidden)
+        .background(Style.background.ignoresSafeArea())
+        .tint(Style.darkGreen)
+        .scrollDismissesKeyboard(.interactively)
+        // Same as the other tabs: custom header instead of a navigation bar.
+        .toolbar(.hidden, for: .navigationBar)
+        .safeAreaInset(edge: .bottom) { nextButton }
+        .navigationDestination(isPresented: $showConfirm) {
+            ExpirationConfirmView(draft: makeDraft(), store: store) {
+                // Saved: go back to a fresh, empty Add page.
+                showConfirm = false
+                resetForm()
             }
-            .navigationTitle("Add Food")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Next") { showConfirm = true }
-                        .disabled(trimmedName.isEmpty)
-                }
-            }
-            .navigationDestination(isPresented: $showConfirm) {
-                ExpirationConfirmView(draft: makeDraft(), store: store) {
-                    resetForm()
-                    dismiss()
-                }
-            }
-            .onAppear {
-                if presets.isEmpty { presets = IngredientPresetService.shared.loadPresets() }
-            }
-            .onChange(of: pickerItem) { loadPickedPhoto() }
-            .onChange(of: name) { autoFillFromPreset() }
-            .fullScreenCover(isPresented: $showCamera) {
-                CameraPicker { image in setPhoto(image) }
-                    .ignoresSafeArea()
-            }
+        }
+        .onAppear {
+            if presets.isEmpty { presets = IngredientPresetService.shared.loadPresets() }
+        }
+        .onChange(of: name) { autoFillFromPreset() }
+        .fullScreenCover(isPresented: $showScanner) {
+            ScannerScreen { result in handle(result) }
         }
     }
 
-    private var photoSection: some View {
+    // MARK: - Header (matches Home / Today)
+
+    private var headerSection: some View {
         Section {
-            if let photo {
-                Color.clear
-                    .frame(height: 220)
-                    .overlay {
-                        Image(uiImage: photo)
-                            .resizable()
-                            .scaledToFill()
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .overlay(alignment: .topTrailing) {
-                        Button(action: removePhoto) {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.title2)
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(.white, .black.opacity(0.5))
-                        }
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("ADD FOOD")
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
+                        .tracking(1.5)
+                        .foregroundStyle(Style.darkGreen)
+                    Text("Add a Freshling")
+                        .font(.system(size: 32, weight: .heavy, design: .rounded))
+                        .foregroundStyle(Style.brown)
+                    Text("Scan it, pick a favorite, or type it in.")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .foregroundStyle(Style.secondary)
+                }
+                Spacer(minLength: 4)
+                if !trimmedName.isEmpty {
+                    Button("Clear", action: resetForm)
+                        .font(.system(size: 13, weight: .bold, design: .rounded))
+                        .foregroundStyle(Style.darkGreen)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 7)
+                        .background(Style.softGreen, in: Capsule())
                         .buttonStyle(.plain)
-                        .padding(8)
-                    }
-                    .listRowInsets(EdgeInsets())
-            }
-
-            HStack {
-                PhotosPicker(selection: $pickerItem, matching: .images) {
-                    Label(photo == nil ? "Choose Photo" : "Change Photo",
-                          systemImage: "photo.on.rectangle")
-                }
-                if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    Spacer()
-                    Button { showCamera = true } label: {
-                        Label("Take Photo", systemImage: "camera")
-                    }
                 }
             }
-            .buttonStyle(.borderless)
-        } header: {
-            Text("Photo")
-        } footer: {
-            Text("Add a photo and we'll try to recognize the food for you.")
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 4, trailing: 4))
         }
     }
 
-    private var aiSection: some View {
-        Section("AI Suggestions") {
-            if isRecognizing {
+    // MARK: - Next (big button at the bottom)
+
+    private var nextButton: some View {
+        Button {
+            showConfirm = true
+        } label: {
+            HStack {
+                Text(trimmedName.isEmpty ? "Enter a food to continue" : "Next: Expiration Date")
+                if !trimmedName.isEmpty { Image(systemName: "arrow.right") }
+            }
+            .font(.system(size: 17, weight: .bold, design: .rounded))
+            .foregroundStyle(trimmedName.isEmpty ? Style.secondary : Style.darkGreen)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(trimmedName.isEmpty ? Style.softGreen : Style.green, in: Capsule())
+        }
+        .buttonStyle(.plain)
+        .disabled(trimmedName.isEmpty)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+        .background(Style.background.opacity(0.95))
+    }
+
+    private func resetForm() {
+        name = ""
+        category = .other
+        quantity = 1
+        priceText = ""
+        addedDate = Date()
+        scanned = nil
+        scanMessage = nil
+        lastAutoFilledName = ""
+    }
+
+    private var scanSection: some View {
+        Section {
+            Button {
+                scanMessage = nil
+                showScanner = true
+            } label: {
+                Label("Scan Barcode or Produce Sticker", systemImage: "barcode.viewfinder")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(!BarcodeScannerView.isSupported || isLookingUp)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets())
+
+            if isLookingUp {
                 HStack(spacing: 10) {
                     ProgressView()
-                    Text("Looking at your photo…").foregroundStyle(.secondary)
+                    Text("Looking up product…").foregroundStyle(.secondary)
                 }
-            } else if suggestions.isEmpty {
-                Text(recognitionNote ?? "No suggestions.")
-                    .foregroundStyle(.secondary)
-            } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(suggestions) { suggestion in
-                            Button { apply(suggestion) } label: {
-                                Text("\(suggestion.category.addFoodIcon) \(suggestion.name)")
-                            }
-                            .buttonStyle(.bordered)
-                            .tint(suggestion.name == trimmedName ? .green : .gray)
-                        }
+            } else if let scanned {
+                VStack(alignment: .leading, spacing: 2) {
+                    Label(scanned.name, systemImage: "checkmark.circle.fill")
+                        .font(.headline)
+                        .foregroundStyle(.green)
+                    if !scanned.detail.isEmpty {
+                        Text(scanned.detail)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
                     }
                 }
-                Text("Tap a suggestion to use it. You can still edit the name below.")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+            } else if let scanMessage {
+                Text(scanMessage).foregroundStyle(.secondary)
+            }
+        } footer: {
+            if BarcodeScannerView.isSupported {
+                Text("Packaged food: scan the barcode. Fruit & vegetables: scan the 4-digit number on the sticker.")
+            } else {
+                Text("Scanning needs a real iPhone. Type the food below instead.")
             }
         }
+    }
+
+    // MARK: - Quick Add (Recent / Usually)
+    // Tap a food you've added before to fill in its name, category,
+    // usual amount and the price you paid last time.
+
+    @ViewBuilder
+    private var quickAddSection: some View {
+        let recent = store.recentAdds()
+        let usual = store.usualAdds()
+
+        if !recent.isEmpty {
+            Section {
+                if !usual.isEmpty {
+                    suggestionRow("Usually", icon: "repeat", items: usual, showsCount: true)
+                }
+                suggestionRow("Recent", icon: "clock.arrow.circlepath", items: recent, showsCount: false)
+            } header: {
+                Text("Quick Add")
+            } footer: {
+                Text("Fills in the name, amount and the price you paid last time. You can still change them.")
+            }
+        }
+    }
+
+    private func suggestionRow(_ title: String, icon: String,
+                               items: [QuickAddSuggestion], showsCount: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label(title, systemImage: icon)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(items) { suggestion in
+                        Button {
+                            apply(suggestion)
+                        } label: {
+                            suggestionChip(suggestion, showsCount: showsCount)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.trailing, 16)
+            }
+        }
+        .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 0))
+    }
+
+    private func suggestionChip(_ suggestion: QuickAddSuggestion, showsCount: Bool) -> some View {
+        let isSelected = trimmedName.lowercased() == suggestion.name.lowercased()
+        let price = suggestion.price > 0 ? " · " + suggestion.price.formatted(.currency(code: "USD")) : ""
+        let detail = showsCount
+            ? "×\(suggestion.quantity) · \(suggestion.timesAdded) times"
+            : "×\(suggestion.quantity)\(price) · \(suggestion.lastAdded.formatted(.relative(presentation: .named)))"
+
+        return VStack(alignment: .leading, spacing: 2) {
+            Text("\(suggestion.category.addFoodIcon) \(suggestion.name)")
+                .font(.subheadline.weight(.semibold))
+                .lineLimit(1)
+            Text(detail)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(isSelected ? Color.green.opacity(0.18) : Color(.secondarySystemBackground),
+                    in: RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(isSelected ? Color.green : .clear, lineWidth: 1.5)
+        )
+    }
+
+    private func apply(_ suggestion: QuickAddSuggestion) {
+        // Keep the price from last time instead of the preset's default price.
+        lastAutoFilledName = PresetMatcher.find(suggestion.name, in: presets)?.name ?? ""
+        name = suggestion.name
+        category = suggestion.category
+        quantity = suggestion.quantity
+        priceText = suggestion.price > 0 ? String(format: "%.2f", suggestion.price) : ""
+        scanned = nil
+        scanMessage = nil
     }
 
     private var detailsSection: some View {
@@ -168,10 +290,10 @@ struct AddFoodView: View {
 
     private var amountSection: some View {
         Section {
-            Stepper("Quantity: \(quantity)", value: $quantity, in: 1...99)
+            Stepper("Quantity: \(quantity)\(unitSuffix)", value: $quantity, in: 1...99)
 
             HStack {
-                Text("Price")
+                Text("Price per unit")
                 Spacer()
                 Text(Locale.current.currencySymbol ?? "$").foregroundStyle(.secondary)
                 TextField("0.00", text: $priceText)
@@ -182,7 +304,43 @@ struct AddFoodView: View {
         } header: {
             Text("Amount & Price")
         } footer: {
-            Text("Price is used to calculate money saved on the Impact page.")
+            Text("Enter the price of ONE \(currentPreset?.unit ?? "unit"). Money saved = price × quantity.")
+        }
+    }
+
+    private var currentPreset: IngredientPreset? {
+        PresetMatcher.find(trimmedName, in: presets)
+    }
+
+    /// e.g. " × bunch" so users know what 1 means.
+    private var unitSuffix: String {
+        guard let unit = currentPreset?.unit, unit != "each" else { return "" }
+        return " × \(unit)"
+    }
+
+    private func handle(_ result: ScanResult) {
+        scanned = nil
+        isLookingUp = true
+        Task {
+            let food: ScannedFood?
+            let code: String
+            switch result {
+            case .barcode(let value):
+                code = value
+                food = await ProductLookup.lookup(barcode: value)
+            case .plu(let value):
+                code = value
+                food = ProductLookup.lookup(plu: value)
+            }
+            isLookingUp = false
+
+            if let food {
+                scanned = food
+                name = food.name
+                if food.category != .other { category = food.category }
+            } else {
+                scanMessage = "Couldn't find code \(code). Type the name below."
+            }
         }
     }
 
@@ -194,54 +352,6 @@ struct AddFoodView: View {
         priceText = String(format: "%.2f", preset.estimatedValue)
     }
 
-    private func loadPickedPhoto() {
-        guard let pickerItem else { return }
-        Task {
-            if let data = try? await pickerItem.loadTransferable(type: Data.self),
-               let image = UIImage(data: data) {
-                setPhoto(image)
-            }
-        }
-    }
-
-    private func setPhoto(_ image: UIImage) {
-        let small = image.resized(maxDimension: 1024)
-        photo = small
-        Task { await recognize(small) }
-    }
-
-    private func recognize(_ image: UIImage) async {
-        isRecognizing = true
-        recognitionNote = nil
-        suggestions = []
-
-        let results = await FoodRecognizer.recognize(image, presets: presets)
-
-        guard photo === image else { return }
-
-        suggestions = results
-        isRecognizing = false
-
-        if let top = results.first {
-            if trimmedName.isEmpty { apply(top) }
-        } else {
-            recognitionNote = "Couldn't recognize this food. Type the name below."
-        }
-    }
-
-    private func apply(_ suggestion: FoodSuggestion) {
-        name = suggestion.name
-        if suggestion.category != .other { category = suggestion.category }
-    }
-
-    private func removePhoto() {
-        photo = nil
-        pickerItem = nil
-        suggestions = []
-        recognitionNote = nil
-        isRecognizing = false
-    }
-
     private func makeDraft() -> FoodDraft {
         FoodDraft(
             name: trimmedName,
@@ -250,25 +360,13 @@ struct AddFoodView: View {
             addedDate: addedDate,
             estimatedValue: Double(priceText.replacingOccurrences(of: ",", with: ".")) ?? 0,
             preset: PresetMatcher.find(trimmedName, in: presets),
-            photo: photo,
-            recognizedFromPhoto: suggestions.contains {
-                $0.name.caseInsensitiveCompare(trimmedName) == .orderedSame
-            }
+            fromScan: scanned?.name == trimmedName
         )
-    }
-
-    private func resetForm() {
-        showConfirm = false
-        name = ""
-        lastAutoFilledName = ""
-        category = .other
-        quantity = 1
-        priceText = ""
-        addedDate = Date()
-        removePhoto()
     }
 }
 
 #Preview {
-    AddFoodView(store: FoodStore())
+    NavigationStack {
+        AddFoodView(store: FoodStore())
+    }
 }

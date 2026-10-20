@@ -1,9 +1,35 @@
 
 import SwiftUI
+import Combine
+
+// MARK: - App navigation
+// Lets any page jump to another tab, e.g. "Find recipes for Milk"
+// from Home, Today or Food Details opens the Recipes tab with Milk selected.
+
+enum AppTab: Hashable {
+    case fridge, today, add, recipes, impact
+}
+
+final class AppRouter: ObservableObject {
+    @Published var selectedTab: AppTab = .fridge
+
+    /// Fridge item selected in the Recipes tab's ingredient chips (nil = All).
+    @Published var recipeFocusID: UUID?
+
+    /// Changing this resets the Recipes tab back to its main list.
+    @Published var recipesStackID = UUID()
+
+    func openRecipes(for item: FoodItem? = nil) {
+        recipeFocusID = item?.id
+        recipesStackID = UUID()
+        selectedTab = .recipes
+    }
+}
 
 struct MainTabView: View {
 
     @EnvironmentObject var foodStore: FoodStore
+    @StateObject private var router = AppRouter()
 
     // MARK: - Freshlings Colors
     private let freshGreen = Color(
@@ -12,15 +38,9 @@ struct MainTabView: View {
         blue: 0.36
     )
 
-    private let creamBackground = Color(
-        red: 0.98,
-        green: 0.99,
-        blue: 0.96
-    )
-
     var body: some View {
 
-        TabView {
+        TabView(selection: $router.selectedTab) {
 
             // MARK: - My Fridge
             NavigationStack {
@@ -30,6 +50,7 @@ struct MainTabView: View {
                 Image(systemName: "refrigerator")
                 Text("Fridge")
             }
+            .tag(AppTab.fridge)
 
             // MARK: - Today
             NavigationStack {
@@ -39,123 +60,50 @@ struct MainTabView: View {
                 Image(systemName: "clock.fill")
                 Text("Today")
             }
+            .tag(AppTab.today)
 
             // MARK: - Add Food
             NavigationStack {
-                AddFoodPlaceholderView()
+                AddFoodView(store: foodStore)
             }
             .tabItem {
                 Image(systemName: "plus.circle.fill")
                 Text("Add")
             }
+            .tag(AppTab.add)
 
             // MARK: - Recipes
             NavigationStack {
                 RecipeListView()
             }
+            .id(router.recipesStackID)
             .tabItem {
                 Image(systemName: "fork.knife")
                 Text("Recipes")
             }
+            .tag(AppTab.recipes)
 
             // MARK: - Impact
             NavigationStack {
-                ImpactPlaceholderView()
+                ImpactView()
             }
             .tabItem {
                 Image(systemName: "chart.bar.fill")
                 Text("Impact")
             }
+            .tag(AppTab.impact)
         }
+        .environmentObject(router)
         .tint(freshGreen)
-    }
-}
-
-
-// MARK: - Temporary Add Food Page
-// Member 2 can replace this later.
-
-struct AddFoodPlaceholderView: View {
-
-    private let freshGreen = Color(
-        red: 0.53,
-        green: 0.89,
-        blue: 0.36
-    )
-
-    private let creamBackground = Color(
-        red: 0.98,
-        green: 0.99,
-        blue: 0.96
-    )
-
-    var body: some View {
-
-        ZStack {
-
-            creamBackground
-                .ignoresSafeArea()
-
-            VStack(spacing: 18) {
-
-                Image(systemName: "plus.circle.fill")
-                    .font(.system(size: 52))
-                    .foregroundStyle(freshGreen)
-
-                Text("Add Food")
-                    .font(.system(size: 30, weight: .bold))
-
-                Text(
-                    "Manual entry and AI food recognition will appear here."
-                )
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
+        // Undo bar for used / wasted / deleted / cooked actions.
+        .overlay(alignment: .bottom) {
+            if let toast = foodStore.toast {
+                UndoToastView(toast: toast)
+                    .padding(.bottom, 58)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-    }
-}
-
-
-// MARK: - Temporary Impact Page
-// Member 4 can replace this later.
-
-struct ImpactPlaceholderView: View {
-
-    private let freshGreen = Color(
-        red: 0.53,
-        green: 0.89,
-        blue: 0.36
-    )
-
-    private let creamBackground = Color(
-        red: 0.98,
-        green: 0.99,
-        blue: 0.96
-    )
-
-    var body: some View {
-
-        ZStack {
-
-            creamBackground
-                .ignoresSafeArea()
-
-            VStack(spacing: 18) {
-
-                Image(systemName: "chart.bar.fill")
-                    .font(.system(size: 48))
-                    .foregroundStyle(freshGreen)
-
-                Text("Impact")
-                    .font(.system(size: 30, weight: .bold))
-
-                Text(
-                    "Your food rescue statistics will appear here."
-                )
-                .foregroundStyle(.secondary)
-            }
-        }
+        .animation(.spring(duration: 0.35), value: foodStore.toast?.id)
     }
 }
 
@@ -166,4 +114,3 @@ struct ImpactPlaceholderView: View {
     MainTabView()
         .environmentObject(FoodStore())
 }
-

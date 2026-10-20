@@ -18,8 +18,27 @@ private enum FreshlingsDetailStyle {
 }
 
 struct FoodDetailView: View {
-    let item: FoodItem
+    @EnvironmentObject var foodStore: FoodStore
+    @EnvironmentObject var router: AppRouter
     @Environment(\.dismiss) private var dismiss
+    @State private var showEdit = false
+    /// How many to mark as used / thrown away (only shown when quantity > 1).
+    @State private var actionCount = 1
+
+    private let original: FoodItem
+
+    init(item: FoodItem) {
+        original = item
+    }
+
+    /// Always shows the latest version from the store (so edits appear right away).
+    private var item: FoodItem {
+        foodStore.foodItems.first { $0.id == original.id } ?? original
+    }
+
+    private var storageTip: String? {
+        IngredientPresetService.shared.storageTip(for: item.name)
+    }
 
     private var statusColor: Color {
         switch item.freshnessLevel {
@@ -35,10 +54,7 @@ struct FoodDetailView: View {
     }
 
     private var daysText: String {
-        if item.freshnessLevel == .expired { return "Expired" }
-        if item.remainingDays == 0 { return "Expires today" }
-        if item.remainingDays == 1 { return "1 day left" }
-        return "\(item.remainingDays) days left"
+        item.daysLeftText
     }
 
     private var foodEmoji: String {
@@ -61,8 +77,13 @@ struct FoodDetailView: View {
                     headerSection
                     heroSection
                     freshnessSection
+                    if let storageTip {
+                        tipSection(storageTip)
+                    }
                     informationSection
                     recipeButton
+                    finishButtons
+                    deleteButton
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
@@ -72,6 +93,155 @@ struct FoodDetailView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
+        .sheet(isPresented: $showEdit) {
+            EditFoodView(item: item)
+                .environmentObject(foodStore)
+        }
+    }
+
+    // MARK: - Storage tip
+
+    private func tipSection(_ tip: String) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "lightbulb.fill")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(FreshlingsDetailStyle.gold)
+                .frame(width: 40, height: 40)
+                .background(FreshlingsDetailStyle.white, in: Circle())
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Storage Tip")
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                    .foregroundStyle(FreshlingsDetailStyle.brown)
+                Text(tip)
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(FreshlingsDetailStyle.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(18)
+        .background(FreshlingsDetailStyle.softYellow, in: RoundedRectangle(cornerRadius: 24))
+    }
+
+    // MARK: - Delete
+
+    private var deleteButton: some View {
+        Button(role: .destructive) {
+            // No pop-up: deletes right away, with Undo at the bottom.
+            foodStore.deleteItem(item)
+            dismiss()
+        } label: {
+            Text("Delete Item")
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.secondary)
+                .underline()
+        }
+        .buttonStyle(.plain)
+        .padding(.top, 4)
+    }
+
+    // MARK: - Used / Wasted
+    // Moves the item into history so the Impact page can count it.
+
+    /// actionCount, kept within 1…quantity (quantity can change after an action).
+    private var count: Int { min(max(actionCount, 1), item.quantity) }
+
+    private var finishButtons: some View {
+        VStack(spacing: 12) {
+            if item.quantity > 1 {
+                countPicker
+            }
+
+            HStack(spacing: 12) {
+                Button {
+                    finish(.used)
+                } label: {
+                    Label(item.quantity > 1 ? "Used \(count)" : "I Used It",
+                          systemImage: "checkmark.circle.fill")
+                        .font(.system(size: 15, weight: .bold, design: .rounded))
+                        .foregroundStyle(FreshlingsDetailStyle.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(FreshlingsDetailStyle.darkGreen, in: RoundedRectangle(cornerRadius: 20))
+                }
+                .buttonStyle(.plain)
+
+                Button {
+                    finish(.wasted)
+                } label: {
+                    Label(item.quantity > 1 ? "Threw Away \(count)" : "Threw Away",
+                          systemImage: "trash")
+                        .font(.system(size: 15, weight: .bold, design: .rounded))
+                        .foregroundStyle(FreshlingsDetailStyle.red)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(FreshlingsDetailStyle.white, in: RoundedRectangle(cornerRadius: 20))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(FreshlingsDetailStyle.red.opacity(0.35), lineWidth: 1)
+                        )
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+
+    /// "How many?  −  1 of 3  +   All"
+    private var countPicker: some View {
+        HStack(spacing: 12) {
+            Text("How many?")
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.brown)
+
+            Spacer(minLength: 4)
+
+            countButton("minus", enabled: count > 1) { actionCount = count - 1 }
+
+            Text("\(count) of \(item.quantity)")
+                .font(.system(size: 15, weight: .heavy, design: .rounded))
+                .foregroundStyle(FreshlingsDetailStyle.darkGreen)
+                .monospacedDigit()
+                .frame(minWidth: 56)
+
+            countButton("plus", enabled: count < item.quantity) { actionCount = count + 1 }
+
+            Button("All") { actionCount = item.quantity }
+                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .foregroundStyle(count == item.quantity ? FreshlingsDetailStyle.white : FreshlingsDetailStyle.darkGreen)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .background(count == item.quantity ? FreshlingsDetailStyle.darkGreen : FreshlingsDetailStyle.softGreen,
+                            in: Capsule())
+                .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(FreshlingsDetailStyle.white, in: RoundedRectangle(cornerRadius: 20))
+    }
+
+    private func countButton(_ icon: String, enabled: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(enabled ? FreshlingsDetailStyle.darkGreen : FreshlingsDetailStyle.secondary.opacity(0.4))
+                .frame(width: 32, height: 32)
+                .background(FreshlingsDetailStyle.softGreen, in: Circle())
+        }
+        .buttonStyle(.plain)
+        .disabled(!enabled)
+    }
+
+    /// Takes `count` out of the fridge. Goes back only if none are left.
+    private func finish(_ status: FoodStatus) {
+        let usesAll = count >= item.quantity
+        if status == .used {
+            foodStore.markAsUsed(item, quantity: count)
+        } else {
+            foodStore.markAsWasted(item, quantity: count)
+        }
+        actionCount = 1
+        if usesAll { dismiss() }
     }
 
     // MARK: - Header
@@ -96,8 +266,15 @@ struct FoodDetailView: View {
 
             Spacer()
 
-            // Balances the back button so the title stays centered.
-            Color.clear.frame(width: 44, height: 44)
+            Button { showEdit = true } label: {
+                Image(systemName: "pencil")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(FreshlingsDetailStyle.darkGreen)
+                    .frame(width: 44, height: 44)
+                    .background(FreshlingsDetailStyle.white, in: Circle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Edit")
         }
     }
 
@@ -226,8 +403,8 @@ struct FoodDetailView: View {
     // MARK: - Recipes
 
     private var recipeButton: some View {
-        NavigationLink {
-            RecipeListView(focusIngredient: item)
+        Button {
+            router.openRecipes(for: item)
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: "fork.knife")
@@ -259,3 +436,12 @@ struct FoodDetailView: View {
     }
 }
 
+#Preview {
+    let store = FoodStore()
+    store.addDemoItems()
+    return NavigationStack {
+        FoodDetailView(item: store.foodItems[0])
+    }
+    .environmentObject(store)
+    .environmentObject(AppRouter())
+}
