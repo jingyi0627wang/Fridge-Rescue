@@ -46,5 +46,4 @@ struct RootView: View {
 #Preview {
     RootView()
         .environmentObject(FoodStore())
-        .environmentObject(MyRecipeStore())
 }

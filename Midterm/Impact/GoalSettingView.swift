@@ -88,6 +88,15 @@ struct GoalSettingView: View {
     @State private var selected: GoalType
     @State private var target: Int
 
+    private enum Style {
+        static let background = Color(red: 0.985, green: 0.992, blue: 0.970)
+        static let green = Color(red: 0.53, green: 0.89, blue: 0.36)
+        static let softGreen = Color(red: 0.931, green: 0.976, blue: 0.869)
+        static let darkGreen = Color(red: 0.22, green: 0.49, blue: 0.19)
+        static let brown = Color(red: 0.34, green: 0.27, blue: 0.22)
+        static let secondary = Color(red: 0.50, green: 0.48, blue: 0.41)
+    }
+
     init(goalTypeRaw: Binding<String>, goalTarget: Binding<Int>) {
         _goalTypeRaw = goalTypeRaw
         _goalTarget = goalTarget
@@ -100,37 +109,47 @@ struct GoalSettingView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Goal") {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 22) {
+
+                    Text("1. Pick a goal")
+                        .font(.system(size: 18, weight: .heavy, design: .rounded))
+                        .foregroundStyle(Style.brown)
+
                     ForEach(GoalType.allCases) { type in
-                        typeRow(type)
+                        typeCard(type)
                     }
-                }
 
-                Section {
-                    Stepper(value: $target, in: selected.range, step: selected.step) {
-                        Text(selected.targetLabel(target))
-                            .monospacedDigit()
+                    Text("2. Choose your target")
+                        .font(.system(size: 18, weight: .heavy, design: .rounded))
+                        .foregroundStyle(Style.brown)
+                        .padding(.top, 6)
+
+                    targetPicker
+
+                    // Live preview of the goal sentence
+                    HStack(spacing: 10) {
+                        Image(systemName: "flag.checkered")
+                        Text(selected.headline(target))
                     }
-                } header: {
-                    Text("Target")
-                } footer: {
-                    Text(selected.headline(target))
-                }
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(Style.darkGreen)
+                    .frame(maxWidth: .infinity)
+                    .padding(16)
+                    .background(Style.softGreen, in: RoundedRectangle(cornerRadius: 18))
 
-                if hasGoal {
-                    Section {
-                        Button("Remove Goal", role: .destructive) {
+                    if hasGoal {
+                        Button("Remove goal", role: .destructive) {
                             goalTypeRaw = ""
                             dismiss()
                         }
+                        .frame(maxWidth: .infinity)
+                        .font(.system(size: 14, weight: .semibold, design: .rounded))
                     }
                 }
+                .padding(20)
             }
-            .font(.game(16, .medium))
-            .foregroundStyle(Game.brown)
-            .gameBackground()
-            .tint(Game.greenDark)
+            .background(Style.background.ignoresSafeArea())
             .navigationTitle(hasGoal ? "Change Goal" : "Set a Goal")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -143,46 +162,91 @@ struct GoalSettingView: View {
                         goalTarget = target
                         dismiss()
                     }
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
                 }
             }
         }
     }
 
-    private func typeRow(_ type: GoalType) -> some View {
-        Button {
+    private func typeCard(_ type: GoalType) -> some View {
+        let isSelected = type == selected
+
+        return Button {
             if selected != type {
                 selected = type
                 target = type.defaultTarget
             }
         } label: {
-            HStack(alignment: .top, spacing: 12) {
+            HStack(alignment: .top, spacing: 14) {
                 Image(systemName: type.icon)
-                    .font(.title3.weight(.bold))
-                    .foregroundStyle(Color.brand)
-                    .frame(width: 28)
+                    .font(.system(size: 22))
+                    .foregroundStyle(isSelected ? Style.darkGreen : Style.secondary)
+                    .frame(width: 30)
 
-                VStack(alignment: .leading, spacing: 3) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(type.title)
-                        .foregroundStyle(.primary)
+                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                        .foregroundStyle(Style.brown)
                     Text(type.explanation)
-                        .font(.game(13, .medium))
-                        .foregroundStyle(.secondary)
+                        .font(.system(size: 13, design: .rounded))
+                        .foregroundStyle(Style.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                         .multilineTextAlignment(.leading)
                 }
 
                 Spacer(minLength: 0)
 
-                if type == selected {
-                    Image(systemName: "checkmark")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(Color.brand)
-                }
+                Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
+                    .font(.system(size: 20))
+                    .foregroundStyle(isSelected ? Style.darkGreen : Style.secondary.opacity(0.5))
             }
-            .contentShape(Rectangle())
+            .padding(16)
+            .background(isSelected ? Style.softGreen : .white, in: RoundedRectangle(cornerRadius: 18))
+            .overlay(
+                RoundedRectangle(cornerRadius: 18)
+                    .stroke(isSelected ? Style.green : .clear, lineWidth: 2)
+            )
         }
         .buttonStyle(.plain)
+    }
+
+    private var targetPicker: some View {
+        HStack(spacing: 18) {
+            stepButton("minus", enabled: target > selected.range.lowerBound) {
+                target = max(target - selected.step, selected.range.lowerBound)
+            }
+
+            VStack(spacing: 2) {
+                Text(selected == .saveMoney ? "$\(target)" : "\(target)")
+                    .font(.system(size: 44, weight: .heavy, design: .rounded))
+                    .foregroundStyle(Style.brown)
+                    .monospacedDigit()
+                    .contentTransition(.numericText())
+                Text(selected.targetLabel(target))
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundStyle(Style.secondary)
+            }
+            .frame(maxWidth: .infinity)
+
+            stepButton("plus", enabled: target < selected.range.upperBound) {
+                target = min(target + selected.step, selected.range.upperBound)
+            }
+        }
+        .padding(16)
+        .background(.white, in: RoundedRectangle(cornerRadius: 18))
+        .animation(.snappy, value: target)
+    }
+
+    private func stepButton(_ icon: String, enabled: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.system(size: 18, weight: .bold))
+                .foregroundStyle(enabled ? Style.darkGreen : Style.secondary.opacity(0.4))
+                .frame(width: 48, height: 48)
+                .background(Style.softGreen, in: Circle())
+        }
+        .buttonStyle(.plain)
+        .disabled(!enabled)
     }
 }
 
@@ -218,10 +282,6 @@ struct ImpactInfoView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .font(.game(16, .medium))
-            .foregroundStyle(Game.brown)
-            .gameBackground()
-            .tint(Game.greenDark)
             .navigationTitle("How We Calculate")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

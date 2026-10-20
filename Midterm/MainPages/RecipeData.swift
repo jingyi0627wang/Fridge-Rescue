@@ -9,7 +9,7 @@ struct Recipe: Identifiable {
     let id: String
 
     let name: String
-    let emoji: String
+    let icon: String           // Freshlings drawing in Assets.xcassets/Food, e.g. "FoodCarrot"
     let time: Int              // minutes (0 = unknown, e.g. online recipes)
     let difficulty: String     // local: "Easy"/"Medium"; online: category like "Chicken"
     let items: [RecipeIngredient]
@@ -21,12 +21,12 @@ struct Recipe: Identifiable {
     var sourceURL: URL? = nil
 
     init(id: String = UUID().uuidString,
-         name: String, emoji: String, time: Int, difficulty: String,
+         name: String, icon: String, time: Int, difficulty: String,
          items: [RecipeIngredient], steps: [String],
          imageURL: URL? = nil, area: String? = nil, sourceURL: URL? = nil) {
         self.id = id
         self.name = name
-        self.emoji = emoji
+        self.icon = icon
         self.time = time
         self.difficulty = difficulty
         self.items = items
@@ -103,7 +103,7 @@ enum RecipeData {
     static let recipes: [Recipe] = [
 
         Recipe(
-            name: "Creamy Carrot Soup", emoji: "🥕", time: 30, difficulty: "Easy",
+            name: "Creamy Carrot Soup", icon: "FoodCarrot", time: 30, difficulty: "Easy",
             items: [ing("4 medium", "Carrot"), ing("1/2 cup", "Milk"), ing("1 small", "Onion"),
                     ing("1 tbsp", "Butter"), ing("2 cups", "Water"), ing("to taste", "Salt")],
             steps: [
@@ -117,7 +117,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Milk Pancakes", emoji: "🥞", time: 20, difficulty: "Easy",
+            name: "Milk Pancakes", icon: "FoodMuffin", time: 20, difficulty: "Easy",
             items: [ing("1 cup", "Milk"), ing("1", "Egg"), ing("1 cup", "Flour"),
                     ing("2 tbsp", "Sugar"), ing("2 tsp", "Baking Powder"), ing("1 tbsp", "Butter")],
             steps: [
@@ -131,7 +131,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Roasted Carrots", emoji: "🥕", time: 35, difficulty: "Easy",
+            name: "Roasted Carrots", icon: "FoodCarrot", time: 35, difficulty: "Easy",
             items: [ing("6 medium", "Carrot"), ing("1 tbsp", "Olive Oil"),
                     ing("1/2 tsp", "Salt"), ing("1 tsp", "Honey")],
             steps: [
@@ -144,7 +144,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Tomato & Egg Stir-Fry", emoji: "🍳", time: 15, difficulty: "Easy",
+            name: "Tomato & Egg Stir-Fry", icon: "FoodEgg", time: 15, difficulty: "Easy",
             items: [ing("2 medium", "Tomato"), ing("3", "Egg"), ing("1 stalk", "Scallion"),
                     ing("1 tsp", "Sugar"), ing("1/2 tsp", "Salt"), ing("2 tbsp", "Cooking Oil")],
             steps: [
@@ -158,7 +158,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Veggie Omelette", emoji: "🥚", time: 15, difficulty: "Easy",
+            name: "Veggie Omelette", icon: "FoodEgg", time: 15, difficulty: "Easy",
             items: [ing("3", "Egg"), ing("1 handful", "Spinach"), ing("1/2", "Bell Pepper"),
                     ing("1/4 cup grated", "Cheese"), ing("1 tsp", "Butter")],
             steps: [
@@ -172,7 +172,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Chicken & Broccoli Stir-Fry", emoji: "🥦", time: 25, difficulty: "Medium",
+            name: "Chicken & Broccoli Stir-Fry", icon: "FoodBroccoli", time: 25, difficulty: "Medium",
             items: [ing("1 lb", "Chicken"), ing("1 head", "Broccoli"), ing("1", "Bell Pepper"),
                     ing("3 cloves", "Garlic"), ing("3 tbsp", "Soy Sauce"), ing("1 tsp", "Cornstarch")],
             steps: [
@@ -186,7 +186,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Crispy Potato Hash", emoji: "🥔", time: 30, difficulty: "Easy",
+            name: "Crispy Potato Hash", icon: "FoodPotato", time: 30, difficulty: "Easy",
             items: [ing("3 medium", "Potato"), ing("1", "Onion"), ing("4 slices", "Bacon"),
                     ing("2", "Egg"), ing("to taste", "Salt")],
             steps: [
@@ -199,7 +199,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Banana Smoothie", emoji: "🍌", time: 5, difficulty: "Easy",
+            name: "Banana Smoothie", icon: "FoodBanana", time: 5, difficulty: "Easy",
             items: [ing("2 ripe", "Banana"), ing("1 cup", "Milk"), ing("1/2 cup", "Yogurt"),
                     ing("4–5", "Strawberry"), ing("1 tsp", "Honey")],
             steps: [
@@ -211,7 +211,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Fresh Fruit Salad", emoji: "🍎", time: 10, difficulty: "Easy",
+            name: "Fresh Fruit Salad", icon: "FoodApple", time: 10, difficulty: "Easy",
             items: [ing("1", "Apple"), ing("1", "Banana"), ing("1", "Orange"),
                     ing("1 cup", "Grape"), ing("1/2 cup", "Yogurt"), ing("1/2", "Lemon")],
             steps: [
@@ -223,7 +223,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Garlic Spinach Pasta", emoji: "🍝", time: 20, difficulty: "Easy",
+            name: "Garlic Spinach Pasta", icon: "FoodLeafy", time: 20, difficulty: "Easy",
             items: [ing("200 g", "Pasta"), ing("4 big handfuls", "Spinach"), ing("4 cloves", "Garlic"),
                     ing("1/3 cup grated", "Parmesan Cheese"), ing("3 tbsp", "Olive Oil")],
             steps: [
@@ -237,7 +237,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Beef Tacos", emoji: "🌮", time: 20, difficulty: "Easy",
+            name: "Beef Tacos", icon: "FoodMeat", time: 20, difficulty: "Easy",
             items: [ing("1 lb", "Ground Beef"), ing("2", "Tomato"), ing("2 cups shredded", "Lettuce"),
                     ing("1 cup shredded", "Cheese"), ing("8 small", "Tortilla"), ing("2 tsp", "Chili Powder")],
             steps: [
@@ -250,7 +250,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Zucchini Fritters", emoji: "🥒", time: 30, difficulty: "Medium",
+            name: "Zucchini Fritters", icon: "FoodCucumber", time: 30, difficulty: "Medium",
             items: [ing("2 medium", "Zucchini"), ing("1", "Egg"), ing("1/3 cup", "Flour"),
                     ing("1/4 cup grated", "Parmesan Cheese"), ing("1/2 tsp", "Salt")],
             steps: [
@@ -263,7 +263,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Guacamole", emoji: "🥑", time: 10, difficulty: "Easy",
+            name: "Guacamole", icon: "FoodAvocado", time: 10, difficulty: "Easy",
             items: [ing("2 ripe", "Avocado"), ing("1", "Lime"), ing("1 small", "Tomato"),
                     ing("1/4", "Onion"), ing("2 tbsp chopped", "Cilantro"), ing("1/2 tsp", "Salt")],
             steps: [
@@ -276,7 +276,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Yogurt Berry Parfait", emoji: "🫐", time: 5, difficulty: "Easy",
+            name: "Yogurt Berry Parfait", icon: "FoodYogurt", time: 5, difficulty: "Easy",
             items: [ing("1 cup", "Yogurt"), ing("1/2 cup", "Blueberry"), ing("1/2 cup sliced", "Strawberry"),
                     ing("1/3 cup", "Granola"), ing("1 tsp", "Honey")],
             steps: [
@@ -288,7 +288,7 @@ enum RecipeData {
         ),
 
         Recipe(
-            name: "Cabbage Fried Rice", emoji: "🍚", time: 20, difficulty: "Easy",
+            name: "Cabbage Fried Rice", icon: "FoodCereal", time: 20, difficulty: "Easy",
             items: [ing("2 cups shredded", "Cabbage"), ing("2", "Egg"), ing("1", "Carrot"),
                     ing("2 stalks", "Scallion"), ing("2 cups cooked (day-old)", "Rice"), ing("2 tbsp", "Soy Sauce")],
             steps: [

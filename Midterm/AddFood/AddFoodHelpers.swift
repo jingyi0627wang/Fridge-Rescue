@@ -1,8 +1,3 @@
-// ------------------------------------------------------------
-// Written by Gladys Yu
-// Food draft, ingredient-name matching, fallback shelf life and CO2
-// ------------------------------------------------------------
-
 import Foundation
 
 struct FoodDraft {
@@ -44,16 +39,6 @@ enum PresetMatcher {
 }
 
 extension FoodCategory {
-    var addFoodIcon: String {
-        switch self {
-        case .vegetable: return "🥦"
-        case .fruit: return "🍎"
-        case .dairy: return "🥛"
-        case .meat: return "🥩"
-        default: return "🛒"
-        }
-    }
-
     var fallbackShelfLifeDays: Int {
         switch self {
         case .meat: return 3

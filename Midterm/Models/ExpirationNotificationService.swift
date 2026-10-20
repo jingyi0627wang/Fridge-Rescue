@@ -1,8 +1,3 @@
-// ------------------------------------------------------------
-// Contributions by Gladys Yu: reminders follow the user's settings,
-// and the reminder text counts days correctly
-// ------------------------------------------------------------
-
 import Foundation
 import UserNotifications
 
@@ -10,22 +5,8 @@ final class ExpirationNotificationService {
     static let shared = ExpirationNotificationService()
 
     private let center = UNUserNotificationCenter.current()
+    private let reminderDays = 3
     private let reminderHour = 9
-
-    // Settings (Settings → Reminder preferences). Same keys as SettingsView's @AppStorage.
-    static let enabledKey = "expirationRemindersEnabled"
-    static let daysBeforeKey = "reminderDaysBefore"
-
-    /// On by default (matches the toggle's default).
-    private var remindersEnabled: Bool {
-        UserDefaults.standard.object(forKey: Self.enabledKey) as? Bool ?? true
-    }
-
-    /// How many days before expiration to remind (default 3).
-    private var reminderDays: Int {
-        let days = UserDefaults.standard.integer(forKey: Self.daysBeforeKey)
-        return days > 0 ? days : 3
-    }
 
     private init() {}
 
@@ -44,7 +25,7 @@ final class ExpirationNotificationService {
             isAuthorized = false
         }
 
-        guard isAuthorized, remindersEnabled else { return }
+        guard isAuthorized else { return }
 
         let pendingIdentifiers = Set(await center.pendingNotificationRequests().map(\.identifier))
         let deliveredIdentifiers = Set(await center.deliveredNotifications().map { $0.request.identifier })
@@ -57,28 +38,7 @@ final class ExpirationNotificationService {
         }
     }
 
-    /// Call after the reminder settings change: removes every waiting food
-    /// reminder and schedules them again with the new settings.
-    /// (Reminders whose new time has already passed are skipped, so changing
-    /// the setting doesn't send a burst of notifications at once.)
-    func rescheduleAll(items: [FoodItem]) async {
-        let pending = await center.pendingNotificationRequests()
-        let foodIDs = pending.map(\.identifier).filter { $0.hasPrefix(Self.identifierPrefix) }
-        center.removePendingNotificationRequests(withIdentifiers: foodIDs)
-
-        guard remindersEnabled else { return }
-
-        let delivered = Set(await center.deliveredNotifications().map { $0.request.identifier })
-        for item in items where item.status == .active {
-            guard !delivered.contains(notificationIdentifier(for: item)) else { continue }
-            await schedule(for: item, sendNowIfLate: false)
-        }
-    }
-
-    /// `sendNowIfLate`: if the reminder time has already passed (e.g. the food
-    /// was added 1 day before it expires), send the reminder right away.
-    func schedule(for item: FoodItem, sendNowIfLate: Bool = true) async {
-        guard remindersEnabled else { return }
+    func schedule(for item: FoodItem) async {
         let settings = await center.notificationSettings()
         guard settings.authorizationStatus == .authorized ||
                 settings.authorizationStatus == .provisional ||
@@ -101,28 +61,21 @@ final class ExpirationNotificationService {
             of: reminderDay
         ) ?? reminderDay
 
-        let isLate = scheduledDate <= Date()
-        if isLate && !sendNowIfLate { return }
-
-        // The text is written now but shown later, so count the days from
-        // the day the reminder will actually appear (not from today).
-        let deliveryDay = isLate ? today : calendar.startOfDay(for: scheduledDate)
-
         let content = UNMutableNotificationContent()
         content.title = "Use \(item.name) soon"
-        content.body = reminderBody(for: item, expirationDay: expirationDay, deliveryDay: deliveryDay)
+        content.body = reminderBody(for: item, expirationDay: expirationDay, today: today)
         content.sound = .default
         content.userInfo = ["foodItemID": item.id.uuidString]
 
         let trigger: UNNotificationTrigger
-        if !isLate {
+        if scheduledDate > Date() {
             let components = calendar.dateComponents(
                 [.year, .month, .day, .hour, .minute],
                 from: scheduledDate
             )
             trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
         } else {
-            // The item was added after its reminder time had already passed.
+            // The item was added after the three-day reminder window began.
             trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
         }
 
@@ -140,16 +93,14 @@ final class ExpirationNotificationService {
         center.removeDeliveredNotifications(withIdentifiers: [identifier])
     }
 
-    private static let identifierPrefix = "food-expiration-"
-
     private func notificationIdentifier(for item: FoodItem) -> String {
-        Self.identifierPrefix + item.id.uuidString
+        "food-expiration-\(item.id.uuidString)"
     }
 
-    private func reminderBody(for item: FoodItem, expirationDay: Date, deliveryDay: Date) -> String {
+    private func reminderBody(for item: FoodItem, expirationDay: Date, today: Date) -> String {
         let daysLeft = Calendar.current.dateComponents(
             [.day],
-            from: deliveryDay,
+            from: today,
             to: expirationDay
         ).day ?? 0
 

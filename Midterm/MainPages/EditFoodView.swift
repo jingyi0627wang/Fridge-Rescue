@@ -1,7 +1,3 @@
-// ------------------------------------------------------------
-// Contributions by Gladys Yu: CO2 value updates when a food is renamed
-// ------------------------------------------------------------
-
 import SwiftUI
 
 /// Edit a food item that is already in the fridge.
@@ -42,7 +38,12 @@ struct EditFoodView: View {
 
                     Picker("Category", selection: $category) {
                         ForEach(FoodCategory.allCases, id: \.self) { category in
-                            Label(category.displayName, systemImage: category.symbolName).tag(category)
+                            Label {
+                                Text(category.rawValue)
+                            } icon: {
+                                FoodIcon.menuImage(category.iconAsset)
+                            }
+                            .tag(category)
                         }
                     }
                 }
@@ -69,10 +70,6 @@ struct EditFoodView: View {
                                displayedComponents: .date)
                 }
             }
-            .font(.game(16, .medium))
-            .foregroundStyle(Game.brown)
-            .gameBackground()
-            .tint(Game.greenDark)
             .navigationTitle("Edit Food")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -95,15 +92,6 @@ struct EditFoodView: View {
         updated.estimatedValue = Double(priceText.replacingOccurrences(of: ",", with: ".")) ?? original.estimatedValue
         updated.addedDate = addedDate
         updated.expirationDate = Calendar.current.startOfDay(for: max(expirationDate, addedDate))
-
-        // New name or category → look up the carbon value again
-        // (e.g. "Other" renamed to "Chicken" should count as meat).
-        if updated.name.lowercased() != original.name.lowercased() || updated.category != original.category {
-            let presets = IngredientPresetService.shared.loadPresets()
-            let preset = PresetMatcher.find(updated.name, in: presets)
-            // Same rule as Add Food: known food → its own value, otherwise the category's.
-            updated.carbonFactor = preset?.carbonFactor ?? updated.category.fallbackCarbonFactor
-        }
         foodStore.updateItem(updated)
         dismiss()
     }

@@ -1,8 +1,3 @@
-// ------------------------------------------------------------
-// Written by Gladys Yu
-// Camera scanner for barcodes and produce sticker (PLU) numbers
-// ------------------------------------------------------------
-
 import SwiftUI
 import Vision
 import VisionKit
@@ -26,7 +21,7 @@ struct ScannerScreen: View {
 
             VStack(spacing: 12) {
                 Text("Point at a barcode, or the number sticker on fruit and vegetables")
-                    .font(.game(14, .medium))
+                    .font(.subheadline)
                     .multilineTextAlignment(.center)
                     .padding(12)
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))

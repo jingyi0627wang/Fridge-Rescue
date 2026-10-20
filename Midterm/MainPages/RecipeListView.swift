@@ -1,41 +1,24 @@
 import SwiftUI
 
-// MARK: - Recipes tab
-// Search bar on top, then three pages:
-//   • Discover   – recipes for your fridge (rescue first), plus online search
-//   • My Recipes – recipes you wrote (+ button to add one)
-//   • Community  – weekly challenge + shared recipes (yours + sample posts)
-// Fridge, Today and Food Details jump here via AppRouter.openRecipes(for:)
-// with an ingredient already selected.
+// MARK: - Freshlings Recipe List (Recipes tab)
+// The ONE place to browse recipes. Home, Today and Food Details jump here
+// via AppRouter.openRecipes(for:) with an ingredient chip already selected.
+//
+// Sections:
+//   1. Rescue First           – uses food that expires soon (most urgent first)
+//   2. Uses Most of Your Fridge – uses 2+ fridge items
+//   3. More Ideas             – everything else (incl. online recipes)
 
 struct RecipeListView: View {
     @EnvironmentObject var foodStore: FoodStore
     @EnvironmentObject var router: AppRouter
-    @EnvironmentObject var myRecipes: MyRecipeStore
-
-    enum Page: CaseIterable {
-        case discover, mine, community
-
-        var title: LocalizedStringKey {
-            switch self {
-            case .discover: return "Discover"
-            case .mine: return "My Recipes"
-            case .community: return "Community"
-            }
-        }
-    }
-
-    @State private var page: Page = .discover
-    @State private var searchText = ""
-    @State private var showAddRecipe = false
 
     // Online recipes from TheMealDB (loaded in .task below)
     @State private var onlineRecipes: [Recipe] = []
-    @State private var onlineSearchResults: [Recipe] = []
     @State private var isLoadingOnline = false
     @State private var isOffline = false
 
-    /// Sections start short; "Show all" expands one (key = section id).
+    /// Sections start short; "Show all" expands one (key = section title).
     @State private var expandedSections: Set<String> = []
     private let collapsedCount = 4
 
@@ -43,13 +26,9 @@ struct RecipeListView: View {
         foodStore.activeItemsByUrgency
     }
 
-    private var query: String {
-        searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-
-    private var isSearching: Bool { !query.isEmpty }
-
-    /// Ingredient chips: only food that expires soon (plus the selected one).
+    /// Chips: only food that expires soon (plus the selected one), so the bar
+    /// stays short even with 60 items. Other food is reachable from its
+    /// Food Details page → Find Recipes.
     private var chipItems: [FoodItem] {
         var items = activeItems.filter { RecipeData.needsAttention($0) }
         if let focusItem, !items.contains(where: { $0.id == focusItem.id }) {
@@ -58,7 +37,7 @@ struct RecipeListView: View {
         return items
     }
 
-    /// Selected ingredient (nil = All).
+    /// Selected ingredient chip (nil = All).
     private var focusItem: FoodItem? {
         guard let id = router.recipeFocusID else { return nil }
         return activeItems.first { $0.id == id }
@@ -70,14 +49,12 @@ struct RecipeListView: View {
         return activeItems
     }
 
-    /// Built-in + my recipes that use at least one fridge item.
-    private var localRecommendations: [Recipe] {
-        let mine = myRecipes.allRecipes.filter { RecipeData.matchCount($0, sourceItems) > 0 }
-        return mine + RecipeData.recommendations(for: sourceItems)
-    }
-
     private var recipes: [Recipe] {
-        let all = RecipeData.merged(local: localRecommendations, online: onlineRecipes, items: foodStore.foodItems)
+        let all = RecipeData.merged(
+            local: RecipeData.recommendations(for: sourceItems),
+            online: onlineRecipes,
+            items: foodStore.foodItems
+        )
         guard let focusItem else { return all }
         // Only recipes that actually use the selected food.
         return all.filter { recipe in
@@ -85,40 +62,71 @@ struct RecipeListView: View {
         }
     }
 
-    /// Reload online recipes when the fridge or the selected ingredient changes.
+    private var sections: RecipeSections {
+        RecipeData.sections(for: recipes, items: foodStore.foodItems)
+    }
+
+    /// Reload online recipes when the fridge or the selected chip changes.
     private var fridgeKey: String {
         sourceItems.map(\.name).sorted().joined(separator: "|")
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                header
-                GameSearchField(text: $searchText, prompt: "Search recipes or ingredients")
-                pagePicker
+        // Computed once per render, then passed down (fast with lots of food).
+        let sections = self.sections
 
-                switch page {
-                case .discover:
-                    if isSearching {
-                        searchResults
-                    } else {
-                        discover
+        return ZStack {
+            RecipeFreshlingsStyle.background.ignoresSafeArea()
+
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 22) {
+                    headerSection
+
+                    if !chipItems.isEmpty {
+                        ingredientChips
                     }
-                case .mine:
-                    mine
-                case .community:
-                    CommunityFeed(searchText: query)
+
+                    onlineStatus
+
+                    if sections.isEmpty && !isLoadingOnline {
+                        emptyState
+                    } else {
+                        recipeSection(
+                            "Rescue First",
+                            subtitle: "Uses food that expires soon",
+                            icon: "exclamationmark.circle.fill",
+                            tint: RecipeFreshlingsStyle.orange,
+                            recipes: sections.rescue
+                        )
+                        recipeSection(
+                            "Uses Most of Your Fridge",
+                            subtitle: "Less to buy",
+                            icon: "refrigerator.fill",
+                            tint: RecipeFreshlingsStyle.leafGreen,
+                            recipes: sections.usesMost
+                        )
+                        recipeSection(
+                            "More Ideas",
+                            subtitle: "Uses 1 fridge item",
+                            icon: "sparkles",
+                            tint: RecipeFreshlingsStyle.secondary,
+                            recipes: sections.moreIdeas
+                        )
+
+                        if !onlineRecipes.isEmpty {
+                            Text("Recipes with photos are from TheMealDB.com")
+                                .font(.system(size: 11, weight: .medium, design: .rounded))
+                                .foregroundStyle(RecipeFreshlingsStyle.secondary)
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 18)
+                .padding(.bottom, 110)
             }
-            .padding(.horizontal, 18)
-            .padding(.bottom, 24)
         }
-        .scrollDismissesKeyboard(.immediately)
-        .gameBackground()
         .toolbar(.hidden, for: .navigationBar)
-        .sheet(isPresented: $showAddRecipe) {
-            AddRecipeView()
-        }
         .task(id: fridgeKey) {
             isLoadingOnline = true
             let result = await MealDBService.recommendations(for: sourceItems)
@@ -126,127 +134,45 @@ struct RecipeListView: View {
             isOffline = result.isOffline
             isLoadingOnline = false
         }
-        .task(id: query) {
-            // Wait until the user stops typing, then search TheMealDB too.
-            guard query.count >= 2 else {
-                onlineSearchResults = []
-                return
+    }
+
+    // MARK: Header
+
+    private var headerSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 7) {
+                Image(systemName: "leaf.fill")
+                    .font(.system(size: 12, weight: .bold))
+                Text("FRESHLINGS KITCHEN")
+                    .font(.system(size: 11, weight: .heavy, design: .rounded))
+                    .tracking(1.4)
             }
-            try? await Task.sleep(for: .milliseconds(450))
-            guard !Task.isCancelled else { return }
-            onlineSearchResults = await MealDBService.search(query)
+            .foregroundStyle(RecipeFreshlingsStyle.leafGreen)
+
+            Text(focusItem.map { "Let's use \($0.name)!" } ?? "Let's cook!")
+                .font(.system(size: 33, weight: .heavy, design: .rounded))
+                .foregroundStyle(RecipeFreshlingsStyle.brown)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text(focusItem.map { "\($0.name): \($0.daysLeftText.lowercased())." }
+                 ?? "Recipes for the food already in your fridge.")
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundStyle(RecipeFreshlingsStyle.secondary)
         }
     }
 
-    // MARK: - Header
-
-    private var header: some View {
-        HStack(alignment: .center) {
-            Text("Recipes")
-                .font(.game(32, .bold, relativeTo: .largeTitle))
-                .foregroundStyle(Game.brown)
-            Spacer(minLength: 8)
-            Button {
-                showAddRecipe = true
-            } label: {
-                Label("New", systemImage: "plus")
-            }
-            .buttonStyle(.chunky(.green, small: true, fullWidth: false))
-            .accessibilityLabel("Add my recipe")
-        }
-        .padding(.top, 12)
-    }
-
-    // MARK: - Page picker (Discover / My Recipes / Community)
-
-    private var pagePicker: some View {
-        HStack(spacing: 4) {
-            ForEach(Page.allCases, id: \.self) { item in
-                let selected = page == item
-                Button {
-                    withAnimation(.snappy) { page = item }
-                } label: {
-                    Text(item.title)
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(selected ? Game.brown : Game.brownSoft)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 7)
-                        .background {
-                            if selected {
-                                RoundedRectangle(cornerRadius: 9, style: .continuous).fill(.white)
-                                    .shadow(color: .black.opacity(0.1), radius: 2, y: 1)
-                            }
-                        }
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityAddTraits(selected ? .isSelected : [])
-            }
-        }
-        .padding(2)
-        .background(RoundedRectangle(cornerRadius: 11, style: .continuous).fill(Game.field))
-        .sensoryFeedback(.selection, trigger: page)
-    }
-
-    // MARK: - Discover
-
-    @ViewBuilder
-    private var discover: some View {
-        let sections = RecipeData.sections(for: recipes, items: foodStore.foodItems)
-        let items = foodStore.foodItems
-
-        if !chipItems.isEmpty {
-            ingredientChips
-        }
-
-        if isLoadingOnline {
-            HStack(spacing: 8) {
-                ProgressView()
-                Text("Finding more recipes online…")
-            }
-            .font(.game(13, .medium))
-            .foregroundStyle(Game.brownSoft)
-        } else if isOffline {
-            Label("Offline: showing built-in recipes only", systemImage: "wifi.slash")
-                .font(.game(13, .medium))
-                .foregroundStyle(Game.brownSoft)
-        }
-
-        if sections.isEmpty && !isLoadingOnline {
-            if activeItems.isEmpty {
-                emptyCard(title: "No recipes yet!",
-                          message: "Add food to your fridge to get recipe ideas, or search above.")
-            } else {
-                emptyCard(title: "No recipes yet!",
-                          message: "No recipes found for this food. Try another ingredient or search above.")
-            }
-        } else {
-            recipeSection(id: "rescue", title: "Rescue Recipes", recipes: sections.rescue, items: items)
-            recipeSection(id: "most", title: "Uses Most of Your Fridge", recipes: sections.usesMost, items: items)
-            recipeSection(id: "more", title: "More Ideas", recipes: sections.moreIdeas, items: items)
-
-            if !onlineRecipes.isEmpty {
-                Text("Recipes with photos are from TheMealDB.com")
-                    .font(.game(12, .medium))
-                    .foregroundStyle(Game.brownSoft)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 4)
-            }
-        }
-    }
+    // MARK: Ingredient chips
 
     private var ingredientChips: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                GameChip(title: "All", isSelected: focusItem == nil) {
+                chip("All", isSelected: focusItem == nil, isUrgent: false) {
                     router.recipeFocusID = nil
                 }
                 ForEach(chipItems) { item in
-                    GameChip(title: LocalizedStringKey(item.name),
-                             isSelected: focusItem?.id == item.id,
-                             showsAlert: item.freshnessLevel == .urgent) {
+                    chip(item.name,
+                         isSelected: focusItem?.id == item.id,
+                         isUrgent: RecipeData.needsAttention(item)) {
                         router.recipeFocusID = (focusItem?.id == item.id) ? nil : item.id
                     }
                 }
@@ -255,147 +181,233 @@ struct RecipeListView: View {
         }
     }
 
-    // MARK: - Search
-
-    /// Every recipe the app knows (mine, built-in, community, online),
-    /// filtered by name or ingredient.
-    private var searchMatches: [Recipe] {
-        let lowered = query.lowercased()
-        let community: [Recipe] = CommunityData.samplePosts.map(\.recipe)
-        let pool: [Recipe] = myRecipes.allRecipes + RecipeData.recipes + community
-            + onlineRecipes + onlineSearchResults
-
-        var seen = Set<String>()
-        var results: [Recipe] = []
-        for recipe in pool where seen.insert(recipe.name.lowercased()).inserted {
-            let nameMatches = recipe.name.lowercased().contains(lowered)
-            let ingredientMatches = recipe.ingredients.contains { $0.lowercased().contains(lowered) }
-            if nameMatches || ingredientMatches {
-                results.append(recipe)
-            }
-        }
-        return results
-    }
-
-    @ViewBuilder
-    private var searchResults: some View {
-        let matches = searchMatches
-
-        if matches.isEmpty {
-            emptyCard(title: "No matches",
-                      message: "Try another dish or ingredient, like \"pasta\" or \"banana\".")
-        } else {
-            GameSectionHeader(title: "Results", count: matches.count)
-            recipeCards(matches, items: foodStore.foodItems)
-        }
-    }
-
-    // MARK: - My Recipes
-
-    private func myMatches(_ all: [Recipe]) -> [Recipe] {
-        guard isSearching else { return all }
-        let lowered = query.lowercased()
-        return all.filter { recipe in
-            recipe.name.lowercased().contains(lowered) ||
-            recipe.ingredients.contains { $0.lowercased().contains(lowered) }
-        }
-    }
-
-    @ViewBuilder
-    private var mine: some View {
-        let all = myRecipes.allRecipes
-        let shown = myMatches(all)
-
-        Button {
-            showAddRecipe = true
-        } label: {
-            Label("Add My Recipe", systemImage: "square.and.pencil")
-        }
-        .buttonStyle(.chunky(.orange))
-
-        if all.isEmpty {
-            VStack(spacing: 10) {
-                FreshlingMascot(size: 70, color: Game.orange)
-                Text("Your recipe book is empty")
-                    .font(.game(19, .bold))
-                    .foregroundStyle(Game.brown)
-                Text("Save your go-to dishes with a photo. Recipes that use your fridge food show up as rescue ideas.")
-                    .font(.game(14, .medium))
-                    .foregroundStyle(Game.brownSoft)
-                    .multilineTextAlignment(.center)
-            }
-            .frame(maxWidth: .infinity)
-            .gameCard(padding: 22)
-        } else if shown.isEmpty {
-            emptyCard(title: "No matches", message: "None of your recipes match that search.")
-        } else {
-            GameSectionHeader(title: "My Recipes", count: shown.count)
-            recipeCards(shown, items: foodStore.foodItems)
-        }
-    }
-
-    // MARK: - Shared pieces
-
-    private func recipeCards(_ list: [Recipe], items: [FoodItem]) -> some View {
-        LazyVStack(spacing: 10) {
-            ForEach(list) { recipe in
-                let rescue = RecipeData.rescueItem(for: recipe, in: items)
-                NavigationLink {
-                    RecipeDetailView(recipe: recipe, focusIngredient: rescue)
-                } label: {
-                    RecipeBookCard(
-                        recipe: recipe,
-                        fridgeCount: RecipeData.matchCount(recipe, items),
-                        rescueFood: rescue,
-                        uses: RecipeData.fridgeItems(for: recipe, in: items)
-                    )
+    private func chip(_ title: String, isSelected: Bool, isUrgent: Bool,
+                      action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 5) {
+                if isUrgent {
+                    Circle()
+                        .fill(RecipeFreshlingsStyle.orange)
+                        .frame(width: 7, height: 7)
                 }
-                .buttonStyle(.plain)
+                Text(title)
             }
+            .font(.system(size: 13, weight: .bold, design: .rounded))
+            .foregroundStyle(isSelected ? RecipeFreshlingsStyle.leafGreen : RecipeFreshlingsStyle.secondary)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 9)
+            .background(isSelected ? RecipeFreshlingsStyle.green : RecipeFreshlingsStyle.card, in: Capsule())
+            .overlay(Capsule().stroke(RecipeFreshlingsStyle.outline, lineWidth: isSelected ? 0 : 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(isUrgent ? "\(title), expires soon" : title)
+    }
+
+    // MARK: Online status
+
+    @ViewBuilder
+    private var onlineStatus: some View {
+        if isLoadingOnline {
+            HStack(spacing: 8) {
+                ProgressView()
+                Text("Finding more recipes online…")
+            }
+            .font(.system(size: 12, weight: .medium, design: .rounded))
+            .foregroundStyle(RecipeFreshlingsStyle.secondary)
+        } else if isOffline {
+            Label("Offline: showing built-in recipes only", systemImage: "wifi.slash")
+                .font(.system(size: 12, weight: .medium, design: .rounded))
+                .foregroundStyle(RecipeFreshlingsStyle.secondary)
         }
     }
 
+    // MARK: Sections
+
     @ViewBuilder
-    private func recipeSection(id: String, title: LocalizedStringKey,
-                               recipes: [Recipe], items: [FoodItem]) -> some View {
+    private func recipeSection(_ title: String, subtitle: String, icon: String,
+                               tint: Color, recipes: [Recipe]) -> some View {
         if !recipes.isEmpty {
-            let isExpanded = expandedSections.contains(id)
+            let isExpanded = expandedSections.contains(title)
             let visible = isExpanded ? recipes : Array(recipes.prefix(collapsedCount))
+            let items = foodStore.foodItems
 
-            GameSectionHeader(title: title, count: recipes.count)
-            recipeCards(visible, items: items)
-
-            if recipes.count > collapsedCount {
-                Button {
-                    withAnimation(.snappy) {
-                        if isExpanded { _ = expandedSections.remove(id) } else { _ = expandedSections.insert(id) }
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Image(systemName: icon)
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundStyle(tint)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(title)
+                            .font(.system(size: 21, weight: .heavy, design: .rounded))
+                            .foregroundStyle(RecipeFreshlingsStyle.brown)
+                        Text(subtitle)
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                            .foregroundStyle(RecipeFreshlingsStyle.secondary)
                     }
-                } label: {
-                    if isExpanded {
-                        Text("Show Less")
-                    } else {
-                        Text("Show All \(recipes.count)")
+                    Spacer(minLength: 4)
+                    Text("\(recipes.count)")
+                        .font(.system(size: 12, weight: .heavy, design: .rounded))
+                        .foregroundStyle(tint)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(RecipeFreshlingsStyle.lightGreen, in: Capsule())
+                }
+
+                LazyVStack(spacing: 12) {
+                    ForEach(visible) { recipe in
+                        // Look these up once per card (not separately for link + card).
+                        let rescue = RecipeData.rescueItem(for: recipe, in: items)
+
+                        NavigationLink {
+                            RecipeDetailView(recipe: recipe, focusIngredient: rescue)
+                        } label: {
+                            FreshlingsRecipeCard(
+                                recipe: recipe,
+                                rescueFood: rescue,
+                                fridgeCount: RecipeData.matchCount(recipe, items)
+                            )
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
-                .buttonStyle(.chunky(.white, small: true))
+
+                if recipes.count > collapsedCount {
+                    Button {
+                        withAnimation(.snappy) {
+                            if isExpanded { expandedSections.remove(title) } else { expandedSections.insert(title) }
+                        }
+                    } label: {
+                        HStack {
+                            Text(isExpanded ? "Show less" : "Show all \(recipes.count)")
+                            Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        }
+                        .font(.system(size: 13, weight: .bold, design: .rounded))
+                        .foregroundStyle(RecipeFreshlingsStyle.leafGreen)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(RecipeFreshlingsStyle.lightGreen, in: Capsule())
+                    }
+                    .buttonStyle(.plain)
+                }
             }
         }
     }
 
-    private func emptyCard(title: LocalizedStringKey, message: LocalizedStringKey) -> some View {
-        VStack(spacing: 8) {
-            FreshlingMascot(size: 60, color: Game.gray)
-            Text(title)
-                .font(.game(18, .bold))
-                .foregroundStyle(Game.brown)
-            Text(message)
-                .font(.game(14, .medium))
-                .foregroundStyle(Game.brownSoft)
+    private var emptyState: some View {
+        VStack(spacing: 12) {
+            FoodIconView(name: "Tomato", category: .vegetable, size: 56)
+                .frame(width: 90, height: 90)
+                .background(RecipeFreshlingsStyle.lightGreen)
+                .clipShape(Circle())
+
+            Text("No recipes yet!")
+                .font(.system(size: 20, weight: .heavy, design: .rounded))
+                .foregroundStyle(RecipeFreshlingsStyle.brown)
+
+            Text(activeItems.isEmpty
+                 ? "Add food to your fridge to get recipe ideas."
+                 : "No recipes found for this food. Try another ingredient or All.")
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundStyle(RecipeFreshlingsStyle.secondary)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
-        .gameCard(padding: 22)
+        .padding(.horizontal, 22)
+        .padding(.vertical, 32)
+        .background(RecipeFreshlingsStyle.card)
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
+}
+
+// MARK: - Recipe Card
+private struct FreshlingsRecipeCard: View {
+    let recipe: Recipe
+    let rescueFood: FoodItem?
+    let fridgeCount: Int
+
+    var body: some View {
+        HStack(spacing: 14) {
+            thumbnail
+                .frame(width: 76, height: 85)
+                .background(RecipeFreshlingsStyle.lightGreen)
+                .clipShape(RoundedRectangle(cornerRadius: 19, style: .continuous))
+
+            VStack(alignment: .leading, spacing: 7) {
+                Text(recipe.name)
+                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                    .foregroundStyle(RecipeFreshlingsStyle.brown)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text(recipe.ingredients.prefix(2).joined(separator: " • "))
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundStyle(RecipeFreshlingsStyle.secondary)
+                    .lineLimit(1)
+
+                if let rescueFood {
+                    Label("Rescue \(rescueFood.name) · \(rescueFood.daysLeftText.lowercased())",
+                          systemImage: "leaf.fill")
+                        .font(.system(size: 11, weight: .bold, design: .rounded))
+                        .foregroundStyle(RecipeFreshlingsStyle.orange)
+                        .lineLimit(1)
+                }
+
+                Label("\(fridgeCount)/\(recipe.items.count) in your fridge", systemImage: "refrigerator")
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .foregroundStyle(RecipeFreshlingsStyle.leafGreen)
+
+                HStack(spacing: 6) {
+                    Image(systemName: "clock")
+                    Text(recipe.timeText)
+                    Text("•")
+                    Text(recipe.difficulty)
+                }
+                .font(.system(size: 11, weight: .medium, design: .rounded))
+                .foregroundStyle(RecipeFreshlingsStyle.secondary)
+            }
+
+            Spacer(minLength: 0)
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(RecipeFreshlingsStyle.leafGreen)
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RecipeFreshlingsStyle.card)
+        .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 23, style: .continuous)
+                .stroke(RecipeFreshlingsStyle.outline, lineWidth: 1)
+        }
+    }
+
+    /// Photo for online recipes, Freshlings drawing for built-in ones.
+    @ViewBuilder
+    private var thumbnail: some View {
+        if let url = recipe.imageURL {
+            AsyncImage(url: url) { image in
+                image.resizable().scaledToFill()
+            } placeholder: {
+                RecipeIconView(recipe: recipe, size: 52)
+            }
+        } else {
+            RecipeIconView(recipe: recipe, size: 52)
+        }
+    }
+}
+
+// MARK: - Local Palette (no shared theme overrides)
+private enum RecipeFreshlingsStyle {
+    static let background = Color(red: 0.985, green: 0.989, blue: 0.967)
+    static let card = Color.white
+    static let lightGreen = Color(red: 0.923, green: 0.975, blue: 0.865)
+    static let green = Color(red: 0.53, green: 0.89, blue: 0.36)
+    static let leafGreen = Color(red: 0.28, green: 0.58, blue: 0.23)
+    static let brown = Color(red: 0.43, green: 0.29, blue: 0.22)
+    static let secondary = Color(red: 0.46, green: 0.43, blue: 0.39)
+    static let orange = Color(red: 0.91, green: 0.45, blue: 0.17)
+    static let outline = Color(red: 0.82, green: 0.90, blue: 0.77).opacity(0.55)
 }
 
 #Preview {
@@ -404,5 +416,5 @@ struct RecipeListView: View {
     }
     .environmentObject(FoodStore())
     .environmentObject(AppRouter())
-    .environmentObject(MyRecipeStore())
 }
+
