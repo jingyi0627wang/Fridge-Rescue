@@ -15,15 +15,9 @@ struct RecipeListView: View {
     }
 
     private func rescueIngredient(for recipe: Recipe) -> FoodItem? {
-        let activeFoods = foodStore.foodItems
-            .filter { $0.status == .active }
-            .sorted { $0.hpPercentage < $1.hpPercentage }
-
-        return activeFoods.first { food in
-            recipe.ingredients.contains {
-                $0.lowercased() == food.name.lowercased()
-            }
-        }
+        // Lowest-HP fridge item this recipe uses.
+        RecipeData.fridgeItems(for: recipe, in: foodStore.foodItems)
+            .min { $0.hpPercentage < $1.hpPercentage }
     }
 
     var body: some View {

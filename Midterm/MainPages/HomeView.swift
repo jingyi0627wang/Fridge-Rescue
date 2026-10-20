@@ -19,6 +19,10 @@ private enum FreshlingsHomeStyle {
 struct HomeView: View {
     @EnvironmentObject var foodStore: FoodStore
 
+    @State private var searchText = ""
+    @State private var selectedCategory: FoodCategory? = nil   // nil = All
+    @State private var itemToDelete: FoodItem?
+
     private var activeItems: [FoodItem] {
         foodStore.foodItems
             .filter { $0.status == .active }
@@ -32,6 +36,15 @@ struct HomeView: View {
     }
 
     private var rescueItem: FoodItem? { attentionItems.first }
+
+    /// Food list after search + category filter.
+    private var filteredItems: [FoodItem] {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return activeItems.filter { item in
+            (selectedCategory == nil || item.category == selectedCategory) &&
+            (query.isEmpty || item.name.localizedCaseInsensitiveContains(query))
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -55,6 +68,21 @@ struct HomeView: View {
         }
         // MainTabView already embeds HomeView in a NavigationStack.
         .toolbar(.hidden, for: .navigationBar)
+        .alert(
+            "Delete \(itemToDelete?.name ?? "item")?",
+            isPresented: Binding(
+                get: { itemToDelete != nil },
+                set: { if !$0 { itemToDelete = nil } }
+            )
+        ) {
+            Button("Delete", role: .destructive) {
+                if let itemToDelete { foodStore.deleteItem(itemToDelete) }
+                itemToDelete = nil
+            }
+            Button("Cancel", role: .cancel) { itemToDelete = nil }
+        } message: {
+            Text("It won't count as used or wasted.")
+        }
     }
 
     // MARK: - Header
@@ -231,19 +259,111 @@ struct HomeView: View {
             if activeItems.isEmpty {
                 emptyState
             } else {
-                VStack(spacing: 11) {
-                    ForEach(activeItems) { item in
-                        NavigationLink {
-                            FoodDetailView(item: item)
-                                .environmentObject(foodStore)
-                        } label: {
-                            foodRow(item)
+                searchBar
+                categoryChips
+
+                if filteredItems.isEmpty {
+                    noMatchState
+                } else {
+                    VStack(spacing: 11) {
+                        ForEach(filteredItems) { item in
+                            NavigationLink {
+                                FoodDetailView(item: item)
+                                    .environmentObject(foodStore)
+                            } label: {
+                                foodRow(item)
+                            }
+                            .buttonStyle(.plain)
+                            .contextMenu {
+                                Button {
+                                    foodStore.markAsUsed(item)
+                                } label: {
+                                    Label("I Used It", systemImage: "checkmark.circle")
+                                }
+                                Button {
+                                    foodStore.markAsWasted(item)
+                                } label: {
+                                    Label("Threw Away", systemImage: "trash")
+                                }
+                                Button(role: .destructive) {
+                                    itemToDelete = item
+                                } label: {
+                                    Label("Delete", systemImage: "xmark.bin")
+                                }
+                            }
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
         }
+    }
+
+    // MARK: - Search & filter
+
+    private var searchBar: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(FreshlingsHomeStyle.secondary)
+            TextField("Search your fridge", text: $searchText)
+                .font(.system(size: 15, weight: .medium, design: .rounded))
+                .foregroundStyle(FreshlingsHomeStyle.brown)
+                .autocorrectionDisabled()
+            if !searchText.isEmpty {
+                Button { searchText = "" } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(FreshlingsHomeStyle.secondary)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Clear search")
+            }
+        }
+        .padding(.horizontal, 16)
+        .frame(height: 46)
+        .background(FreshlingsHomeStyle.white, in: Capsule())
+    }
+
+    private var categoryChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                chip(title: "All", isSelected: selectedCategory == nil) {
+                    selectedCategory = nil
+                }
+                ForEach(FoodCategory.allCases, id: \.self) { category in
+                    chip(title: "\(category.addFoodIcon) \(category.rawValue)",
+                         isSelected: selectedCategory == category) {
+                        selectedCategory = (selectedCategory == category) ? nil : category
+                    }
+                }
+            }
+        }
+    }
+
+    private func chip(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .foregroundStyle(isSelected ? FreshlingsHomeStyle.darkGreen : FreshlingsHomeStyle.secondary)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 9)
+                .background(isSelected ? FreshlingsHomeStyle.green : FreshlingsHomeStyle.white,
+                            in: Capsule())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var noMatchState: some View {
+        VStack(spacing: 6) {
+            Text("🔍").font(.system(size: 34))
+            Text("No matching food")
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .foregroundStyle(FreshlingsHomeStyle.brown)
+            Text("Try another name or category.")
+                .font(.system(size: 13, design: .rounded))
+                .foregroundStyle(FreshlingsHomeStyle.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 28)
+        .background(FreshlingsHomeStyle.white, in: RoundedRectangle(cornerRadius: 21))
     }
 
     private func foodRow(_ item: FoodItem) -> some View {
